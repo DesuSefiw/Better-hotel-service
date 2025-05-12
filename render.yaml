@@ -1,13 +1,13 @@
 services:
   - type: web
-    name:better-hotel-backend
+    name: better-hotel-backend
     env: node
     plan: free
     branch: main
     buildCommand: npm install
-    startCommand: node index.js  # Or app.js/server.js depending on your entry file
+    startCommand: node index.js  # or your entry file like server.js
     envVars:
       - key: MONGODB_URI
         value: mongodb+srv://desalegnsefiw2:kXuopHwMq4ZVgnei@cluster0.xauvfp5.mongodb.net/test
-      - key: 80
+      - key: PORT
         value: 5000

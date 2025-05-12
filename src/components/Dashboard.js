@@ -201,7 +201,7 @@ const Dashboard = () => {
       });
   
       const data = await res.json();
-      if (res.ok && data.post) {
+      if (res.ok) {
         setPosts([data.post, ...posts]);
         setPostTitle('');
         setPostContent('');

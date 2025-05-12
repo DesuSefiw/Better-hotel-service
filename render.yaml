@@ -1,6 +1,6 @@
 services:
   - type: web
-    name:trainer-registration-backend
+    name:better-hotel-backend
     env: node
     plan: free
     branch: main

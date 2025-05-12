@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name:trainer-registration-backend
+    env: node
+    plan: free
+    branch: main
+    buildCommand: npm install
+    startCommand: node index.js  # Or app.js/server.js depending on your entry file
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://desalegnsefiw2:kXuopHwMq4ZVgnei@cluster0.xauvfp5.mongodb.net/test
+      - key: 80
+        value: 5000

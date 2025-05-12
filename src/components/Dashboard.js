@@ -1,0 +1,617 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+/* import Navbar from './Navbar';
+ */
+import { Link } from 'react-router-dom';
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+      name: '',
+      email: '',
+      phone: '',
+      services: [],
+    });
+  
+    const [type, setTrainingType] = useState(''); // New state for training type
+  
+  
+    const servicesList = [
+      'Organize a Hotel',
+      'Take Training',
+      'Get a Job',
+      'Write a Book',
+    ];
+  
+  const [trainers, setTrainers] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [postTitle, setPostTitle] = useState('');
+  const [postContent, setPostContent] = useState('');
+  const [newTrainer, setNewTrainer] = useState({ name: '', email: '', phone: '', services: [] });
+  const [editTrainer, setEditTrainer] = useState(null);
+  const [userCount, setUserCount] = useState(0);
+  const [viewMode, setViewMode] = useState('trainers'); // 'trainers' or 'posts'
+  const [showPostForm, setShowPostForm] = useState(false);
+  const [showTrainerForm, setShowTrainerForm] = useState(false);
+  const [editPostId, setEditPostId] = useState(null);
+  const [editPostTitle, setEditPostTitle] = useState('');
+  const [editPostContent, setEditPostContent] = useState('');
+  const [postFile, setPostFile] = useState(null);
+
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleServiceChange = (service) => {
+    const updatedServices = formData.services.includes(service)
+      ? formData.services.filter((s) => s !== service)
+      : [...formData.services, service];
+
+    setFormData({ ...formData, services: updatedServices });
+
+    // Reset training type if "Take Training" is deselected
+    if (service === 'Take Training' && formData.services.includes(service)) {
+      setTrainingType('');
+    }
+  };
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return navigate('/login');
+
+    const decoded = JSON.parse(atob(token.split('.')[1]));
+    if (!decoded.isCEO) return navigate('/');
+
+    const fetchData = async () => {
+      try {
+        const headers = { 'Authorization': `Bearer ${token}` };
+        const [resTrainers, resPosts, resUsers] = await Promise.all([
+          fetch('http://localhost:5000/api/trainers', { headers }),
+          fetch('http://localhost:5000/api/posts', { headers }),
+          fetch('http://localhost:5000/api/stats', { headers }),
+        ]);
+
+        setTrainers(await resTrainers.json());
+        setPosts(await resPosts.json());
+        const usersData = await resUsers.json();
+        setUserCount(usersData.count || 0);
+      } catch (err) {
+        console.error('Error:', err);
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  const categorizeServices = () => {
+    const serviceCategories = {
+      'Organize a Hotel': 0,
+      'Take Training': 0,
+      'Get a Job': 0,
+      'Write a Book': 0,
+    };
+    console.log("trainers value:", trainers);
+
+    if (Array.isArray(trainers)) {
+  trainers.forEach((trainer) => {
+    trainer.services.forEach((service) => {
+      if (serviceCategories[service] !== undefined) {
+        serviceCategories[service]++;
+      }
+    });
+  });
+}
+
+    return serviceCategories;
+  };
+
+  const chartData = {
+    labels: ['Organize a Hotel', 'Take Training', 'Get a Job', 'Write a Book'],
+    datasets: [
+      {
+        label: 'Custome Service Count',
+        data: Object.values(categorizeServices()),
+        backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
+        borderColor: '#fff',
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const handleAddTrainer = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch('http://localhost:5000/api/trainers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(newTrainer),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTrainers([data.data, ...trainers]);
+        setNewTrainer({ name: '', email: '', phone: '', services: [] });
+        setTrainingType('');
+
+        setShowTrainerForm(false);
+      }
+    } catch (err) {
+      console.error('Add trainer error:', err);
+    }
+  };
+
+  const handleEditTrainer = (trainer) => {
+    setEditTrainer(trainer);
+    setShowTrainerForm(true);  // Show form in edit mode
+  };
+
+  const handleUpdateTrainer = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`http://localhost:5000/api/trainers/${editTrainer._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(editTrainer),
+      });
+      if (res.ok) {
+        setTrainers(trainers.map(t => (t._id === editTrainer._id ? editTrainer : t)));
+        setEditTrainer(null);
+        setShowTrainerForm(false);
+      }
+    } catch (err) {
+      console.error('Edit trainer error:', err);
+    }
+  };
+
+  const handleDeleteTrainer = async (id) => {
+    const token = localStorage.getItem('token');
+    try {
+      await fetch(`http://localhost:5000/api/trainers/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      setTrainers(trainers.filter(t => t._id !== id));
+    } catch (err) {
+      console.error('Delete error:', err);
+    }
+  };
+
+  const handlePostSubmit = async () => {
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append('title', postTitle);
+    formData.append('content', postContent);
+    if (postFile) {
+      formData.append('file', postFile);
+    }
+  
+    try {
+      const res = await fetch('http://localhost:5000/api/posts', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
+  
+      const data = await res.json();
+      if (res.ok && data.post) {
+        setPosts([data.post, ...posts]);
+        setPostTitle('');
+        setPostContent('');
+        setPostFile(null);
+        setShowPostForm(false);  
+        alert('🎉 Registered successfully!');
+        navigate('/posts'); // 👈 redirect to desired page
+
+      
+    } 
+        else {
+        console.error('Unexpected response format:', data);
+      }
+      
+     
+    } catch (err) {
+      console.error('Post error:', err);
+    }
+  };
+  
+
+  const handleEditPost = (post) => {
+    setEditPostId(post._id);
+    setEditPostTitle(post.title);
+    setEditPostContent(post.content);
+  };
+
+  const handleUpdatePost = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const res = await fetch(`http://localhost:5000/api/posts/${editPostId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ title: editPostTitle, content: editPostContent }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setPosts(posts.map(p => (p._id === editPostId ? data.post : p)));
+        setEditPostId(null);
+        setEditPostTitle('');
+        setEditPostContent('');
+      }
+    } catch (err) {
+      console.error('Edit post error:', err);
+    }
+  };
+
+  const handleDeletePost = async (id) => {
+    const token = localStorage.getItem('token');
+    try {
+      await fetch(`http://localhost:5000/api/posts/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      setPosts(posts.filter(p => p._id !== id));
+    } catch (err) {
+      console.error('Delete post error:', err);
+    }
+  };
+
+  return (
+    <>
+    {/* <Navbar/> */}
+    <div style={{ padding: '40px', fontFamily: 'Segoe UI' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2>🎯 Better Hotel Services</h2>
+        <div>
+          <button onClick={() => setShowPostForm(true)} style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>📝 New Notice</button>
+          <button onClick={() => setViewMode('posts')} style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>📄 View Posts</button>
+          <button onClick={() => setViewMode('trainers')} style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>👥 View Trainers</button>
+          <Link to="/" style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>👥 log out</Link>
+
+        </div>
+      </div>
+
+      <p>Total Registered Customers: <strong>{userCount}</strong></p>
+
+      {/* Add Trainer Button */}
+      <button onClick={() => setShowTrainerForm(true)} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px', marginTop: '20px' }}>
+        ➕ Add Trainer
+      </button>
+
+      {/* View Trainers Section */}
+      {viewMode === 'trainers' && (
+        <div style={{ marginTop: '20px' }}>
+          <h3>👥 Registered Customers</h3>
+          {trainers.length === 0 ? <p>No Customers available.</p> : (
+            trainers.map(trainer => (
+              <div key={trainer._id} style={{ marginBottom: '10px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                <p><strong>{trainer.name}</strong> (Email: {trainer.email})</p>
+                <p><strong>Services:</strong> {trainer.services.join(', ')}</p> {/* Display multiple services */}
+                <button onClick={() => handleEditTrainer(trainer)} style={{ padding: '5px', backgroundColor: '#FF9800', color: '#fff', borderRadius: '5px', marginRight: '10px' }}>Edit</button>
+                <button onClick={() => handleDeleteTrainer(trainer._id)} style={{ padding: '5px', backgroundColor: '#f44336', color: '#fff', borderRadius: '5px' }}>Delete</button>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* Trainer Form */}
+      {showTrainerForm && (
+  <div style={{
+    background: '#fff',
+    padding: '30px',
+    borderRadius: '10px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    maxWidth: '400px',
+    margin: '30px auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px'
+  }}>
+    <h3 style={{ textAlign: 'center', color: '#333' }}>
+      {editTrainer ? 'Edit Trainer' : 'Add New Trainer'}
+    </h3>
+
+    <label>Name</label>
+    <input
+      type="text"
+      placeholder="Trainer Name"
+      value={editTrainer ? editTrainer.name : newTrainer.name}
+      onChange={(e) =>
+        editTrainer
+          ? setEditTrainer({ ...editTrainer, name: e.target.value })
+          : setNewTrainer({ ...newTrainer, name: e.target.value })
+      }
+      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
+    />
+
+    <label>Email</label>
+    <input
+      type="email"
+      placeholder="Email"
+      value={editTrainer ? editTrainer.email : newTrainer.email}
+      onChange={(e) =>
+        editTrainer
+          ? setEditTrainer({ ...editTrainer, email: e.target.value })
+          : setNewTrainer({ ...newTrainer, email: e.target.value })
+      }
+      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
+    />
+
+    <label>Phone</label>
+    <input
+      type="text"
+      placeholder="Phone Number"
+      value={editTrainer ? editTrainer.phone : newTrainer.phone}
+      onChange={(e) =>
+        editTrainer
+          ? setEditTrainer({ ...editTrainer, phone: e.target.value })
+          : setNewTrainer({ ...newTrainer, phone: e.target.value })
+      }
+      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
+    />
+
+    <label style={styles.label}>Select Services You're Interested In:</label>
+    <div style={styles.checkboxContainer}>
+      {servicesList.map((service) => {
+        const currentTrainer = editTrainer || newTrainer;
+        return (
+          <label key={service} style={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              value={service}
+              checked={currentTrainer?.services?.includes(service)}
+              onChange={() => {
+                const updatedServices = currentTrainer.services.includes(service)
+                  ? currentTrainer.services.filter((s) => s !== service)
+                  : [...currentTrainer.services, service];
+
+                if (editTrainer) {
+                  setEditTrainer({ ...editTrainer, services: updatedServices });
+                  if (service === 'Take Training' && !updatedServices.includes('Take Training')) {
+                    setTrainingType('');
+                  }
+                } else {
+                  setNewTrainer({ ...newTrainer, services: updatedServices });
+                  if (service === 'Take Training' && !updatedServices.includes('Take Training')) {
+                    setTrainingType('');
+                  }
+                }
+              }}
+            />{' '}
+            {service}
+          </label>
+        );
+      })}
+    </div>
+
+    {/* Conditional training type selector */}
+    {(editTrainer?.services?.includes('Take Training') ||
+      newTrainer?.services?.includes('Take Training')) && (
+      <div>
+        <label style={styles.label}>
+          Are you registering as an individual or organization?
+        </label>
+        <select
+          value={type}
+          onChange={(e) => setTrainingType(e.target.value)}
+          style={styles.input}
+          required
+        >
+          <option value="">-- Select Option --</option>
+          <option value="Individual">Individual</option>
+          <option value="Organization">Organization</option>
+        </select>
+      </div>
+    )}
+
+
+
+
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <button
+        onClick={() => {
+          editTrainer ? handleUpdateTrainer() : handleAddTrainer();
+        }}
+        style={{ padding: '10px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px', flex: 1, marginRight: '10px' }}
+      >
+        {editTrainer ? 'Update' : 'Add'}
+      </button>
+      <button
+        onClick={() => {
+          setShowTrainerForm(false);
+          setEditTrainer(null);
+        }}
+        style={{ padding: '10px', backgroundColor: '#ccc', color: '#333', borderRadius: '5px', flex: 1 }}
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+
+
+      {/* View Posts Section */}
+      {viewMode === 'posts' && (
+        <div style={{ marginTop: '40px' }}>
+          <h3>📄 Notices</h3>
+          {posts.length === 0 ? (
+            <p>No posts available.</p>
+          ) : (
+            posts.map((post) => (
+              <div key={post._id} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                <h4>{post.title}</h4>
+                <p>{post.content}</p>
+                <button onClick={() => handleEditPost(post)} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#FF9800', color: '#fff', borderRadius: '5px' }}>Edit</button>
+                <button onClick={() => handleDeletePost(post._id)} style={{ padding: '5px 10px', backgroundColor: '#f44336', color: '#fff', borderRadius: '5px' }}>Delete</button>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* Post Form */}
+      {showPostForm && (
+  <div style={{
+    background: '#fff',
+    padding: '30px',
+    borderRadius: '10px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    maxWidth: '400px',
+    margin: '30px auto',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px'
+  }}>
+    <h3 style={{ textAlign: 'center', color: '#333' }}>Add New Notice</h3>
+
+    <label>Title</label>
+    <input
+      type="text"
+      value={postTitle}
+      onChange={(e) => setPostTitle(e.target.value)}
+      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
+    />
+
+    <label>Content</label>
+    <textarea
+      value={postContent}
+      onChange={(e) => setPostContent(e.target.value)}
+      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
+    />
+
+    <label>Upload Media (Image/Video/Doc)</label>
+    <input
+      type="file"
+      accept="image/*,video/*,.pdf,.doc,.docx"
+      onChange={(e) => setPostFile(e.target.files[0])}
+    />
+
+    <button onClick={handlePostSubmit} style={{ padding: '10px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>
+      Submit Notice
+    </button>
+
+  <button onClick={() => setShowPostForm(false)} style={{ marginLeft: '10px', padding: '10px', backgroundColor: '#f44336', color: '#fff', borderRadius: '5px' }}>
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {/* Edit Post Form */}
+      {editPostId && (
+        <div style={{ marginTop: '30px' }}>
+          <h3>Edit Notice</h3>
+          <input
+            type="text"
+            value={editPostTitle}
+            onChange={(e) => setEditPostTitle(e.target.value)}
+            style={{ margin: '5px 0', padding: '5px', width: '100%' }}
+          />
+          <textarea
+            value={editPostContent}
+            onChange={(e) => setEditPostContent(e.target.value)}
+            rows="5"
+            style={{ margin: '5px 0', padding: '5px', width: '100%' }}
+          />
+          <button onClick={handleUpdatePost} style={{ padding: '10px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>
+            Update
+          </button>
+          <button onClick={() => setEditPostId(null)} style={{ marginLeft: '10px', padding: '10px', backgroundColor: '#f44336', color: '#fff', borderRadius: '5px' }}>
+            Cancel
+          </button>
+        </div>
+      )}
+       {/* Bar Chart Section */}
+       <div style={{ marginTop: '40px' }}>
+        <h3>📊 Hotel Services Overview</h3>
+        <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Customer Services Count' } } }} />
+      </div>
+    </div>
+    </>
+  );
+};
+
+const styles = {
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '40px',
+    background: '#f2f6fc',
+    minHeight: '90vh',
+  },
+  card: {
+    width: '100%',
+    maxWidth: '500px',
+    background: '#fff',
+    padding: '30px',
+    borderRadius: '12px',
+    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.1)',
+  },
+  heading: {
+    textAlign: 'center',
+    marginBottom: '10px',
+    color: '#003366',
+  },
+  description: {
+    textAlign: 'center',
+    fontSize: '14px',
+    marginBottom: '20px',
+    color: '#555',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  label: {
+    fontWeight: 'bold',
+    marginBottom: '5px',
+    color: '#003366',
+  },
+  input: {
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '6px',
+    border: '1px solid #ccc',
+    outline: 'none',
+  },
+  checkboxContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
+    marginBottom: '15px',
+  },
+  checkboxLabel: {
+    color: '#333',
+    fontSize: '14px',
+  },
+  button: {
+    backgroundColor: '#003366',
+    color: 'white',
+    padding: '12px',
+    border: 'none',
+    borderRadius: '6px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'background 0.3s',
+  },
+  homeButton: {
+    marginTop: '10px',
+    padding: '20px 100px',
+    borderRadius: '25px',
+    backgroundColor: 'orange',
+    border: 'none',
+    color: 'white',
+  },
+};
+
+export default Dashboard;

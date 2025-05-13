@@ -53,7 +53,7 @@ const PostList = () => {
   const renderMedia = (filePath) => {
     if (!filePath) return null;
   
-    const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
+    const fullPath = `https://better-hotel-service-1.onrender.com/${filePath}`;
     const fileType = filePath.split('.').pop().toLowerCase();
   
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {

@@ -7,7 +7,7 @@ const PostList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/posts')
+    axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);
@@ -53,7 +53,7 @@ const PostList = () => {
   const renderMedia = (filePath) => {
     if (!filePath) return null;
   
-    const fullPath = `http://localhost:5000${filePath}`;
+    const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
     const fileType = filePath.split('.').pop().toLowerCase();
   
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {

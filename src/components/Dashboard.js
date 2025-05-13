@@ -208,7 +208,7 @@ const Dashboard = () => {
         setPostFile(null);
         setShowPostForm(false);  
         alert('🎉 Registered successfully!');
-        navigate('/posts'); // 👈 redirect to desired page
+        navigate('/dashboard'); // 👈 redirect to desired page
 
       
     } 

@@ -67,9 +67,9 @@ const Dashboard = () => {
       try {
         const headers = { 'Authorization': `Bearer ${token}` };
         const [resTrainers, resPosts, resUsers] = await Promise.all([
-          fetch('http://localhost:5000/api/trainers', { headers }),
-          fetch('http://localhost:5000/api/posts', { headers }),
-          fetch('http://localhost:5000/api/stats', { headers }),
+          fetch('https://better-hotel-service-1.onrender.com/api/trainers', { headers }),
+          fetch('https://better-hotel-service-1.onrender.com/api/posts', { headers }),
+          fetch('https://better-hotel-service-1.onrender.com/api/stats', { headers }),
         ]);
 
         setTrainers(await resTrainers.json());
@@ -122,7 +122,7 @@ const Dashboard = () => {
   const handleAddTrainer = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch('http://localhost:5000/api/trainers', {
+      const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const Dashboard = () => {
   const handleUpdateTrainer = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/trainers/${editTrainer._id}`, {
+      const res = await fetch(`https://better-hotel-service-1.onrender.com/trainers/${editTrainer._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ const Dashboard = () => {
   const handleDeleteTrainer = async (id) => {
     const token = localStorage.getItem('token');
     try {
-      await fetch(`http://localhost:5000/api/trainers/${id}`, {
+      await fetch(`https://better-hotel-service-1.onrender.com/api/trainers/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -192,7 +192,7 @@ const Dashboard = () => {
     }
   
     try {
-      const res = await fetch('http://localhost:5000/api/posts', {
+      const res = await fetch('https://better-hotel-service-1.onrender.com/api/posts', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -232,7 +232,7 @@ const Dashboard = () => {
   const handleUpdatePost = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`http://localhost:5000/api/posts/${editPostId}`, {
+      const res = await fetch(`https://better-hotel-service-1.onrender.com/api/posts/${editPostId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ const Dashboard = () => {
   const handleDeletePost = async (id) => {
     const token = localStorage.getItem('token');
     try {
-      await fetch(`http://localhost:5000/api/posts/${id}`, {
+      await fetch(`https://better-hotel-service-1.onrender.com/api/posts/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });

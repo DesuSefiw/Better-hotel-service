@@ -50,10 +50,11 @@ const PostList = () => {
     }
   `;
 
-  const renderMedia = (filePath) => {
+ const renderMedia = (filePath) => {
   if (!filePath) return null;
 
-  const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
+  // Replace any spaces in filePath with %20
+  const fullPath = `https://better-hotel-service-1.onrender.com${filePath.replace(/ /g, '%20')}`;
   const fileType = filePath.split('.').pop().toLowerCase();
   console.log('Loading media from:', fullPath);
 

@@ -51,50 +51,51 @@ const PostList = () => {
   `;
 
   const renderMedia = (filePath) => {
-    if (!filePath) return null;
-  
-    const fullPath = `https://better-hotel-service-1.onrender.com ${filePath}`;
-    const fileType = filePath.split('.').pop().toLowerCase();
-  
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
-      return (
-        <img
-          key={filePath}
-          src={fullPath}
-          alt="Post Media"
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-            borderRadius: '10px',
-            ...fadeInStyle,
-          }}
-        />
-      );
-    }
-  
-    if (['mp4', 'webm'].includes(fileType)) {
-      return (
-        <video
-          key={filePath}
-          src={fullPath}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          type={`video/${fileType}`}
-          controls // ← Remove this after testing
-          style={{
-            maxWidth: '100%',
-            borderRadius: '10px',
-            ...fadeInStyle,
-          }}
-        />
-      );
-    }
-  
-    return null;
-  };
+  if (!filePath) return null;
+
+  const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
+  const fileType = filePath.split('.').pop().toLowerCase();
+  console.log('Loading media from:', fullPath);
+
+  if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+    return (
+      <img
+        key={filePath}
+        src={fullPath}
+        alt="Post Media"
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          borderRadius: '10px',
+          ...fadeInStyle,
+        }}
+      />
+    );
+  }
+
+  if (['mp4', 'webm'].includes(fileType)) {
+    return (
+      <video
+        key={filePath}
+        src={fullPath}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        type={`video/${fileType}`}
+        style={{
+          maxWidth: '100%',
+          borderRadius: '10px',
+          ...fadeInStyle,
+        }}
+      />
+    );
+  }
+
+  return null;
+};
+
   
   return (
     <section

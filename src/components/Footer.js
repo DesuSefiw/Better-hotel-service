@@ -51,13 +51,13 @@ const Footer = () => {
             </a>
           </p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
-            <FaUsers /> {trainerCount} Trainers Registered
+             {/*<FaUsers /> {trainerCount} Trainers Registered */}
           </p>
 
           {/* Social Media Links */}
           <div style={{ marginTop: '20px', display: 'flex', gap: '15px' }}>
             <a
-              href="https://t.me/c/2593570202/"
+              href="https://t.me/c/2593570202/4329"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'white', fontSize: '20px' }}

@@ -28,12 +28,22 @@ const AboutUs = () => {
        
        </h2>
       <p style={{ fontSize: '1.1rem', color: '#555', lineHeight: '1.8' }}>
-        <strong>Better Hotel Services</strong> was founded with a passionate mission to elevate Ethiopia’s hospitality sector.
-        Since our establishment in March 2017 by <strong>Mr. Tarekegn Legesse</strong>, we have been committed to organizing and empowering hotel businesses through top-tier training, professional consulting, and direct industry engagement.
-        <br /><br />
-        Our platform connects hotels with skilled professionals, offers tailored training programs, and provides expert guidance that drives quality, efficiency, and guest satisfaction.
-        Whether you're a hotel owner, a new manager, or an aspiring hospitality professional — <strong>we’re here to support your journey to excellence.</strong>
-      </p>
+  <strong>Better Hotel Services</strong> was founded with a passionate mission to elevate Ethiopia’s hospitality sector.
+  Since our establishment in March 2017 by <strong>Mr. Tarekegn Legesse</strong>, we have been committed to organizing and empowering hotel businesses through top-tier training, professional consulting, and direct industry engagement.
+  <br /><br />
+  <span style={{ display: 'block', marginBottom: '0.5rem' }}>
+    ✅ Our platform connects hotels with skilled professionals
+  </span>
+  <span style={{ display: 'block', marginBottom: '0.5rem' }}>
+    ✅ Offers tailored training programs
+  </span>
+  <span style={{ display: 'block', marginBottom: '0.5rem' }}>
+    ✅ Provides expert guidance that drives quality, efficiency, and guest satisfaction
+  </span>
+  <br />
+  Whether you're a hotel owner, a new manager, or an aspiring hospitality professional — <strong>we’re here to support your journey to excellence.</strong>
+</p>
+
     </motion.section>
   );
 };

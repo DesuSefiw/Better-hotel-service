@@ -48,7 +48,7 @@ if (formData.services.includes('Take Training')) {
   requestBody.type = type;
 }
 
-await axios.post('http://localhost:5000/api/register', requestBody);
+await axios.post('https://better-hotel-service-1.onrender.com/api/register', requestBody);
 
       
       alert('🎉 Registered successfully!');

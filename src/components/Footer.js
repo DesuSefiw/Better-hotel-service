@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FaPhoneAlt, FaEnvelope, FaUsers } from 'react-icons/fa';
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaUsers,
+  FaTelegramPlane,
+  FaFacebook,
+  FaLinkedin,
+} from 'react-icons/fa';
 import ceoImg from '../assets/images/CEO.jpg';
 import headworker from '../assets/images/boardpartnerandmainworker.jpg';
 
@@ -7,14 +14,13 @@ const Footer = () => {
   const [trainerCount, setTrainerCount] = useState(0);
 
   useEffect(() => {
-    fetch('https://better-hotel-service-1.onrender.com/api/stats') // Adjust URL if you're in production
+    fetch('https://better-hotel-service-1.onrender.com/api/stats')
       .then(res => res.json())
       .then(data => {
         setTrainerCount(data.count);
       })
       .catch(err => console.error('Error fetching trainer count:', err));
   }, []);
-  
 
   return (
     <footer style={{ backgroundColor: '#003366', color: 'white', padding: '40px 20px' }}>
@@ -41,6 +47,34 @@ const Footer = () => {
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
             <FaUsers /> {trainerCount} Trainers Registered
           </p>
+
+          {/* Social Media Links */}
+          <div style={{ marginTop: '20px', display: 'flex', gap: '15px' }}>
+            <a
+              href="https://t.me/c/2593570202/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'white', fontSize: '20px' }}
+            >
+              <FaTelegramPlane />
+            </a>
+            <a
+              href="https://facebook.com/yourfacebook"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'white', fontSize: '20px' }}
+            >
+              <FaFacebook />
+            </a>
+            <a
+              href="https://linkedin.com/in/yourlinkedin"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'white', fontSize: '20px' }}
+            >
+              <FaLinkedin />
+            </a>
+          </div>
         </div>
 
         {/* CEO Info */}
@@ -76,7 +110,7 @@ const Footer = () => {
             }}
           />
           <h4>Main Partner</h4>
-          <p>Our Board & General Manager </p>
+          <p>Our Board & General Manager</p>
         </div>
       </div>
 

@@ -7,7 +7,7 @@ const Footer = () => {
   const [trainerCount, setTrainerCount] = useState(0);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/stats') // Adjust URL if you're in production
+    fetch('https://better-hotel-service-1.onrender.com/api/stats') // Adjust URL if you're in production
       .then(res => res.json())
       .then(data => {
         setTrainerCount(data.count);

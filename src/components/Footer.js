@@ -40,13 +40,13 @@ const Footer = () => {
           <h3 style={{ marginBottom: '10px' }}>Better Hotel Services</h3>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaPhoneAlt />
-            <a href="tel:+251911444512" style={{ color: 'white' }}>
+            <a href="tel:+251911444512" style={{ color: 'white',textDecoration:'none' }}>
               +251-911-444-512
             </a>
           </p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaEnvelope />
-            <a href="mailto:betterhotel@gmail.com" style={{ color: 'white' }}>
+            <a href="mailto:betterhotel@gmail.com" style={{ color: 'white',textDecoration:'none' }}>
               betterhotel@gmail.com
             </a>
           </p>

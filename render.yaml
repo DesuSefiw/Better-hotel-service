@@ -1,17 +1,13 @@
-# Exported from Render on 2025-05-13T08:23:33Z
 services:
-- type: web
-  name: better-hotel-backend
-  runtime: node
-  repo: https://github.com/DesuSefiw/Better-hotel-service
-  plan: free
-  envVars:
-  - key: PORT
-    sync: false
-  - key: MONGODB_URI
-    sync: false
-  region: oregon
-  buildCommand: npm install
-  startCommand: node index.js
-  autoDeployTrigger: commit
-version: "1"
+  - type: web
+    name: better-hotel-backend
+    env: node
+    plan: free
+    branch: main
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://desalegnsefiw2:kXuopHwMq4ZVgnei@cluster0.xauvfp5.mongodb.net/test
+      - key: PORT
+        value: "5000"

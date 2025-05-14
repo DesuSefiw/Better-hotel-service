@@ -7,6 +7,35 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PostList from '../components/PostList';
 import AboutUs  from './About';
+import GallerySection from '../components/GallerySection';
+import img1 from '../assets/images/worker.jpg'
+import img2 from '../assets/images/hospitality_and_consultancy.jpg'
+import img3 from '../assets/images/organiz.jpg'
+import img4 from '../assets/images/org2.jpg'
+import img5 from '../assets/images/consulting.jpg'
+import img6 from '../assets/images/cons2.jpg'
+import img7 from '../assets/images/top.jpg'
+import img8 from '../assets/images/live1.jpg'
+
+import img9 from '../assets/images/office.jpg'
+import img10 from '../assets/images/trinhosp.jpg'
+import img11 from '../assets/images/workerpart.jpg'
+import img12 from '../assets/images/service1.jpg'
+
+const images = [
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+  img11,
+  img12,
+];
 const Home = () => {
   const { t } = useTranslation();
 
@@ -74,6 +103,8 @@ const Home = () => {
         </motion.div> 
          <PostList/> 
         <AboutUs />
+        <GallerySection images={images} />
+
         <ContactForm />
       </main>
       <Footer />

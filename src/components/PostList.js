@@ -72,27 +72,26 @@ const PostList = () => {
       );
     }
   
-    if (['mp4', 'webm'].includes(fileType)) {
-      return (
-        <video
-          key={filePath}
-          src={fullPath}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          type={`video/${fileType}`}
-          controls // ← Remove this after testing
-          style={{
-            maxWidth: '100%',
-            borderRadius: '10px',
-            ...fadeInStyle,
-          }}
-        />
-      );
-    }
-  
+   if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileType)) {
+  return (
+    <video
+      key={filePath}
+      src={fullPath}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      controls
+      style={{
+        maxWidth: '100%',
+        borderRadius: '10px',
+        ...fadeInStyle,
+      }}
+    />
+  );
+}
+
     return null;
   };
   

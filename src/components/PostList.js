@@ -5,6 +5,7 @@ const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [mediaList, setMediaList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isInteracting, setIsInteracting] = useState(false);
 
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
@@ -50,50 +51,57 @@ const PostList = () => {
     }
   `;
 
-  const renderMedia = (filePath) => {
-    if (!filePath) return null;
-  
-    const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
-    const fileType = filePath.split('.').pop().toLowerCase();
-  
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
-      return (
-        <img
-          key={filePath}
-          src={fullPath}
-          alt="Post Media"
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-            borderRadius: '10px',
-            ...fadeInStyle,
-          }}
-        />
-      );
-    }
-  
-   if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileType)) {
-  return (
-    <video
-      key={filePath}
-      src={fullPath}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="auto"
-      controls
-      style={{
-        maxWidth: '100%',
-        borderRadius: '10px',
-        ...fadeInStyle,
-      }}
-    />
-  );
-}
 
-    return null;
-  };
+const renderMedia = (filePath) => {
+  if (!filePath) return null;
+
+  const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
+  const fileType = filePath.split('.').pop().toLowerCase();
+
+  const interactiveStyle = isInteracting ? {} : fadeInStyle;
+
+  if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+    return (
+      <img
+        key={filePath}
+        src={fullPath}
+        alt="Post Media"
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          borderRadius: '10px',
+          ...interactiveStyle,
+        }}
+      />
+    );
+  }
+
+  if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileType)) {
+    return (
+      <video
+        key={filePath}
+        src={fullPath}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        controls
+        onMouseEnter={() => setIsInteracting(true)}
+        onMouseLeave={() => setIsInteracting(false)}
+        onFocus={() => setIsInteracting(true)}
+        onBlur={() => setIsInteracting(false)}
+        style={{
+          maxWidth: '100%',
+          borderRadius: '10px',
+          ...interactiveStyle,
+        }}
+      />
+    );
+  }
+
+  return null;
+};
   
   return (
     <section

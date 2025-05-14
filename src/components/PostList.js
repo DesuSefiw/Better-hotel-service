@@ -28,15 +28,17 @@ const PostList = () => {
   }, []);
 
   // Slideshow effect
-  useEffect(() => {
-    if (mediaList.length === 0) return;
+  const [isPlaying, setIsPlaying] = useState(false);
 
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % mediaList.length);
-    }, 6000); // every 4 seconds
+useEffect(() => {
+  if (mediaList.length === 0 || isPlaying) return;
 
-    return () => clearInterval(interval);
-  }, [mediaList]);
+  const interval = setInterval(() => {
+    setCurrentIndex(prev => (prev + 1) % mediaList.length);
+  }, 6000); // 6 seconds
+
+  return () => clearInterval(interval);
+}, [mediaList, isPlaying]);
 
   const fadeInStyle = {
     animation: 'fadeIn 1s ease-in-out',
@@ -87,10 +89,8 @@ const renderMedia = (filePath) => {
         playsInline
         preload="auto"
         controls
-        onMouseEnter={() => setIsInteracting(true)}
-        onMouseLeave={() => setIsInteracting(false)}
-        onFocus={() => setIsInteracting(true)}
-        onBlur={() => setIsInteracting(false)}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
         style={{
           maxWidth: '100%',
           borderRadius: '10px',

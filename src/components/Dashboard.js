@@ -270,34 +270,75 @@ const Dashboard = () => {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-          <button
-            onClick={() => setShowPostForm(true)}
-            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.3s' }}
-          >
-            📝 New Notice
-          </button>
+  <button
+    onClick={() => setShowPostForm(true)}
+    style={{
+      padding: '10px 20px',
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      transition: 'background 0.3s',
+      width: '100%', // Ensure the buttons are responsive
+    }}
+  >
+    📝 New Notice
+  </button>
 
-          <button
-            onClick={() => setViewMode('posts')}
-            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.3s' }}
-          >
-            📄 View Posts
-          </button>
+  <button
+    onClick={() => setViewMode('posts')}
+    style={{
+      padding: '10px 20px',
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      transition: 'background 0.3s',
+      width: '100%', // Ensure the buttons are responsive
+    }}
+  >
+    📄 View Posts
+  </button>
 
-          <button
-            onClick={() => setViewMode('trainers')}
-            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.3s' }}
-          >
-            👥 View Trainers
-          </button>
+  <button
+    onClick={() => setViewMode('trainers')}
+    style={{
+      padding: '10px 20px',
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      transition: 'background 0.3s',
+      width: '100%', // Ensure the buttons are responsive
+    }}
+  >
+    👥 View Trainers
+  </button>
 
-          <Link
-            to="/"
-            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', textDecoration: 'none', display: 'inline-block' }}
-          >
-            👥 Log Out
-          </Link>
-        </div>
+  <Link
+    to="/"
+    style={{
+      padding: '10px 20px',
+      backgroundColor: '#4CAF50',
+      color: 'white',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '14px',
+      textDecoration: 'none',
+      display: 'inline-block',
+      width: '100%', // Ensure the button is responsive
+    }}
+  >
+    👥 Log Out
+  </Link>
+</div>
 
 
       <p>Total Registered Customers: <strong>{userCount}</strong></p>

@@ -87,9 +87,7 @@ const handleResize = () => {
         setMenuOpen(false); // Reset on desktop
       }
     };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+   
 const headerStyle = {
     position: "fixed",
     top: 0,

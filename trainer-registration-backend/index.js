@@ -108,7 +108,7 @@ app.get('/api/trainers', authenticateJWT, async (req, res) => {
   }
 });
 
-app.post('/api/trainers', authenticateJWT, async (req, res) => {
+app.post('/api/trainers', async (req, res) => {
   try {
     const { name, email, phone, services, type } = req.body;
     const existingUser = await Registration.findOne({ email });

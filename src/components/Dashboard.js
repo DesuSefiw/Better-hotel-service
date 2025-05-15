@@ -117,22 +117,39 @@ const Dashboard = () => {
 const handleAddTrainer = async () => {
   const token = localStorage.getItem('token');
 
-   try {
-      const requestBody = { ...formData };
-if (formData.services.includes('Take Training')) {
-  requestBody.type = type;
-}
+  try {
+    const trainerData = { ...newTrainer };
 
-await axios.post('https://better-hotel-service-1.onrender.com/api/tainers', requestBody);
-
-      
-      alert('🎉 Registered successfully!');
-      setFormData({ name: '', email: '', phone: '', services: [] });
-      setTrainingType('');
-    } catch (err) {
-      alert('❌ Error registering. Please try again.');
+    if (newTrainer.services.includes('Take Training')) {
+      trainerData.type = type;
     }
+
+    const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers',trainerData {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(trainerData),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setTrainers([data.data, ...trainers]);
+      setNewTrainer({ name: '', email: '', phone: '', services: [] });
+      setTrainingType('');
+      setShowTrainerForm(false);
+    } else {
+      console.error('Failed response:', data);
+      alert(data.message || 'Failed to register trainer. Please try again.');
+    }
+  } catch (err) {
+    console.error('Error Adding trainer:', err);
+    alert('An error occurred while adding the trainer.');
+  }
 };
+
 
 
 

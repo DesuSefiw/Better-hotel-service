@@ -110,7 +110,11 @@ app.get('/api/trainers', authenticateJWT, async (req, res) => {
 
 app.post('/api/trainers', authenticateJWT, async (req, res) => {
   try {
-    const newTrainer = new Registration(req.body);
+    const { name, email, phone, services, type } = req.body;
+    const existingUser = await Registration.findOne({ email });
+    if (existingUser) return res.status(400).json({ message: 'Email already registered' });
+
+    const newTrainer = new Registration({ name, email, phone, services, type });
     await newTrainer.save();
     res.status(201).json(newTrainer);
   } catch (err) {

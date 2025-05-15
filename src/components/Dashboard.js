@@ -114,13 +114,10 @@ const Dashboard = () => {
     ],
   };
 
- const handleAddTrainer = async () => {
+const handleAddTrainer = async () => {
   const token = localStorage.getItem('token');
   try {
-    const trainerData = { 
-      ...newTrainer, 
-      trainingType: type // Ensure the type is included here
-    };
+    const trainerData = { ...newTrainer }; // trainingType is now included inside newTrainer
 
     const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers', {
       method: 'POST',
@@ -128,15 +125,18 @@ const Dashboard = () => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(trainerData), // Pass the trainingType here
+      body: JSON.stringify(trainerData),
     });
+
     const data = await res.json();
 
     if (res.ok) {
       setTrainers([data.data, ...trainers]);
-      setNewTrainer({ name: '', email: '', phone: '', services: [] });
-      setTrainingType(''); // Reset the training type
+      setNewTrainer({ name: '', email: '', phone: '', services: [], trainingType: '' });
+       alert(' register trainer succfully ');
+
       setShowTrainerForm(false);
+      
     } else {
       alert('Failed to register trainer. Please try again.');
     }
@@ -145,6 +145,7 @@ const Dashboard = () => {
     alert('An error occurred while adding the trainer.');
   }
 };
+
 
 
   const handleEditTrainer = (trainer) => {
@@ -210,9 +211,9 @@ const Dashboard = () => {
         setPostTitle('');
         setPostContent('');
         setPostFile(null);
-        setShowPostForm(false);  
+         
         alert('🎉 Registered successfully!');
-        navigate('/dashboard');
+        setShowPostForm(false); 
       }
     } catch (err) {
       console.error('Post error:', err);
@@ -321,7 +322,7 @@ const Dashboard = () => {
     👥 View Trainers
   </button>
 
-  <Link
+   <Link
     to="/"
     style={{
       padding: '10px 20px',
@@ -334,11 +335,13 @@ const Dashboard = () => {
       textDecoration: 'none',
       display: 'inline-block',
       width: '100%', // Ensure the button is responsive
+      textAlign: 'center',
     }}
   >
-    👥 Log Out
+    🔓 Log Out
   </Link>
 </div>
+
 
 
       <p>Total Registered Customers: <strong>{userCount}</strong></p>

@@ -48,7 +48,7 @@ const Dashboard = () => {
     setFormData({ ...formData, services: updatedServices });
 
     // Reset training type if "Take Training" is deselected
-    if (service === 'Take Training' && formData.services.includes(service)) {
+    if (service === 'Take Training' && setNewTrainer.services.includes(service)) {
       setTrainingType('');
     }
   };
@@ -124,7 +124,7 @@ const handleAddTrainer = async () => {
       trainerData.type = type;
     }
 
-    const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers',trainerData, {
+    const res = await fetch(`https://better-hotel-service-1.onrender.com/api/trainers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -365,7 +365,7 @@ const handleAddTrainer = async () => {
             trainers.map(trainer => (
               <div key={trainer._id} style={{ marginBottom: '10px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>
                 <p><strong>{trainer.name}</strong> (Email: {trainer.email})</p>
-                <p><strong>Phone-No:</strong> {trainer.phone}</p> {/* Display multiple services */}
+                <p><strong>Phone-No:</strong> {trainer.phone}</p> 
                 <p><strong>Services:</strong> {trainer.services.join(', ')}</p> {/* Display multiple services */}
                 <button onClick={() => handleEditTrainer(trainer)} style={{ padding: '5px', backgroundColor: '#FF9800', color: '#fff', borderRadius: '5px', marginRight: '10px' }}>Edit</button>
                 <button onClick={() => handleDeleteTrainer(trainer._id)} style={{ padding: '5px', backgroundColor: '#f44336', color: '#fff', borderRadius: '5px' }}>Delete</button>

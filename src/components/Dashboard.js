@@ -3,7 +3,6 @@ import { useNavigate,Link } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
-import axios from 'axios';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({

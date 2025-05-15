@@ -124,7 +124,7 @@ const handleAddTrainer = async () => {
       trainerData.type = type;
     }
 
-    const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers',trainerData {
+    const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers',trainerData, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

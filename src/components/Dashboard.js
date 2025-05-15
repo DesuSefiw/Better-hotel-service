@@ -2,30 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-/* import Navbar from './Navbar';
- */
-import { Link } from 'react-router-dom';
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-      name: '',
-      email: '',
-      phone: '',
-      services: [],
-    });
-  
-    const [type, setTrainingType] = useState(''); // New state for training type
-  
-  
-    const servicesList = [
-      'Organize a Hotel',
-      'Take Training',
-      'Get a Job',
-      'Write a Book',
-    ];
-  
+    name: '',
+    email: '',
+    phone: '',
+    services: [],
+  });
+
+  const [type, setTrainingType] = useState(''); // New state for training type
+
+  const servicesList = [
+    'Organize a Hotel',
+    'Take Training',
+    'Get a Job',
+    'Write a Book',
+  ];
+
   const [trainers, setTrainers] = useState([]);
   const [posts, setPosts] = useState([]);
   const [postTitle, setPostTitle] = useState('');
@@ -56,6 +52,7 @@ const Dashboard = () => {
       setTrainingType('');
     }
   };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return navigate('/login');
@@ -91,18 +88,16 @@ const Dashboard = () => {
       'Get a Job': 0,
       'Write a Book': 0,
     };
-    console.log("trainers value:", trainers);
 
     if (Array.isArray(trainers)) {
-  trainers.forEach((trainer) => {
-    trainer.services.forEach((service) => {
-      if (serviceCategories[service] !== undefined) {
-        serviceCategories[service]++;
-      }
-    });
-  });
-}
-
+      trainers.forEach((trainer) => {
+        trainer.services.forEach((service) => {
+          if (serviceCategories[service] !== undefined) {
+            serviceCategories[service]++;
+          }
+        });
+      });
+    }
     return serviceCategories;
   };
 
@@ -110,7 +105,7 @@ const Dashboard = () => {
     labels: ['Organize a Hotel', 'Take Training', 'Get a Job', 'Write a Book'],
     datasets: [
       {
-        label: 'Custome Service Count',
+        label: 'Customer Service Count',
         data: Object.values(categorizeServices()),
         backgroundColor: ['#FF5733', '#33FF57', '#3357FF', '#FF33A1'],
         borderColor: '#fff',
@@ -128,14 +123,13 @@ const Dashboard = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(newTrainer),
+        body: JSON.stringify({ ...newTrainer, trainingType: type }),
       });
       const data = await res.json();
       if (res.ok) {
         setTrainers([data.data, ...trainers]);
         setNewTrainer({ name: '', email: '', phone: '', services: [] });
         setTrainingType('');
-
         setShowTrainerForm(false);
       }
     } catch (err) {
@@ -151,16 +145,16 @@ const Dashboard = () => {
   const handleUpdateTrainer = async () => {
     const token = localStorage.getItem('token');
     try {
-      const res = await fetch(`https://better-hotel-service-1.onrender.com/trainers/${editTrainer._id}`, {
+      const res = await fetch(`https://better-hotel-service-1.onrender.com/api/trainers/${editTrainer._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(editTrainer),
+        body: JSON.stringify({ ...editTrainer, trainingType: type }),
       });
       if (res.ok) {
-        setTrainers(trainers.map(t => (t._id === editTrainer._id ? editTrainer : t)));
+        setTrainers(trainers.map(t => (t._id === editTrainer._id ? { ...editTrainer, trainingType: type } : t)));
         setEditTrainer(null);
         setShowTrainerForm(false);
       }
@@ -190,7 +184,7 @@ const Dashboard = () => {
     if (postFile) {
       formData.append('file', postFile);
     }
-  
+
     try {
       const res = await fetch('https://better-hotel-service-1.onrender.com/api/posts', {
         method: 'POST',
@@ -199,7 +193,7 @@ const Dashboard = () => {
         },
         body: formData,
       });
-  
+
       const data = await res.json();
       if (res.ok) {
         setPosts([data.post, ...posts]);
@@ -208,20 +202,12 @@ const Dashboard = () => {
         setPostFile(null);
         setShowPostForm(false);  
         alert('🎉 Registered successfully!');
-        navigate('/dashboard'); // 👈 redirect to desired page
-
-      
-    } 
-        else {
-        console.error('Unexpected response format:', data);
+        navigate('/dashboard');
       }
-      
-     
     } catch (err) {
       console.error('Post error:', err);
     }
   };
-  
 
   const handleEditPost = (post) => {
     setEditPostId(post._id);
@@ -267,18 +253,42 @@ const Dashboard = () => {
 
   return (
     <>
-    {/* <Navbar/> */}
-    <div style={{ padding: '40px', fontFamily: 'Segoe UI' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>🎯 Better Hotel Services</h2>
-        <div>
-          <button onClick={() => setShowPostForm(true)} style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>📝 New Notice</button>
-          <button onClick={() => setViewMode('posts')} style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>📄 View Posts</button>
-          <button onClick={() => setViewMode('trainers')} style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>👥 View Trainers</button>
-          <Link to="/" style={{ margin: '0 10px', padding: '10px', fontWeight: 'bold', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>👥 log out</Link>
-
+      <div style={{ padding: '40px' }}>
+        <div style={{ margin: '10px', textAlign: 'center' }}>
+          <h2>Welcome to the Dashboard</h2>
+          <p>Total Users: {userCount}</p>
         </div>
-      </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+          <button
+            onClick={() => setShowPostForm(true)}
+            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.3s' }}
+          >
+            📝 New Notice
+          </button>
+
+          <button
+            onClick={() => setViewMode('posts')}
+            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.3s' }}
+          >
+            📄 View Posts
+          </button>
+
+          <button
+            onClick={() => setViewMode('trainers')}
+            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', transition: 'background 0.3s' }}
+          >
+            👥 View Trainers
+          </button>
+
+          <Link
+            to="/"
+            style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '14px', textDecoration: 'none', display: 'inline-block' }}
+          >
+            👥 Log Out
+          </Link>
+        </div>
+
 
       <p>Total Registered Customers: <strong>{userCount}</strong></p>
 

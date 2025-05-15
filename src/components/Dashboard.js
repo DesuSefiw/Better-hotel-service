@@ -121,7 +121,7 @@ const handleAddTrainer = async () => {
     const trainerData = { ...newTrainer };
 
     if (newTrainer.services.includes('Take Training')) {
-      trainerData.type = type; // ✅ Fix here
+      trainerData.type = type;
     }
 
     const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers', {
@@ -141,6 +141,7 @@ const handleAddTrainer = async () => {
       setTrainingType('');
       setShowTrainerForm(false);
     } else {
+      console.error('Failed response:', data);
       alert(data.message || 'Failed to register trainer. Please try again.');
     }
   } catch (err) {
@@ -337,6 +338,7 @@ const handleAddTrainer = async () => {
       fontSize: '14px',
       textDecoration: 'none',
       display: 'inline-block',
+     transition: 'background 0.3s',
       width: '100%', // Ensure the button is responsive
       textAlign: 'center',
     }}

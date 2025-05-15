@@ -313,40 +313,30 @@ const handleAddTrainer = async () => {
   return (
     <>
     <div style={headerStyle}>
-        <div style={topRowStyle}>
-          <h2 style={{ margin: 0 }}>Dashboard</h2>
-          {isMobile && (
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "white",
-                fontSize: "24px",
-                cursor: "pointer",
-              }}
-            >
-              ☰
-            </button>
-          )}
-        </div>
-
-        {/* Menu Buttons */}
-        <div style={menuStyle}>
-          <button onClick={() => setShowPostForm(true)} style={buttonCommonStyle}>📝 New Notice</button>
-          <button onClick={() => setViewMode('posts')} style={buttonCommonStyle}>📄 View Posts</button>
-          <button onClick={() => setViewMode('trainers')} style={buttonCommonStyle}>👥 View Trainers</button>
-          <Link to="/" style={buttonCommonStyle}>🔓 Log Out</Link>
-        </div>
+      <div style={topRowStyle}>
+        <h2 style={{ margin: 0 }}>Dashboard</h2>
+        {isMobile && (
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "white",
+              fontSize: "24px",
+              cursor: "pointer",
+            }}
+          >
+            ☰
+          </button>
+        )}
       </div>
 
-      {/* Main Content */}
-      <div style={{ paddingTop: '130px', padding: '40px' }}>
-        <div style={{ margin: '10px', textAlign: 'center' }}>
-          <h2>Welcome to the Dashboard</h2>
-          <p>Total Users: {userCount}</p>
-        </div>
+      <div style={menuStyle}>
+        <button onClick={() => setShowPostForm(true)} style={buttonCommonStyle}>📝 New Notice</button>
+        <button onClick={() => setViewMode('posts')} style={buttonCommonStyle}>📄 View Posts</button>
+        <button onClick={() => setViewMode('trainers')} style={buttonCommonStyle}>👥 View Trainers</button>
       </div>
+    </div>
       <p>Total Registered Customers: <strong>{userCount}</strong></p>
 
       {/* Add Trainer Button */}

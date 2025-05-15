@@ -268,85 +268,74 @@ const handleAddTrainer = async () => {
 
   return (
     <>
-      <div style={{ padding: '40px' }}>
+     <div style={{ position: "fixed", top: 0, left: 0, right: 0, background: "#4CAF50", padding: "10px 20px", zIndex: 999 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white' }}>
+          <h2 style={{ margin: 0 }}>Dashboard</h2>
+          <button 
+            onClick={() => setMenuOpen(!menuOpen)} 
+            style={{ background: "transparent", border: "none", color: "white", fontSize: "24px", cursor: "pointer", display: 'none' }}
+            className="menu-toggle"
+          >
+            ☰
+          </button>
+        </div>
+
+        <div className={`menu-items ${menuOpen ? 'open' : ''}`}>
+          <button onClick={() => setShowPostForm(true)}>📝 New Notice</button>
+          <button onClick={() => setViewMode('posts')}>📄 View Posts</button>
+          <button onClick={() => setViewMode('trainers')}>👥 View Trainers</button>
+          <Link to="/">🔓 Log Out</Link>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div style={{ paddingTop: '130px', padding: '40px' }}>
         <div style={{ margin: '10px', textAlign: 'center' }}>
           <h2>Welcome to the Dashboard</h2>
           <p>Total Users: {userCount}</p>
         </div>
+      </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-  <button
-    onClick={() => setShowPostForm(true)}
-    style={{
-      padding: '10px 20px',
-      backgroundColor: '#4CAF50',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      transition: 'background 0.3s',
-      width: '100%', // Ensure the buttons are responsive
-    }}
-  >
-    📝 New Notice
-  </button>
+      {/* Inline styles or move to a CSS file */}
+      <style>{`
+        .menu-items {
+          display: flex;
+          gap: 10px;
+          margin-top: 10px;
+        }
 
-  <button
-    onClick={() => setViewMode('posts')}
-    style={{
-      padding: '10px 20px',
-      backgroundColor: '#4CAF50',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      transition: 'background 0.3s',
-      width: '100%', // Ensure the buttons are responsive
-    }}
-  >
-    📄 View Posts
-  </button>
+        .menu-items button,
+        .menu-items a {
+          background-color: white;
+          color: #4CAF50;
+          border: none;
+          border-radius: 5px;
+          padding: 10px 20px;
+          text-decoration: none;
+          font-size: 14px;
+          cursor: pointer;
+          transition: background 0.3s;
+        }
 
-  <button
-    onClick={() => setViewMode('trainers')}
-    style={{
-      padding: '10px 20px',
-      backgroundColor: '#4CAF50',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      transition: 'background 0.3s',
-      width: '100%', // Ensure the buttons are responsive
-    }}
-  >
-    👥 View Trainers
-  </button>
+        .menu-items a {
+          display: inline-block;
+        }
 
-   <Link
-    to="/"
-    style={{
-      padding: '10px 20px',
-      backgroundColor: '#4CAF50',
-      color: 'white',
-      border: 'none',
-      borderRadius: '5px',
-      cursor: 'pointer',
-      fontSize: '14px',
-      textDecoration: 'none',
-      display: 'inline-block',
-     transition: 'background 0.3s',
-      width: '100%', // Ensure the button is responsive
-      textAlign: 'center',
-    }}
-  >
-    🔓 Log Out
-  </Link>
-</div>
+        @media (max-width: 768px) {
+          .menu-toggle {
+            display: block !important;
+          }
 
+          .menu-items {
+            display: none;
+            flex-direction: column;
+          }
+
+          .menu-items.open {
+            display: flex;
+          }
+        }
+      `}</style>
 
 
       <p>Total Registered Customers: <strong>{userCount}</strong></p>

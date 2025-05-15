@@ -116,8 +116,13 @@ const Dashboard = () => {
 
 const handleAddTrainer = async () => {
   const token = localStorage.getItem('token');
+
   try {
-    const trainerData = { ...newTrainer }; // trainingType is now included inside newTrainer
+    const trainerData = { ...newTrainer };
+
+    if (newTrainer.services.includes('Take Training')) {
+      trainerData.type = type; // ✅ Fix here
+    }
 
     const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers', {
       method: 'POST',
@@ -132,13 +137,11 @@ const handleAddTrainer = async () => {
 
     if (res.ok) {
       setTrainers([data.data, ...trainers]);
-      setNewTrainer({ name: '', email: '', phone: '', services: [], trainingType: '' });
-       alert(' register trainer succfully ');
-
+      setNewTrainer({ name: '', email: '', phone: '', services: [] });
+      setTrainingType('');
       setShowTrainerForm(false);
-      
     } else {
-      alert('Failed to register trainer. Please try again.');
+      alert(data.message || 'Failed to register trainer. Please try again.');
     }
   } catch (err) {
     console.error('Error adding trainer:', err);

@@ -116,7 +116,7 @@ app.post('/api/trainers', authenticateJWT, async (req, res) => {
 
     const newTrainer = new Registration({ name, email, phone, services, type });
     await newTrainer.save();
-    res.status(201).json(newTrainer);
+    res.status(201).json({ message: 'Registered successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error adding trainer' });
   }

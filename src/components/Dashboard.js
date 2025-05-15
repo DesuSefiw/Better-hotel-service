@@ -114,28 +114,38 @@ const Dashboard = () => {
     ],
   };
 
-  const handleAddTrainer = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ ...newTrainer, trainingType: type }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setTrainers([data.data, ...trainers]);
-        setNewTrainer({ name: '', email: '', phone: '', services: [] });
-        setTrainingType('');
-        setShowTrainerForm(false);
-      }
-    } catch (err) {
-      console.error('Add trainer error:', err);
+ const handleAddTrainer = async () => {
+  const token = localStorage.getItem('token');
+  try {
+    const trainerData = { 
+      ...newTrainer, 
+      trainingType: type // Ensure the type is included here
+    };
+
+    const res = await fetch('https://better-hotel-service-1.onrender.com/api/trainers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(trainerData), // Pass the trainingType here
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      setTrainers([data.data, ...trainers]);
+      setNewTrainer({ name: '', email: '', phone: '', services: [] });
+      setTrainingType(''); // Reset the training type
+      setShowTrainerForm(false);
+    } else {
+      alert('Failed to register trainer. Please try again.');
     }
-  };
+  } catch (err) {
+    console.error('Error adding trainer:', err);
+    alert('An error occurred while adding the trainer.');
+  }
+};
+
 
   const handleEditTrainer = (trainer) => {
     setEditTrainer(trainer);
@@ -409,18 +419,19 @@ const Dashboard = () => {
       newTrainer?.services?.includes('Take Training')) && (
       <div>
         <label style={styles.label}>
-          Are you registering as an individual or organization?
-        </label>
-        <select
-          value={type}
-          onChange={(e) => setTrainingType(e.target.value)}
-          style={styles.input}
-          required
-        >
-          <option value="">-- Select Option --</option>
-          <option value="Individual">Individual</option>
-          <option value="Organization">Organization</option>
-        </select>
+  Are you registering as an individual or organization?
+</label>
+<select
+  value={type}
+  onChange={(e) => setTrainingType(e.target.value)}
+  style={styles.input}
+  required
+>
+  <option value="">-- Select Option --</option>
+  <option value="Individual">Individual</option>
+  <option value="Organization">Organization</option>
+</select>
+
       </div>
     )}
 

@@ -267,7 +267,7 @@ const handleAddTrainer = async () => {
   };
 
   return (
-    <>
+    
      <div style={{ position: "fixed", top: 0, left: 0, right: 0, background: "#4CAF50", padding: "10px 20px", zIndex: 999 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white' }}>
           <h2 style={{ margin: 0 }}>Dashboard</h2>

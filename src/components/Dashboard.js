@@ -268,75 +268,74 @@ const handleAddTrainer = async () => {
 
   return (
     
-     <div style={{ position: "fixed", top: 0, left: 0, right: 0, background: "#4CAF50", padding: "10px 20px", zIndex: 999 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white' }}>
-          <h2 style={{ margin: 0 }}>Dashboard</h2>
-          <button 
-            onClick={() => setMenuOpen(!menuOpen)} 
-            style={{ background: "transparent", border: "none", color: "white", fontSize: "24px", cursor: "pointer", display: 'none' }}
-            className="menu-toggle"
-          >
-            ☰
-          </button>
-        </div>
-
-        <div className={`menu-items ${menuOpen ? 'open' : ''}`}>
-          <button onClick={() => setShowPostForm(true)}>📝 New Notice</button>
-          <button onClick={() => setViewMode('posts')}>📄 View Posts</button>
-          <button onClick={() => setViewMode('trainers')}>👥 View Trainers</button>
-          <Link to="/">🔓 Log Out</Link>
-        </div>
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, background: "#4CAF50", padding: "10px 20px", zIndex: 999 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: 'white' }}>
+        <h2 style={{ margin: 0 }}>Dashboard</h2>
+        <button 
+          onClick={() => setMenuOpen(!menuOpen)} 
+          style={{ background: "transparent", border: "none", color: "white", fontSize: "24px", cursor: "pointer", display: 'none' }}
+          className="menu-toggle"
+        >
+          ☰
+        </button>
       </div>
 
-      {/* Main Content */}
-      <div style={{ paddingTop: '130px', padding: '40px' }}>
-        <div style={{ margin: '10px', textAlign: 'center' }}>
-          <h2>Welcome to the Dashboard</h2>
-          <p>Total Users: {userCount}</p>
-        </div>
+      <div className={`menu-items ${menuOpen ? 'open' : ''}`}>
+        <button onClick={() => setShowPostForm(true)}>📝 New Notice</button>
+        <button onClick={() => setViewMode('posts')}>📄 View Posts</button>
+        <button onClick={() => setViewMode('trainers')}>👥 View Trainers</button>
+        <Link to="/">🔓 Log Out</Link>
       </div>
+    </div>
 
-      {/* Inline styles or move to a CSS file */}
-      <style>{`
+    {/* Main Content */}
+    <div style={{ paddingTop: '130px', padding: '40px' }}>
+      <div style={{ margin: '10px', textAlign: 'center' }}>
+        <h2>Welcome to the Dashboard</h2>
+        <p>Total Users: {userCount}</p>
+      </div>
+    </div>
+
+    {/* Inline styles (keep this last inside the fragment) */}
+    <style>{`
+      .menu-items {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .menu-items button,
+      .menu-items a {
+        background-color: white;
+        color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        text-decoration: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .menu-items a {
+        display: inline-block;
+      }
+
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block !important;
+        }
+
         .menu-items {
+          display: none;
+          flex-direction: column;
+        }
+
+        .menu-items.open {
           display: flex;
-          gap: 10px;
-          margin-top: 10px;
         }
-
-        .menu-items button,
-        .menu-items a {
-          background-color: white;
-          color: #4CAF50;
-          border: none;
-          border-radius: 5px;
-          padding: 10px 20px;
-          text-decoration: none;
-          font-size: 14px;
-          cursor: pointer;
-          transition: background 0.3s;
-        }
-
-        .menu-items a {
-          display: inline-block;
-        }
-
-        @media (max-width: 768px) {
-          .menu-toggle {
-            display: block !important;
-          }
-
-          .menu-items {
-            display: none;
-            flex-direction: column;
-          }
-
-          .menu-items.open {
-            display: flex;
-          }
-        }
-      `}</style>
-
+      }
+    `}</style>
 
       <p>Total Registered Customers: <strong>{userCount}</strong></p>
 

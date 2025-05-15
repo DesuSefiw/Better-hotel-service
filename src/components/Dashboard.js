@@ -466,8 +466,12 @@ const handleAddTrainer = async () => {
   Are you registering as an individual or organization?
 </label>
 <select
-  value={type}
-  onChange={(e) => setTrainingType(e.target.value)}
+  value={(editTrainer ? editTrainer.trainingType : newTrainer.trainingType) || ''}
+  onChange={(e) =>
+    editTrainer
+      ? setEditTrainer({ ...editTrainer, trainingType: e.target.value })
+      : setNewTrainer({ ...newTrainer, trainingType: e.target.value })
+  }
   style={styles.input}
   required
 >
@@ -475,6 +479,7 @@ const handleAddTrainer = async () => {
   <option value="Individual">Individual</option>
   <option value="Organization">Organization</option>
 </select>
+
 
       </div>
     )}

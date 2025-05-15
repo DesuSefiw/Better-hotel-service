@@ -45,15 +45,13 @@ const RegistrationSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   services: [{ type: String }],
   type: {
-    type: String,
-    enum: ['Individual', 'Organization'],
-    required: function () {
-      return this.services && this.services.includes('Take Training');
-    },
-  }
-  
-  
-  
+  type: String,
+  enum: ['Individual', 'Organization'],
+  required: function () {
+    return this.services && this.services.includes('Take Training');
+  },
+}
+
   });
 const Registration = mongoose.model('Registration', RegistrationSchema, 'registrations');
 
@@ -108,19 +106,22 @@ app.get('/api/trainers', authenticateJWT, async (req, res) => {
   }
 });
 
-app.post('/api/trainers',authenticateJWT, async (req, res) => {
+app.post('/api/trainers', authenticateJWT, async (req, res) => {
   try {
     const { name, email, phone, services, type } = req.body;
     const existingUser = await Registration.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'Email already registered' });
 
     const newTrainer = new Registration({ name, email, phone, services, type });
-    await newTrainer.save();
+    await newTrainer.save(); // ❗ Error likely thrown here if `type` is invalid or missing
     res.status(201).json({ message: 'Registered successfully' });
   } catch (err) {
-    res.status(500).json({ message: 'Error Adding Trainer' });
-  }
+  console.error('Error Adding Trainer:', err); // <== Add this
+  res.status(500).json({ message: 'Error Adding Trainer', error: err.message });
+}
+
 });
+
 
 app.put('/api/trainers/:id', authenticateJWT, async (req, res) => {
   try {

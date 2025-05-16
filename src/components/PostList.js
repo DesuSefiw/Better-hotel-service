@@ -6,6 +6,8 @@ const PostList = () => {
   const [mediaList, setMediaList] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isInteracting, setIsInteracting] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [videoDuration, setVideoDuration] = useState(0);
 
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
@@ -18,27 +20,26 @@ const PostList = () => {
         });
         setPosts(filtered);
 
-        // Extract all media filePaths from posts
         const allMedia = filtered
           .map(post => post.filePath)
-          .filter(Boolean); // remove nulls
+          .filter(Boolean);
         setMediaList(allMedia);
       })
       .catch(err => console.error('Error fetching posts:', err));
   }, []);
 
   // Slideshow effect
-  const [isPlaying, setIsPlaying] = useState(false);
+  useEffect(() => {
+    if (mediaList.length === 0) return;
 
-useEffect(() => {
-  if (mediaList.length === 0 || isPlaying) return;
+    if (isVideoPlaying && videoDuration > 7) return;
 
-  const interval = setInterval(() => {
-    setCurrentIndex(prev => (prev + 1) % mediaList.length);
-  }, 6000); // 6 seconds
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % mediaList.length);
+    }, 7000); // 7 seconds
 
-  return () => clearInterval(interval);
-}, [mediaList, isPlaying]);
+    return () => clearInterval(interval);
+  }, [mediaList, currentIndex, isVideoPlaying, videoDuration]);
 
   const fadeInStyle = {
     animation: 'fadeIn 1s ease-in-out',
@@ -53,56 +54,64 @@ useEffect(() => {
     }
   `;
 
+  const renderMedia = (filePath) => {
+    if (!filePath) return null;
 
-const renderMedia = (filePath) => {
-  if (!filePath) return null;
+    const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
+    const fileType = filePath.split('.').pop().toLowerCase();
+    const interactiveStyle = isInteracting ? {} : fadeInStyle;
 
-  const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
-  const fileType = filePath.split('.').pop().toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+      setIsVideoPlaying(false); // Ensure slideshow continues
+      return (
+        <img
+          key={filePath}
+          src={fullPath}
+          alt="Post Media"
+          style={{
+            width: '100%',
+            maxHeight: '500px',
+            objectFit: 'contain',
+            borderRadius: '10px',
+            ...interactiveStyle,
+          }}
+        />
+      );
+    }
 
-  const interactiveStyle = isInteracting ? {} : fadeInStyle;
+    if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileType)) {
+      return (
+        <video
+          key={filePath}
+          src={fullPath}
+          muted
+          playsInline
+          preload="auto"
+          controls
+          style={{
+            width: '100%',
+            maxHeight: '500px',
+            objectFit: 'contain',
+            borderRadius: '10px',
+            ...interactiveStyle,
+          }}
+          onPlay={(e) => {
+            const duration = e.target.duration;
+            setVideoDuration(duration);
+            setIsVideoPlaying(true);
+          }}
+          onPause={() => setIsVideoPlaying(false)}
+          onEnded={() => {
+            setIsVideoPlaying(false);
+            setCurrentIndex(prev => (prev + 1) % mediaList.length);
+          }}
+        />
+      );
+    }
 
-  if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
-    return (
-      <img
-        key={filePath}
-        src={fullPath}
-        alt="Post Media"
-        style={{
-          maxWidth: '100%',
-          height: 'auto',
-          borderRadius: '10px',
-          ...interactiveStyle,
-        }}
-      />
-    );
-  }
+    return null;
+  };
 
-  if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileType)) {
-    return (
-      <video
-        key={filePath}
-        src={fullPath}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        controls
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        style={{
-          maxWidth: '100%',
-          borderRadius: '10px',
-          ...interactiveStyle,
-        }}
-      />
-    );
-  }
-
-  return null;
-};
-  
   return (
     <section
       style={{

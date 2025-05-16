@@ -335,6 +335,7 @@ const handleAddTrainer = async () => {
         <button onClick={() => setShowPostForm(true)} style={buttonCommonStyle}>📝 New Notice</button>
         <button onClick={() => setViewMode('posts')} style={buttonCommonStyle}>📄 View Posts</button>
         <button onClick={() => setViewMode('trainers')} style={buttonCommonStyle}>👥 View Trainers</button>
+          <Link to="/" style={buttonCommonStyle}>Log Out</Link>
       </div>
     </div>
       <p>Total Registered Customers: <strong>{userCount}</strong></p>

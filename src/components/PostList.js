@@ -7,41 +7,35 @@ const PostList = () => {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const timeoutRef = useRef(null);
 
-  // Fetch posts on mount
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
-        // Filter posts within 8 days
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);
           const today = new Date();
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
-          return diffDays <= 8 && post.filePath;  // Only posts with media
+          return diffDays <= 8 && post.filePath;
         });
         setPosts(filtered);
       })
       .catch(err => console.error('Error fetching posts:', err));
   }, []);
 
-  // Automatically advance for images after 3 seconds
   useEffect(() => {
     if (posts.length === 0) return;
 
-    // Clear previous timeout
+    const currentMedia = posts[currentIndex]?.filePath;
+    const ext = currentMedia?.split('.').pop().toLowerCase();
+
+    // Clear previous timer
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    // Check if current media is image or video
-    const currentMedia = posts[currentIndex].filePath;
-    const ext = currentMedia.split('.').pop().toLowerCase();
-
     if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
-      // For images, switch after 3 seconds
       timeoutRef.current = setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % posts.length);
       }, 3000);
       setIsVideoPlaying(false);
     } else {
-      // For videos, don't auto advance here, wait for onEnded
       setIsVideoPlaying(true);
     }
 
@@ -58,11 +52,11 @@ const PostList = () => {
   const fadeInStyle = {
     animation: 'fadeIn 1s ease-in-out',
     opacity: 1,
-    transform: 'scale(1)',
     maxHeight: '90vh',
-    width: '100%',
+    maxWidth: '100%',
     objectFit: 'contain',
     borderRadius: '12px',
+    transition: 'all 0.5s ease-in-out'
   };
 
   const keyframes = `
@@ -74,21 +68,27 @@ const PostList = () => {
 
   if (posts.length === 0) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center' }}>
+      <div style={{ padding: '2rem', textAlign: 'center', color: '#fff' }}>
         <style>{keyframes}</style>
-        <p>No posts with media available.</p>
+        <p>No recent media posts available.</p>
       </div>
     );
   }
 
-  const currentMedia = posts[currentIndex].filePath;
-  const fullPath = `https://better-hotel-service-1.onrender.com${currentMedia}`;
+  const currentMedia = posts[currentIndex]?.filePath;
+  if (!currentMedia) return null;
+
+  const fullPath = currentMedia.startsWith('/uploads')
+    ? `https://better-hotel-service-1.onrender.com${currentMedia}`
+    : currentMedia;
+
   const ext = currentMedia.split('.').pop().toLowerCase();
 
   return (
     <div
       style={{
         height: '100vh',
+        width: '100vw',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -113,8 +113,8 @@ const PostList = () => {
           autoPlay
           muted
           playsInline
-          controls={false}
           onEnded={handleVideoEnded}
+          onLoadedData={() => setIsVideoPlaying(true)}
           style={fadeInStyle}
           preload="auto"
           draggable={false}

@@ -3,9 +3,6 @@ import axios from 'axios';
 
 const PostList = () => {
   const [posts, setPosts] = useState([]);
-  const [mediaList, setMediaList] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isInteracting, setIsInteracting] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [videoDuration, setVideoDuration] = useState(0);
 
@@ -19,27 +16,9 @@ const PostList = () => {
           return diffDays <= 8;
         });
         setPosts(filtered);
-
-        const allMedia = filtered
-          .map(post => post.filePath)
-          .filter(Boolean);
-        setMediaList(allMedia);
       })
       .catch(err => console.error('Error fetching posts:', err));
   }, []);
-
-  // Slideshow effect
-  useEffect(() => {
-    if (mediaList.length === 0) return;
-
-    if (isVideoPlaying && videoDuration > 7) return;
-
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % mediaList.length);
-    }, 7000); // 7 seconds
-
-    return () => clearInterval(interval);
-  }, [mediaList, currentIndex, isVideoPlaying, videoDuration]);
 
   const fadeInStyle = {
     animation: 'fadeIn 1s ease-in-out',
@@ -59,13 +38,10 @@ const PostList = () => {
 
     const fullPath = `https://better-hotel-service-1.onrender.com${filePath}`;
     const fileType = filePath.split('.').pop().toLowerCase();
-    const interactiveStyle = isInteracting ? {} : fadeInStyle;
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
-      setIsVideoPlaying(false); // Ensure slideshow continues
       return (
         <img
-          key={filePath}
           src={fullPath}
           alt="Post Media"
           style={{
@@ -73,7 +49,7 @@ const PostList = () => {
             maxHeight: '500px',
             objectFit: 'contain',
             borderRadius: '10px',
-            ...interactiveStyle,
+            ...fadeInStyle,
           }}
         />
       );
@@ -82,29 +58,27 @@ const PostList = () => {
     if (['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileType)) {
       return (
         <video
-          key={filePath}
           src={fullPath}
+          autoPlay
           muted
           playsInline
-          preload="auto"
+          loop
           controls
+          preload="auto"
           style={{
             width: '100%',
             maxHeight: '500px',
             objectFit: 'contain',
             borderRadius: '10px',
-            ...interactiveStyle,
+            ...fadeInStyle,
           }}
-          onPlay={(e) => {
+          onLoadedMetadata={(e) => {
             const duration = e.target.duration;
             setVideoDuration(duration);
             setIsVideoPlaying(true);
           }}
           onPause={() => setIsVideoPlaying(false)}
-          onEnded={() => {
-            setIsVideoPlaying(false);
-            setCurrentIndex(prev => (prev + 1) % mediaList.length);
-          }}
+          onEnded={() => setIsVideoPlaying(false)}
         />
       );
     }
@@ -119,33 +93,53 @@ const PostList = () => {
         backgroundColor: '#fff',
         borderRadius: '12px',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-        maxWidth: '800px',
+        maxWidth: '900px',
         margin: '2rem auto',
-        textAlign: 'center',
       }}
     >
       <style>{keyframes}</style>
-      <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem' }}>📢 New Notices</h2>
+      <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem', textAlign: 'center' }}>
+        📢 New Notices
+      </h2>
 
       {posts.length === 0 ? (
         <p>No posts available at the moment.</p>
       ) : (
-        <>
-          {mediaList.length > 0 && (
-            <div
-              style={{
-                width: '100%',
-                maxHeight: '500px',
-                overflow: 'hidden',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {renderMedia(mediaList[currentIndex])}
-            </div>
-          )}
-        </>
+        posts.map((post) => (
+          <div
+            key={post._id}
+            style={{
+              marginBottom: '2rem',
+              padding: '1rem',
+              border: '1px solid #eee',
+              borderRadius: '10px',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
+              backgroundColor: '#fafafa',
+            }}
+          >
+            <h3 style={{ color: '#34495e' }}>{post.title}</h3>
+            <p style={{ margin: '0.5rem 0 1rem', color: '#555' }}>{post.content}</p>
+
+            {post.filePath && (
+              <div
+                style={{
+                  width: '100%',
+                  maxHeight: '500px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: '1rem',
+                }}
+              >
+                {renderMedia(post.filePath)}
+              </div>
+            )}
+
+            <p style={{ fontSize: '0.9rem', color: '#888' }}>
+              Posted on: {new Date(post.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+        ))
       )}
     </section>
   );

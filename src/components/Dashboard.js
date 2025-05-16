@@ -338,7 +338,7 @@ const handleAddTrainer = async () => {
       <p>Total Registered Customers: <strong>{userCount}</strong></p>
 
       {/* Add Trainer Button */}
-      <button onClick={() => setShowTrainerForm(true);setShowPostForm(false)} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px', marginTop: '20px' }}>
+      <button onClick={() => {setShowTrainerForm(true);setShowPostForm(false);}} style={{ padding: '10px 20px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px', marginTop: '20px' }}>
         ➕ Add Trainer
       </button>
 

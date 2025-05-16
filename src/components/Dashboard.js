@@ -37,7 +37,8 @@ const Dashboard = () => {
   const [postFile, setPostFile] = useState(null);
    const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -238,44 +239,36 @@ const handleAddTrainer = async () => {
   formData.append('title', postTitle);
   formData.append('content', postContent);
 
-  if (postFile) {
-    formData.append('file', postFile);
-  }
-
-  if (mediaURL) {
-    formData.append('externalLink', mediaURL);
-  }
+  
 
   try {
     setIsSubmitting(true); // loading flag
 
     const res = await fetch('https://better-hotel-service-1.onrender.com/api/posts', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      body: formData,
-    });
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
-    const data = await res.json();
-
-    if (res.ok) {
-      setPosts([data.post, ...posts]);
-      setPostTitle('');
-      setPostContent('');
-      setPostFile(null);
-      setMediaURL('');
-      alert('🎉 Notice posted successfully!');
-      setShowPostForm(false);
-    } else {
-      alert(data.message || 'Failed to post');
+      const data = await res.json();
+      if (res.ok) {
+        setPosts([data.post, ...posts]);
+        setPostTitle('');
+        setPostContent('');
+        setPostFile(null);
+        alert('🎉 Notice submitted successfully!');
+        setShowPostForm(false);
+      } else {
+        alert(data.message || 'Upload failed!');
+      }
+    } catch (err) {
+      console.error('Post error:', err);
+      alert('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-  } catch (err) {
-    console.error('Post error:', err);
-    alert('❌ Something went wrong.');
-  } finally {
-    setIsSubmitting(false);
-  }
 };
 
 

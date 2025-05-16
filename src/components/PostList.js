@@ -4,7 +4,6 @@ import axios from 'axios';
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -34,8 +33,9 @@ const PostList = () => {
         setCurrentIndex((prev) => (prev + 1) % posts.length);
       }, 4000);
     } else {
-      // Allow time for video to play
-      setIsVideoLoaded(false); // Wait for onLoadedData
+      timeoutRef.current = setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % posts.length);
+      }, 7000); // fallback video duration
     }
 
     return () => {
@@ -47,9 +47,7 @@ const PostList = () => {
     setCurrentIndex((prev) => (prev + 1) % posts.length);
   };
 
-  const currentPost = posts[currentIndex];
-  const currentMedia = currentPost?.filePath;
-
+  const currentMedia = posts[currentIndex]?.filePath;
   if (!currentMedia) return null;
 
   const ext = currentMedia.split('.').pop().toLowerCase();
@@ -57,37 +55,52 @@ const PostList = () => {
     ? `https://better-hotel-service-1.onrender.com${currentMedia}`
     : currentMedia;
 
-  const keyframes = `
+  const fadeInKeyframes = `
     @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   `;
 
   const mediaStyle = {
     animation: 'fadeIn 1s ease-in-out',
-    width: '100%',
-    height: '100%',
+    width: '90vw',
+    maxWidth: '720px',
+    height: 'auto',
+    maxHeight: '65vh',
     objectFit: 'cover',
-    borderRadius: '10px',
-    transition: 'all 0.5s ease-in-out',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
   };
 
   return (
     <div
       style={{
-        position: 'relative',
-        height: '100vh',
-        width: '100vw',
-        overflow: 'hidden',
         backgroundColor: '#000',
         display: 'flex',
-        justifyContent: 'center',
+        flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
+        padding: '2rem',
+        minHeight: '100vh',
       }}
     >
-      <style>{keyframes}</style>
+      <style>{fadeInKeyframes}</style>
 
+      {/* Top Label */}
+      <div
+        style={{
+          color: '#fff',
+          fontSize: '1.5rem',
+          fontWeight: 'bold',
+          marginBottom: '1rem',
+          animation: 'fadeIn 1s ease-in-out',
+        }}
+      >
+        🛎️ New Notice
+      </div>
+
+      {/* Media Viewer */}
       {['jpg', 'jpeg', 'png', 'gif'].includes(ext) ? (
         <img
           key={fullPath}
@@ -104,35 +117,11 @@ const PostList = () => {
           muted
           playsInline
           onEnded={handleVideoEnded}
-          onLoadedData={() => {
-            setIsVideoLoaded(true);
-            timeoutRef.current = setTimeout(() => {
-              setCurrentIndex((prev) => (prev + 1) % posts.length);
-            }, currentPost?.duration ? currentPost.duration * 1000 : 7000); // fallback 7s
-          }}
-          style={mediaStyle}
           preload="auto"
+          style={mediaStyle}
           draggable={false}
         />
       )}
-
-      {/* Overlay Text */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '20px',
-          left: '20px',
-          color: '#fff',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          padding: '1rem',
-          borderRadius: '10px',
-          maxWidth: '80%',
-          animation: 'fadeIn 1s ease-in-out',
-        }}
-      >
-        <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{currentPost?.title}</h2>
-        <p style={{ margin: 0 }}>{currentPost?.content}</p>
-      </div>
     </div>
   );
 };

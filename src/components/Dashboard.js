@@ -232,37 +232,52 @@ const handleAddTrainer = async () => {
   };
 
   const handlePostSubmit = async () => {
-    const token = localStorage.getItem('token');
-    const formData = new FormData();
-    formData.append('title', postTitle);
-    formData.append('content', postContent);
-    if (postFile) {
-      formData.append('file', postFile);
-    }
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
 
-    try {
-      const res = await fetch('https://better-hotel-service-1.onrender.com/api/posts', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formData,
-      });
+  formData.append('title', postTitle);
+  formData.append('content', postContent);
 
-      const data = await res.json();
-      if (res.ok) {
-        setPosts([data.post, ...posts]);
-        setPostTitle('');
-        setPostContent('');
-        setPostFile(null);
-         
-        alert('🎉 Registered successfully!');
-        setShowPostForm(false); 
-      }
-    } catch (err) {
-      console.error('Post error:', err);
+  if (postFile) {
+    formData.append('file', postFile);
+  }
+
+  if (mediaURL) {
+    formData.append('externalLink', mediaURL);
+  }
+
+  try {
+    setIsSubmitting(true); // loading flag
+
+    const res = await fetch('https://better-hotel-service-1.onrender.com/api/posts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setPosts([data.post, ...posts]);
+      setPostTitle('');
+      setPostContent('');
+      setPostFile(null);
+      setMediaURL('');
+      alert('🎉 Notice posted successfully!');
+      setShowPostForm(false);
+    } else {
+      alert(data.message || 'Failed to post');
     }
-  };
+  } catch (err) {
+    console.error('Post error:', err);
+    alert('❌ Something went wrong.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   const handleEditPost = (post) => {
     setEditPostId(post._id);
@@ -522,47 +537,75 @@ const handleAddTrainer = async () => {
       )}
 
       {/* Post Form */}
-      {showPostForm && (
-  <div style={{
-    background: '#fff',
-    padding: '30px',
-    borderRadius: '10px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    maxWidth: '400px',
-    margin: '30px auto',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px'
-  }}>
-    <h3 style={{ textAlign: 'center', color: '#333' }}>Add New Notice</h3>
+     {showPostForm && (
+        <div style={{
+          background: '#fff',
+          padding: '30px',
+          borderRadius: '10px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          maxWidth: '500px',
+          margin: '30px auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px'
+        }}>
+          <h3 style={{ textAlign: 'center', color: '#333' }}>Add New Notice</h3>
 
-    <label>Title</label>
-    <input
-      type="text"
-      value={postTitle}
-      onChange={(e) => setPostTitle(e.target.value)}
-      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
-    />
+          <label>Title</label>
+          <input
+            type="text"
+            value={postTitle}
+            onChange={(e) => setPostTitle(e.target.value)}
+            placeholder="Enter title"
+            style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+          />
 
-    <label>Content</label>
-    <textarea
-      value={postContent}
-      onChange={(e) => setPostContent(e.target.value)}
-      style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc' }}
-    />
+          <label>Content</label>
+          <textarea
+            value={postContent}
+            onChange={(e) => setPostContent(e.target.value)}
+            rows={4}
+            placeholder="Write content here"
+            style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+          />
 
-    <label>Upload Media (Image/Video/Doc)</label>
-    <input
-      type="file"
-      accept="image/*,video/*,.pdf,.doc,.docx"
-      onChange={(e) => setPostFile(e.target.files[0])}
-    />
+          <label>Upload Media (Image, Video, PDF, Doc)</label>
+          <input
+            type="file"
+            accept="image/*,video/*,.pdf,.doc,.docx"
+            onChange={(e) => setPostFile(e.target.files[0])}
+          />
 
-    <button onClick={handlePostSubmit} style={{ padding: '10px', backgroundColor: '#4CAF50', color: '#fff', borderRadius: '5px' }}>
-      Submit Notice
-    </button>
+          {postFile && (
+            <div style={{ fontSize: '14px', color: '#555' }}>
+              Selected: {postFile.name}
+            </div>
+          )}
 
-  <button onClick={() => setShowPostForm(false)} style={{ marginLeft: '10px', padding: '10px', backgroundColor: '#f44336', color: '#fff', borderRadius: '5px' }}>
+          <button
+            onClick={handlePostSubmit}
+            disabled={isSubmitting}
+            style={{
+              padding: '10px',
+              backgroundColor: isSubmitting ? '#ccc' : '#4CAF50',
+              color: '#fff',
+              borderRadius: '5px',
+              cursor: isSubmitting ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {isSubmitting ? 'Uploading...' : 'Submit Notice'}
+          </button>
+
+          <button
+            onClick={() => setShowPostForm(false)}
+            style={{
+              padding: '10px',
+              backgroundColor: '#f44336',
+              color: '#fff',
+              borderRadius: '5px',
+              marginTop: '10px'
+            }}
+          >
             Cancel
           </button>
         </div>

@@ -164,7 +164,7 @@ const handleAddTrainer = async () => {
     const trainerData = { ...newTrainer };
 
     if (newTrainer.services.includes('Take Training')) {
-      trainerData.type = type;
+      trainerData.type = newTrainer.trainingType; // <-- FIXED
     }
 
     const res = await fetch(`https://better-hotel-service-1.onrender.com/api/trainers`, {
@@ -180,8 +180,7 @@ const handleAddTrainer = async () => {
 
     if (res.ok) {
       setTrainers([data.data, ...trainers]);
-      setNewTrainer({ name: '', email: '', phone: '', services: [] });
-      setTrainingType('');
+      setNewTrainer({ name: '', email: '', phone: '', services: [], trainingType: '' });
       setShowTrainerForm(false);
     } else {
       console.error('Failed response:', data);
@@ -192,9 +191,6 @@ const handleAddTrainer = async () => {
     alert('An error occurred while adding the trainer.');
   }
 };
-
-
-
 
   const handleEditTrainer = (trainer) => {
     setEditTrainer(trainer);

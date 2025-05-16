@@ -239,37 +239,40 @@ const handleAddTrainer = async () => {
   formData.append('title', postTitle);
   formData.append('content', postContent);
 
-  
+  if (postFile) {
+    formData.append('file', postFile); // ✅ Append the file properly
+  }
 
   try {
-    setIsSubmitting(true); // loading flag
+    setIsSubmitting(true);
 
     const res = await fetch('https://better-hotel-service-1.onrender.com/api/posts', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
-      const data = await res.json();
-      if (res.ok) {
-        setPosts([data.post, ...posts]);
-        setPostTitle('');
-        setPostContent('');
-        setPostFile(null);
-        alert('🎉 Notice submitted successfully!');
-        setShowPostForm(false);
-      } else {
-        alert(data.message || 'Upload failed!');
-      }
-    } catch (err) {
-      console.error('Post error:', err);
-      alert('Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+    const data = await res.json();
+    if (res.ok) {
+      setPosts([data.post, ...posts]);
+      setPostTitle('');
+      setPostContent('');
+      setPostFile('');
+      alert('🎉 Notice submitted successfully!');
+      setShowPostForm(false);
+    } else {
+      alert(data.message || 'Upload failed!');
     }
+  } catch (err) {
+    console.error('Post error:', err);
+    alert('Something went wrong. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
 };
+
 
 
   const handleEditPost = (post) => {

@@ -599,7 +599,7 @@ const handleAddTrainer = async () => {
         <h3>📊 Hotel Services Overview</h3>
         <Bar data={chartData} options={{ responsive: true, plugins: { legend: { position: 'top' }, title: { display: true, text: 'Customer Services Count' } } }} />
       </div>
-    </div>
+  
     </>
   );
 };

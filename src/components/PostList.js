@@ -4,7 +4,7 @@ import axios from 'axios';
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -27,16 +27,15 @@ const PostList = () => {
     const currentMedia = posts[currentIndex]?.filePath;
     const ext = currentMedia?.split('.').pop().toLowerCase();
 
-    // Clear previous timer
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
       timeoutRef.current = setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % posts.length);
-      }, 3000);
-      setIsVideoPlaying(false);
+      }, 4000);
     } else {
-      setIsVideoPlaying(true);
+      // Allow time for video to play
+      setIsVideoLoaded(false); // Wait for onLoadedData
     }
 
     return () => {
@@ -45,19 +44,18 @@ const PostList = () => {
   }, [currentIndex, posts]);
 
   const handleVideoEnded = () => {
-    setIsVideoPlaying(false);
     setCurrentIndex((prev) => (prev + 1) % posts.length);
   };
 
-  const fadeInStyle = {
-    animation: 'fadeIn 1s ease-in-out',
-    opacity: 1,
-    maxHeight: '90vh',
-    maxWidth: '100%',
-    objectFit: 'contain',
-    borderRadius: '12px',
-    transition: 'all 0.5s ease-in-out'
-  };
+  const currentPost = posts[currentIndex];
+  const currentMedia = currentPost?.filePath;
+
+  if (!currentMedia) return null;
+
+  const ext = currentMedia.split('.').pop().toLowerCase();
+  const fullPath = currentMedia.startsWith('/uploads')
+    ? `https://better-hotel-service-1.onrender.com${currentMedia}`
+    : currentMedia;
 
   const keyframes = `
     @keyframes fadeIn {
@@ -66,60 +64,75 @@ const PostList = () => {
     }
   `;
 
-  if (posts.length === 0) {
-    return (
-      <div style={{ padding: '2rem', textAlign: 'center', color: '#fff' }}>
-        <style>{keyframes}</style>
-        <p>No recent media posts available.</p>
-      </div>
-    );
-  }
-
-  const currentMedia = posts[currentIndex]?.filePath;
-  if (!currentMedia) return null;
-
-  const fullPath = currentMedia.startsWith('/uploads')
-    ? `https://better-hotel-service-1.onrender.com${currentMedia}`
-    : currentMedia;
-
-  const ext = currentMedia.split('.').pop().toLowerCase();
+  const mediaStyle = {
+    animation: 'fadeIn 1s ease-in-out',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    borderRadius: '10px',
+    transition: 'all 0.5s ease-in-out',
+  };
 
   return (
     <div
       style={{
+        position: 'relative',
         height: '100vh',
         width: '100vw',
+        overflow: 'hidden',
+        backgroundColor: '#000',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000',
-        overflow: 'hidden',
-        padding: '1rem',
       }}
     >
       <style>{keyframes}</style>
+
       {['jpg', 'jpeg', 'png', 'gif'].includes(ext) ? (
         <img
-          key={currentMedia}
+          key={fullPath}
           src={fullPath}
           alt="Post media"
-          style={fadeInStyle}
+          style={mediaStyle}
           draggable={false}
         />
       ) : (
         <video
-          key={currentMedia}
+          key={fullPath}
           src={fullPath}
           autoPlay
           muted
           playsInline
           onEnded={handleVideoEnded}
-          onLoadedData={() => setIsVideoPlaying(true)}
-          style={fadeInStyle}
+          onLoadedData={() => {
+            setIsVideoLoaded(true);
+            timeoutRef.current = setTimeout(() => {
+              setCurrentIndex((prev) => (prev + 1) % posts.length);
+            }, currentPost?.duration ? currentPost.duration * 1000 : 7000); // fallback 7s
+          }}
+          style={mediaStyle}
           preload="auto"
           draggable={false}
         />
       )}
+
+      {/* Overlay Text */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          left: '20px',
+          color: '#fff',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          padding: '1rem',
+          borderRadius: '10px',
+          maxWidth: '80%',
+          animation: 'fadeIn 1s ease-in-out',
+        }}
+      >
+        <h2 style={{ margin: 0, fontSize: '1.5rem' }}>{currentPost?.title}</h2>
+        <p style={{ margin: 0 }}>{currentPost?.content}</p>
+      </div>
     </div>
   );
 };

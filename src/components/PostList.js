@@ -21,33 +21,26 @@ const PostList = () => {
   }, []);
 
   useEffect(() => {
-    if (posts.length === 0) return;
+    if (!posts.length) return;
 
     const currentMedia = posts[currentIndex]?.filePath;
     const ext = currentMedia?.split('.').pop().toLowerCase();
 
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-    if (['jpg', 'jpeg', 'png', 'gif'].includes(ext)) {
-      timeoutRef.current = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % posts.length);
-      }, 4000);
-    } else {
-      timeoutRef.current = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % posts.length);
-      }, 7000); // fallback video duration
-    }
+    const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
+    const delay = isImage ? 4000 : 9000;
 
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
+    timeoutRef.current = setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % posts.length);
+    }, delay);
+
+    return () => clearTimeout(timeoutRef.current);
   }, [currentIndex, posts]);
 
-  const handleVideoEnded = () => {
-    setCurrentIndex((prev) => (prev + 1) % posts.length);
-  };
+  const currentPost = posts[currentIndex];
+  const currentMedia = currentPost?.filePath;
 
-  const currentMedia = posts[currentIndex]?.filePath;
   if (!currentMedia) return null;
 
   const ext = currentMedia.split('.').pop().toLowerCase();
@@ -55,71 +48,54 @@ const PostList = () => {
     ? `https://better-hotel-service-1.onrender.com${currentMedia}`
     : currentMedia;
 
-  const fadeInKeyframes = `
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  `;
-
-  const mediaStyle = {
-    animation: 'fadeIn 1s ease-in-out',
-    width: '90vw',
-    maxWidth: '720px',
-    height: 'auto',
-    maxHeight: '65vh',
-    objectFit: 'cover',
-    borderRadius: '12px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
-  };
+  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
+  const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
   return (
     <div
       style={{
-        backgroundColor: '#000',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'center',
-        padding: '2rem',
-        minHeight: '100vh',
+        alignItems: 'center',
+        padding: '1rem',
+        backgroundColor: 'transparent',
+        height: '100vh',
+        width: '100%',
+        overflow: 'hidden',
       }}
     >
-      <style>{fadeInKeyframes}</style>
-
-      {/* Top Label */}
-      <div
-        style={{
-          color: '#fff',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          marginBottom: '1rem',
-          animation: 'fadeIn 1s ease-in-out',
-        }}
-      >
-        🛎️ New Notice
-      </div>
-
-      {/* Media Viewer */}
-      {['jpg', 'jpeg', 'png', 'gif'].includes(ext) ? (
+      {isImage && (
         <img
-          key={fullPath}
           src={fullPath}
-          alt="Post media"
-          style={mediaStyle}
+          alt="Post"
+          style={{
+            maxHeight: '90vh',
+            maxWidth: '90vw',
+            borderRadius: '12px',
+            objectFit: 'contain',
+            boxShadow: '0 0 15px rgba(0,0,0,0.2)',
+          }}
           draggable={false}
         />
-      ) : (
+      )}
+
+      {isVideo && (
         <video
           key={fullPath}
           src={fullPath}
           autoPlay
           muted
           playsInline
-          onEnded={handleVideoEnded}
-          preload="auto"
-          style={mediaStyle}
-          draggable={false}
+          controls={false}
+          onError={() => console.error('Video load failed:', fullPath)}
+          onEnded={() => setCurrentIndex((prev) => (prev + 1) % posts.length)}
+          style={{
+            maxHeight: '90vh',
+            maxWidth: '90vw',
+            borderRadius: '12px',
+            objectFit: 'contain',
+            boxShadow: '0 0 15px rgba(0,0,0,0.2)',
+          }}
         />
       )}
     </div>

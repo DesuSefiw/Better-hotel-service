@@ -334,6 +334,7 @@ const handleAddTrainer = async () => {
           <Link to="/" style={buttonCommonStyle}>Log Out</Link>
       </div>
     </div>
+          <br></br><br></br>
       <p>Total Registered Customers: <strong>{userCount}</strong></p>
 
       {/* Add Trainer Button */}

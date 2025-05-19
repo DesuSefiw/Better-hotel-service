@@ -15,14 +15,28 @@ const PostList = () => {
           const postDate = new Date(post.createdAt);
           const today = new Date();
 
-          // Convert to local date (strip time)
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
 
-          return diffDays <= 8 && diffDays >= 0 && post.filePath; // Only past 8 days
+          console.log('Post:', post.title, '| Created:', postDate.toISOString(), '| DiffDays:', diffDays);
+
+          return diffDays <= 8 && postDate <= today && post.filePath;
         });
 
         console.log('Filtered posts:', filtered);
-        setPosts(filtered);
+
+        // If filtered posts are empty, use dummy image for test
+        if (!filtered.length) {
+          console.warn('No valid posts found — using fallback image');
+          setPosts([
+            {
+              title: 'Test Post',
+              filePath: 'https://via.placeholder.com/800x500.jpg',
+              createdAt: new Date().toISOString()
+            }
+          ]);
+        } else {
+          setPosts(filtered);
+        }
       })
       .catch(err => console.error('Error fetching posts:', err));
   }, []);

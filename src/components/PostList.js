@@ -9,31 +9,23 @@ const PostList = () => {
   useEffect(() => {
     axios.get('https://better-hotel-service.vercel.app/api/posts')
       .then(res => {
-        console.log('Fetched posts:', res.data);
-
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);
           const today = new Date();
-
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
 
-          console.log('Post:', post.title, '| Created:', postDate.toISOString(), '| DiffDays:', diffDays);
+          const ext = post.filePath?.split('.').pop()?.toLowerCase();
+          const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
-          return diffDays <= 8 && postDate <= today && post.filePath;
+          return diffDays <= 8 && postDate <= today && post.filePath && isValidMedia;
         });
 
-        console.log('Filtered posts:', filtered);
-
-        // If filtered posts are empty, use dummy image for test
         if (!filtered.length) {
-          console.warn('No valid posts found — using fallback image');
-          setPosts([
-            {
-              title: 'Test Post',
-              filePath: 'https://via.placeholder.com/800x500.jpg',
-              createdAt: new Date().toISOString()
-            }
-          ]);
+          setPosts([{
+            title: 'Fallback Post',
+            filePath: 'https://via.placeholder.com/800x500.jpg',
+            createdAt: new Date().toISOString(),
+          }]);
         } else {
           setPosts(filtered);
         }
@@ -60,7 +52,7 @@ const PostList = () => {
 
   if (!posts.length) {
     return (
-      <div style={{ textAlign: 'center', padding: '2rem', fontSize: '1.2rem' }}>
+      <div style={{ textAlign: 'center', padding: '2rem' }}>
         No recent posts to display.
       </div>
     );
@@ -69,9 +61,8 @@ const PostList = () => {
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
-
   const fullPath = currentMedia.startsWith('/uploads')
-    ? `https://better-hotel-service-1.onrender.com${currentMedia}`
+    ? `https://better-hotel-service.vercel.app${currentMedia}`
     : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
@@ -83,15 +74,14 @@ const PostList = () => {
       justifyContent: 'center',
       alignItems: 'center',
       padding: '1rem',
-      backgroundColor: 'transparent',
       height: '100vh',
       width: '100%',
-      overflow: 'hidden'
+      background: '#f9f9f9',
     }}>
       {isImage && (
         <img
           src={fullPath}
-          alt="Post"
+          alt={currentPost.title}
           style={{
             maxHeight: '90vh',
             maxWidth: '90vw',
@@ -110,9 +100,7 @@ const PostList = () => {
           autoPlay
           muted
           playsInline
-          controls={false}
-          onError={() => console.error('Video load failed:', fullPath)}
-          onEnded={() => setCurrentIndex((prev) => (prev + 1) % posts.length)}
+          loop
           style={{
             maxHeight: '90vh',
             maxWidth: '90vw',
@@ -120,6 +108,7 @@ const PostList = () => {
             objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
           }}
+          onError={() => console.error('Video failed to load:', fullPath)}
         />
       )}
     </div>

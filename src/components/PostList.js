@@ -61,9 +61,10 @@ const PostList = () => {
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
-  const fullPath = currentMedia.startsWith('/uploads')
-    ? `https://better-hotel-service.vercel.app${currentMedia}`
-    : currentMedia;
+  const fullPath = currentMedia?.includes('uploads')
+  ? `https://better-hotel-service.vercel.app/${currentMedia.replace(/^\/?/, '')}`
+  : currentMedia;
+
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
   const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);

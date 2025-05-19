@@ -9,12 +9,14 @@ const PostList = () => {
   useEffect(() => {
     axios.get('https://better-hotel-service.vercel.app/api/posts')
       .then(res => {
+        console.log('All posts:', res.data);
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);
           const today = new Date();
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
           return diffDays <= 8 && post.filePath;
         });
+        console.log('Filtered posts:', filtered);
         setPosts(filtered);
       })
       .catch(err => console.error('Error fetching posts:', err));
@@ -37,13 +39,20 @@ const PostList = () => {
     return () => clearTimeout(timeoutRef.current);
   }, [currentIndex, posts]);
 
+  if (!posts.length) {
+    return (
+      <div style={{ textAlign: 'center', padding: '2rem', fontSize: '1.2rem' }}>
+        No recent posts to display.
+      </div>
+    );
+  }
+
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
-  if (!currentMedia) return null;
-
   const ext = currentMedia.split('.').pop().toLowerCase();
+
   const fullPath = currentMedia.startsWith('/uploads')
-    ? `http://localhost:5000${currentMedia}`
+    ? `https://better-hotel-service.vercel.app${currentMedia}`
     : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
@@ -51,16 +60,24 @@ const PostList = () => {
 
   return (
     <div style={{
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-      padding: '1rem', backgroundColor: 'transparent', height: '100vh', width: '100%', overflow: 'hidden'
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: '1rem',
+      backgroundColor: 'transparent',
+      height: '100vh',
+      width: '100%',
+      overflow: 'hidden'
     }}>
       {isImage && (
         <img
           src={fullPath}
           alt="Post"
           style={{
-            maxHeight: '90vh', maxWidth: '90vw',
-            borderRadius: '12px', objectFit: 'contain',
+            maxHeight: '90vh',
+            maxWidth: '90vw',
+            borderRadius: '12px',
+            objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
           }}
           draggable={false}
@@ -78,8 +95,10 @@ const PostList = () => {
           onError={() => console.error('Video load failed:', fullPath)}
           onEnded={() => setCurrentIndex((prev) => (prev + 1) % posts.length)}
           style={{
-            maxHeight: '90vh', maxWidth: '90vw',
-            borderRadius: '12px', objectFit: 'contain',
+            maxHeight: '90vh',
+            maxWidth: '90vw',
+            borderRadius: '12px',
+            objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
           }}
         />

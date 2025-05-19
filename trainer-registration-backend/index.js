@@ -14,7 +14,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Multer setup for file uploads
 
 
@@ -26,7 +26,6 @@ const storage = multer.diskStorage({
     cb(null, name);
   },
 });
-const upload = multer({ storage });
 const upload = multer({ storage });
 app.use('/uploads', (req, res, next) => {
   const fileExt = path.extname(req.path).toLowerCase();

@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
 const app = express();
-
+const fs = require('fs');
+const { exec } = require('child_process');
 // Middleware
 app.use(cors({
   origin: 'https://better-hotel-service.vercel.app',
@@ -19,16 +20,23 @@ app.use('/uploads', express.static('uploads')); // ✅ Serve uploaded files
 
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
+  destination: 'uploads/',
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + Date.now() + ext);
-  }
+    const name = Date.now() + ext;
+    cb(null, name);
+  },
 });
-
 const upload = multer({ storage });
+app.use('/uploads', (req, res, next) => {
+  const fileExt = path.extname(req.path).toLowerCase();
+  const videoTypes = ['.mp4', '.mov', '.webm', '.ogg'];
+
+  if (videoTypes.includes(fileExt)) {
+    res.setHeader('Content-Type', `video/${fileExt.replace('.', '')}`);
+  }
+  next();
+}, express.static('uploads'));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://desalegnsefiw2:kXuopHwMq4ZVgnei@cluster0.xauvfp5.mongodb.net/test', {

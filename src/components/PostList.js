@@ -67,7 +67,7 @@ const PostList = () => {
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
   const fullPath = currentMedia?.includes('uploads')
-    ? `https://better-hotel-service-1.onrender.com${currentMedia.replace(/^\/?/, '')}`
+    ? `https://better-hotel-service-1.onrender.com/${currentMedia.replace(/^\/?/, '')}`
     : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);

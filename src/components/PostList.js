@@ -71,7 +71,7 @@ const PostList = () => {
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
 
   const fullPath = currentMedia.startsWith('/uploads')
-    ? `https://better-hotel-service.vercel.app${currentMedia}`
+    ? `https://better-hotel-service-1.onrender.com${currentMedia}`
     : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);

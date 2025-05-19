@@ -9,13 +9,18 @@ const PostList = () => {
   useEffect(() => {
     axios.get('https://better-hotel-service.vercel.app/api/posts')
       .then(res => {
-        console.log('All posts:', res.data);
+        console.log('Fetched posts:', res.data);
+
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);
           const today = new Date();
+
+          // Convert to local date (strip time)
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
-          return diffDays <= 8 && post.filePath;
+
+          return diffDays <= 8 && diffDays >= 0 && post.filePath; // Only past 8 days
         });
+
         console.log('Filtered posts:', filtered);
         setPosts(filtered);
       })
@@ -26,7 +31,7 @@ const PostList = () => {
     if (!posts.length) return;
 
     const currentMedia = posts[currentIndex]?.filePath;
-    const ext = currentMedia?.split('.').pop().toLowerCase();
+    const ext = currentMedia?.split('.').pop()?.toLowerCase();
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
@@ -49,7 +54,7 @@ const PostList = () => {
 
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
-  const ext = currentMedia.split('.').pop().toLowerCase();
+  const ext = currentMedia?.split('.').pop()?.toLowerCase();
 
   const fullPath = currentMedia.startsWith('/uploads')
     ? `https://better-hotel-service.vercel.app${currentMedia}`

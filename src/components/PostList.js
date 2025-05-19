@@ -7,7 +7,7 @@ const PostList = () => {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    axios.get('https://better-hotel-service.vercel.app/api/posts')
+    axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
         console.log('Fetched response:', res.data); // Debugging: log API response
 
@@ -67,7 +67,7 @@ const PostList = () => {
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
   const fullPath = currentMedia?.includes('uploads')
-    ? `https://better-hotel-service.vercel.app/${currentMedia.replace(/^\/?/, '')}`
+    ? `https://better-hotel-service-1.onrender.com${currentMedia.replace(/^\/?/, '')}`
     : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);

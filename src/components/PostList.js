@@ -9,9 +9,8 @@ const PostList = () => {
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
-        console.log('Fetched response:', res.data); // Debugging: log API response
+        console.log('Fetched response:', res.data);
 
-        // Safely extract array from response structure
         const rawPosts = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.posts)
@@ -79,8 +78,8 @@ const PostList = () => {
       justifyContent: 'center',
       alignItems: 'center',
       padding: '1rem',
-      height: '80vh',
-      width: '80%',
+      height: '100vh',
+      width: '100%',
       background: '#f9f9f9',
     }}>
       {isImage && (
@@ -88,8 +87,8 @@ const PostList = () => {
           src={fullPath}
           alt={currentPost.title}
           style={{
-            maxHeight: '70vh',
-            maxWidth: '70vw',
+            maxHeight: '90vh',
+            maxWidth: '90vw',
             borderRadius: '12px',
             objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
@@ -99,22 +98,38 @@ const PostList = () => {
       )}
 
       {isVideo && (
-        <video
-          key={fullPath}
-          src={fullPath}
-          autoPlay
-          muted
-          playsInline
-          loop
+        <div
           style={{
-            maxHeight: '70vh',
-            maxWidth: '70vw',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#000',
+            width: '100%',
+            height: '100%',
+            padding: '1rem',
             borderRadius: '12px',
-            objectFit: 'contain',
-            boxShadow: '0 0 15px rgba(0,0,0,0.2)',
           }}
-          onError={() => console.error('Video failed to load:', fullPath)}
-        />
+        >
+          <video
+            key={fullPath}
+            src={fullPath}
+            autoPlay
+            muted
+            playsInline
+            loop
+            style={{
+              height: 'auto',
+              width: 'auto',
+              maxHeight: '90vh',
+              maxWidth: '90vw',
+              objectFit: 'contain',
+              borderRadius: '12px',
+              backgroundColor: '#000', // fallback for transparent/small videos
+              boxShadow: '0 0 15px rgba(0,0,0,0.2)',
+            }}
+            onError={() => console.error('Video failed to load:', fullPath)}
+          />
+        </div>
       )}
     </div>
   );

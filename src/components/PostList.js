@@ -7,30 +7,27 @@ const PostList = () => {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    axios.get('https://better-hotel-service.vercel.app/api/posts')
-      .then(res => {
-        const filtered = res.data.filter(post => {
-          const postDate = new Date(post.createdAt);
-          const today = new Date();
-          const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
+   axios.get('https://better-hotel-service.vercel.app/api/posts')
+  .then(res => {
+    const postsArray = res.data.posts || res.data; // fallback if already array
+    const filtered = postsArray.filter(post => {
+      const postDate = new Date(post.createdAt);
+      const today = new Date();
+      const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
 
-          const ext = post.filePath?.split('.').pop()?.toLowerCase();
-          const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
+      const ext = post.filePath?.split('.').pop()?.toLowerCase();
+      const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
-          return diffDays <= 8 && postDate <= today && post.filePath && isValidMedia;
-        });
+      return diffDays <= 8 && postDate <= today && post.filePath && isValidMedia;
+    });
 
-        if (!filtered.length) {
-          setPosts([{
-            title: 'Fallback Post',
-            filePath: 'https://via.placeholder.com/800x500.jpg',
-            createdAt: new Date().toISOString(),
-          }]);
-        } else {
-          setPosts(filtered);
-        }
-      })
-      .catch(err => console.error('Error fetching posts:', err));
+    setPosts(filtered.length ? filtered : [{
+      title: 'Fallback Post',
+      filePath: 'https://via.placeholder.com/800x500.jpg',
+      createdAt: new Date().toISOString(),
+    }]);
+  })
+  .catch(err => console.error('Error fetching posts:', err));
   }, []);
 
   useEffect(() => {

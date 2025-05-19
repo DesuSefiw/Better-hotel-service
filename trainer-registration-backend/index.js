@@ -14,19 +14,19 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
-app.use('/uploads', express.static('uploads')); // ✅ Serve uploaded files
-
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Multer setup for file uploads
 
 
 const storage = multer.diskStorage({
-  destination: 'uploads/',
+  destination: (req, file, cb) => cb(null, 'uploads/'),
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     const name = Date.now() + ext;
     cb(null, name);
   },
 });
+const upload = multer({ storage });
 const upload = multer({ storage });
 app.use('/uploads', (req, res, next) => {
   const fileExt = path.extname(req.path).toLowerCase();
@@ -163,9 +163,9 @@ app.get('/api/stats', async (req, res) => {
 
 // Post Schema & Model
 const PostSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  content: { type: String, required: true },
-  filePath: { type: String },
+  title: String,
+  content: String,
+  filePath: String,
   createdAt: { type: Date, default: Date.now },
 });
 const Post = mongoose.model('Post', PostSchema, 'posts');
@@ -175,13 +175,7 @@ app.post('/api/posts', upload.single('file'), async (req, res) => {
   const { title, content } = req.body;
   const filePath = req.file ? `/uploads/${req.file.filename}` : '';
 
-  const newPost = new Post({
-    title,
-    content,
-    filePath,
-    createdAt: new Date(),
-  });
-
+  const newPost = new Post({ title, content, filePath });
   await newPost.save();
   res.status(201).json(newPost);
 });
@@ -224,8 +218,9 @@ app.get('/api/posts', async (req, res) => {
     eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
 
     const posts = await Post.find({ createdAt: { $gte: eightDaysAgo } }).sort({ createdAt: -1 });
-    res.status(200).json(posts);
+    res.json(posts);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Error fetching posts' });
   }
 });

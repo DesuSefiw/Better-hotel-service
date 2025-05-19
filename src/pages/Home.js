@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PostList from '../components/PostList';
 import AboutUs  from './About';
+import { Helmet } from "react-helmet-async"; // ✅ Import Helmet
 import GallerySection from '../components/GallerySection';
 import img1 from '../assets/images/worker.jpg'
 import img2 from '../assets/images/hospitality_and_consultancy.jpg'
@@ -41,6 +42,12 @@ const Home = () => {
 
   return (
     <>
+     <Helmet>
+        <title>Better Hotel Service - Quality Hotels in Ethiopia</title>
+        <meta name="description" content="Affordable and quality hotel services in Ethiopia with Better Hotel Service. Compare, choose, and register now." />
+        <meta name="keywords" content="hotel booking Ethiopia, Better Hotel service, Ethiopian hotels, Addis Ababa hotels, luxury hotel Ethiopia,Hotel Service ,Hotel Service" />
+        <meta name="robots" content="index, follow" />
+      </Helmet>
       <Header />
       <main style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#f8f9fa' }}>
         {/* Hover animated Welcome section */}

@@ -79,7 +79,7 @@ const PostList = () => {
       justifyContent: 'center',
       alignItems: 'center',
       padding: '1rem',
-      height: '100vh',
+      height: '80vh',
       width: '80%',
       background: '#f9f9f9',
     }}>
@@ -88,8 +88,8 @@ const PostList = () => {
           src={fullPath}
           alt={currentPost.title}
           style={{
-            maxHeight: '90vh',
-            maxWidth: '90vw',
+            maxHeight: '70vh',
+            maxWidth: '70vw',
             borderRadius: '12px',
             objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
@@ -107,8 +107,8 @@ const PostList = () => {
           playsInline
           loop
           style={{
-            maxHeight: '90vh',
-            maxWidth: '90vw',
+            maxHeight: '70vh',
+            maxWidth: '70vw',
             borderRadius: '12px',
             objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',

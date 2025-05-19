@@ -7,7 +7,7 @@ const PostList = () => {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/posts')
+    axios.get('https://better-hotel-service.vercel.app/api/posts')
       .then(res => {
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);

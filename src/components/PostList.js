@@ -7,27 +7,35 @@ const PostList = () => {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-   axios.get('https://better-hotel-service.vercel.app/api/posts')
-  .then(res => {
-    const postsArray = res.data.posts || res.data; // fallback if already array
-    const filtered = postsArray.filter(post => {
-      const postDate = new Date(post.createdAt);
-      const today = new Date();
-      const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
+    axios.get('https://better-hotel-service.vercel.app/api/posts')
+      .then(res => {
+        console.log('Fetched response:', res.data); // Debugging: log API response
 
-      const ext = post.filePath?.split('.').pop()?.toLowerCase();
-      const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
+        // Safely extract array from response structure
+        const rawPosts = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data.posts)
+          ? res.data.posts
+          : [];
 
-      return diffDays <= 8 && postDate <= today && post.filePath && isValidMedia;
-    });
+        const filtered = rawPosts.filter(post => {
+          const postDate = new Date(post.createdAt);
+          const today = new Date();
+          const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
 
-    setPosts(filtered.length ? filtered : [{
-      title: 'Fallback Post',
-      filePath: 'https://via.placeholder.com/800x500.jpg',
-      createdAt: new Date().toISOString(),
-    }]);
-  })
-  .catch(err => console.error('Error fetching posts:', err));
+          const ext = post.filePath?.split('.').pop()?.toLowerCase();
+          const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
+
+          return diffDays <= 8 && postDate <= today && post.filePath && isValidMedia;
+        });
+
+        setPosts(filtered.length ? filtered : [{
+          title: 'Fallback Post',
+          filePath: 'https://via.placeholder.com/800x500.jpg',
+          createdAt: new Date().toISOString(),
+        }]);
+      })
+      .catch(err => console.error('Error fetching posts:', err));
   }, []);
 
   useEffect(() => {
@@ -59,9 +67,8 @@ const PostList = () => {
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
   const fullPath = currentMedia?.includes('uploads')
-  ? `https://better-hotel-service.vercel.app/${currentMedia.replace(/^\/?/, '')}`
-  : currentMedia;
-
+    ? `https://better-hotel-service.vercel.app/${currentMedia.replace(/^\/?/, '')}`
+    : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
   const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);

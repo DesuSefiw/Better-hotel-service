@@ -80,7 +80,7 @@ const PostList = () => {
       alignItems: 'center',
       padding: '1rem',
       height: '100vh',
-      width: '100%',
+      width: '80%',
       background: '#f9f9f9',
     }}>
       {isImage && (

@@ -5,9 +5,11 @@ import Home from '../src/pages/Home';
 import Register from '../src/pages/Registration';
 import Login  from './pages/Login';
 import Dashboard from './components/Dashboard';
+import { HelmetProvider } from 'react-helmet-async';
 function App() {
   return (
-    <BrowserRouter>
+    <HelmetProvider>
+      <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -16,6 +18,9 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+
+    </HelmetProvider>
+    
   );
 }
 

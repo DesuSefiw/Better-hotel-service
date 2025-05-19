@@ -7,7 +7,7 @@ const PostList = () => {
   const timeoutRef = useRef(null);
 
   useEffect(() => {
-    axios.get('https://better-hotel-service-1.onrender.com/api/posts')
+    axios.get('http://localhost:5000/api/posts')
       .then(res => {
         const filtered = res.data.filter(post => {
           const postDate = new Date(post.createdAt);
@@ -25,7 +25,6 @@ const PostList = () => {
 
     const currentMedia = posts[currentIndex]?.filePath;
     const ext = currentMedia?.split('.').pop().toLowerCase();
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
@@ -40,39 +39,28 @@ const PostList = () => {
 
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
-
   if (!currentMedia) return null;
 
   const ext = currentMedia.split('.').pop().toLowerCase();
   const fullPath = currentMedia.startsWith('/uploads')
-    ? `https://better-hotel-service-1.onrender.com${currentMedia}`
+    ? `http://localhost:5000${currentMedia}`
     : currentMedia;
 
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
   const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '1rem',
-        backgroundColor: 'transparent',
-        height: '100vh',
-        width: '100%',
-        overflow: 'hidden',
-      }}
-    >
+    <div style={{
+      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      padding: '1rem', backgroundColor: 'transparent', height: '100vh', width: '100%', overflow: 'hidden'
+    }}>
       {isImage && (
         <img
           src={fullPath}
           alt="Post"
           style={{
-            maxHeight: '90vh',
-            maxWidth: '90vw',
-            borderRadius: '12px',
-            objectFit: 'contain',
+            maxHeight: '90vh', maxWidth: '90vw',
+            borderRadius: '12px', objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
           }}
           draggable={false}
@@ -90,10 +78,8 @@ const PostList = () => {
           onError={() => console.error('Video load failed:', fullPath)}
           onEnded={() => setCurrentIndex((prev) => (prev + 1) % posts.length)}
           style={{
-            maxHeight: '90vh',
-            maxWidth: '90vw',
-            borderRadius: '12px',
-            objectFit: 'contain',
+            maxHeight: '90vh', maxWidth: '90vw',
+            borderRadius: '12px', objectFit: 'contain',
             boxShadow: '0 0 15px rgba(0,0,0,0.2)',
           }}
         />

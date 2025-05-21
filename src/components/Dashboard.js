@@ -356,7 +356,7 @@ const handleAddTrainer = async () => {
       {/* View Trainers Section */}
       {viewMode === 'trainers' && (
         <div style={{ marginTop: '20px' }}>
-          <h3>👥 Registered Customers</h3>
+          <h3>👥 Registered Customers:- <strong>{userCount}</strong></h3>
           {trainers.length === 0 ? <p>No Customers available.</p> : (
             trainers.map(trainer => (
               <div key={trainer._id} style={{ marginBottom: '10px', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}>

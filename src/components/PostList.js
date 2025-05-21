@@ -9,8 +9,6 @@ const PostList = () => {
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
-        console.log('Fetched response:', res.data);
-
         const rawPosts = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.posts)
@@ -21,7 +19,6 @@ const PostList = () => {
           const postDate = new Date(post.createdAt);
           const today = new Date();
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
-
           const ext = post.filePath?.split('.').pop()?.toLowerCase();
           const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
@@ -30,7 +27,7 @@ const PostList = () => {
 
         setPosts(filtered.length ? filtered : [{
           title: 'Fallback Post',
-          filePath: 'https://via.placeholder.com/800x500.jpg',
+          filePath: 'https://via.placeholder.com/800x450.jpg',
           createdAt: new Date().toISOString(),
         }]);
       })
@@ -56,7 +53,7 @@ const PostList = () => {
 
   if (!posts.length) {
     return (
-      <div style={{ textAlign: 'center', padding: '2rem' }}>
+      <div style={{ textAlign: 'center', padding: '1rem', fontSize: '14px' }}>
         No recent posts to display.
       </div>
     );
@@ -77,59 +74,47 @@ const PostList = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      padding: '1rem',
-      height: '100vh',
-      width: '100%',
-      background: '#f9f9f9',
+      height: '360px',
+      width: '640px',
+      maxWidth: '90vw',
+      maxHeight: '50vh',
+      margin: '2rem auto',
+      background: '#fff',
+      border: '1px solid #ddd',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+      position: 'relative',
     }}>
       {isImage && (
         <img
           src={fullPath}
           alt={currentPost.title}
           style={{
-            maxHeight: '90vh',
-            maxWidth: '90vw',
-            borderRadius: '12px',
-            objectFit: 'contain',
-            boxShadow: '0 0 15px rgba(0,0,0,0.2)',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
           }}
           draggable={false}
         />
       )}
 
       {isVideo && (
-        <div
+        <video
+          key={fullPath}
+          src={fullPath}
+          autoPlay
+          muted
+          playsInline
+          loop
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#000',
             width: '100%',
             height: '100%',
-            padding: '1rem',
-            borderRadius: '12px',
+            objectFit: 'cover',
+            backgroundColor: '#000',
           }}
-        >
-          <video
-            key={fullPath}
-            src={fullPath}
-            autoPlay
-            muted
-            playsInline
-            loop
-            style={{
-              height: 'auto',
-              width: 'auto',
-              maxHeight: '90vh',
-              maxWidth: '90vw',
-              objectFit: 'contain',
-              borderRadius: '12px',
-              backgroundColor: '#000', // fallback for transparent/small videos
-              boxShadow: '0 0 15px rgba(0,0,0,0.2)',
-            }}
-            onError={() => console.error('Video failed to load:', fullPath)}
-          />
-        </div>
+          onError={() => console.error('Video failed to load:', fullPath)}
+        />
       )}
     </div>
   );

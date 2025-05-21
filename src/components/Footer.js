@@ -51,7 +51,7 @@ const Footer = () => {
             </a>
           </p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
-             {/*<FaUsers /> {trainerCount} Trainers Registered */}
+             <FaUsers /> {trainerCount} Trainers Registered 
           </p>
 
           {/* Social Media Links */}

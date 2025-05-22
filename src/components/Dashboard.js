@@ -146,7 +146,7 @@ const headerStyle = {
   };
 
   const chartData = {
-    labels: ['Organize a Hotel', 'Take Training', 'Get a Job', 'Write a Book'],
+    labels: ['Organize a Hotel', 'Take Training', 'Get a Job', 'prepare their work documents'],
     datasets: [
       {
         label: 'Customer Service Count',

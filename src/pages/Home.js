@@ -139,9 +139,9 @@ const Home = () => {
             margin: '0 auto'
           }}>
             {[
-              { name: 'Selam T.', feedback: 'I loved the hotel options. Great quality and easy to book!' },
-              { name: 'Yonas B.', feedback: 'Their consultancy really helped grow my business.' },
-              { name: 'Mekdes A.', feedback: 'The training improved my team’s service quality. Highly recommended!' },
+              { name: 'Selam M.', feedback: 'An exceptional initiative! This service will make hotel management seamless, from setup to staffing and operations.' },
+              { name: 'Desalegn S.', feedback: 'A game-changer for the hospitality industry! Comprehensive training, consultancy, and recruitment—all in one place. and Recruit employees for them.' },
+              { name: 'MOH A.', feedback: 'This service is exactly what hotels need to elevate their quality and efficiency. A must-have for industry growth! and also Prepare necessary operational documents' },
             ].map((review, index) => (
               <motion.div
                 key={index}
@@ -179,7 +179,7 @@ const Home = () => {
               gap: '2rem'
             }}
           >
-            {['partner1.png', 'partner2.png', 'partner3.png'].map((logo, i) => (
+            {['wear.jpg', 'sky.jpg', 'ethio.jpg'].map((logo, i) => (
               <motion.img
                 key={i}
                 src={`/images/${logo}`}

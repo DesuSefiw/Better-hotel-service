@@ -11,7 +11,7 @@ import GallerySection from '../components/GallerySection';
 import { Helmet } from "react-helmet-async";
 import sky from '../assets/images/sky.jpg';
 import wear from '../assets/images/wear.jpg';
-import ethio from '../assets/images/ethio.jpg';
+import ethio from '../assets/images/ethio.png';
 
 import img1 from '../assets/images/worker.jpg';
 import img2 from '../assets/images/hospitality_and_consultancy.jpg';

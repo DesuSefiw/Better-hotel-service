@@ -9,6 +9,9 @@ import PostList from '../components/PostList';
 import AboutUs from './About';
 import GallerySection from '../components/GallerySection';
 import { Helmet } from "react-helmet-async";
+import sky from '../assets/images/sky.jpg';
+import wear from '../assets/images/wear.jpg';
+import ethio from '../assets/images/ethio.jpg';
 
 import img1 from '../assets/images/worker.jpg';
 import img2 from '../assets/images/hospitality_and_consultancy.jpg';
@@ -102,7 +105,7 @@ const Home = () => {
             padding: '0 1rem'
           }}>
             {[
-              { title: 'Hotel Booking', icon: '🏨', desc: 'Book quality hotels with ease.' },
+              { title: 'Organize a Hotel', icon: '🏨', desc: 'Organize quality hotels,cafes,restuarant with ease.' },
               { title: 'Consultancy', icon: '🧠', desc: 'Professional hospitality guidance.' },
               { title: 'Training', icon: '📚', desc: 'Skill-based programs for staff.' },
             ].map((service, idx) => (
@@ -179,10 +182,10 @@ const Home = () => {
               gap: '2rem'
             }}
           >
-            {['wear.jpg', 'sky.jpg', 'ethio.jpg'].map((logo, i) => (
+            {[wear, sky, ethio].map((logo, i) => (
               <motion.img
                 key={i}
-                src={`/images/${logo}`}
+                src={logo}
                 alt={`Partner ${i + 1}`}
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.3 }}

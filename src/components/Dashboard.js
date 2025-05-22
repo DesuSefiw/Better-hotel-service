@@ -18,7 +18,7 @@ const Dashboard = () => {
     'Organize a Hotel',
     'Take Training',
     'Get a Job',
-    'Write a Book',
+    'prepare their work documents',
   ];
 
   const [trainers, setTrainers] = useState([]);
@@ -130,7 +130,7 @@ const headerStyle = {
       'Organize a Hotel': 0,
       'Take Training': 0,
       'Get a Job': 0,
-      'Write a Book': 0,
+      'prepare their work documents': 0,
     };
 
     if (Array.isArray(trainers)) {

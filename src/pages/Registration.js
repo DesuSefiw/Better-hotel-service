@@ -20,7 +20,7 @@ const Register = () => {
     'Organize a Hotel',
     'Take Training',
     'Get a Job',
-    'Write a Book',
+    'prepare their work documents',
   ];
 
   const handleChange = (e) =>

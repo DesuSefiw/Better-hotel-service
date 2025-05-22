@@ -38,59 +38,67 @@ const Slideshow = () => {
 
   return (
     <div style={{ position: 'relative', marginTop: '2rem' }}>
-      <Fade duration={2500} transitionDuration={600} infinite arrows={false}>
+      <Fade duration={3000} transitionDuration={800} infinite arrows={false}>
         {slides.map((slide, index) => (
           <div
             key={index}
             className="slide-container"
             style={{
               display: 'flex',
-              flexDirection: 'row',
+              flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
               flexWrap: 'wrap',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '50px 30px',
-              background: '#fefefe',
+              padding: '60px 40px',
+              background: 'linear-gradient(to right, #f7f8fc, #eef2f3)',
               borderRadius: '20px',
-              boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-              gap: '30px',
-              minHeight: '400px',
+              boxShadow: '0 6px 25px rgba(0,0,0,0.1)',
+              gap: '40px',
+              minHeight: '450px',
+              transition: 'all 0.5s ease-in-out',
             }}
           >
-            {/* Text */}
-            {(slide.leftText || slide.rightText) && (
-              <div
-                className="text-container"
+            {/* Text Area */}
+            <div
+              className="text-container"
+              style={{
+                flex: '1 1 350px',
+                animation: 'fadeInText 1.3s ease-in-out',
+                padding: '10px',
+              }}
+            >
+              <h2
                 style={{
-                  flex: '1 1 300px',
-                  animation: 'fadeInUp 1s ease-in-out',
-                }}
-              >
-                <h2 style={{
-                  fontSize: '1.7rem',
+                  fontSize: '2rem',
                   color: '#2c3e50',
-                  fontWeight: 'bold',
+                  fontWeight: 600,
                   lineHeight: '1.6',
                   textAlign: slide.leftText ? 'right' : 'left',
-                }}>
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+              >
+                <span style={{ background: 'linear-gradient(90deg, #00c6ff, #0072ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   {slide.leftText || slide.rightText}
-                </h2>
-              </div>
-            )}
+                </span>
+              </h2>
+            </div>
 
-            {/* Image with gallery icon */}
-            <div style={{ position: 'relative' }}>
+            {/* Image Area */}
+            <div style={{ position: 'relative', transition: 'transform 0.3s ease' }}>
               <img
                 src={slide.image}
                 alt={`Slide ${index}`}
                 style={{
-                  width: '400px',
+                  width: '420px',
                   height: 'auto',
-                  borderRadius: '18px',
+                  borderRadius: '20px',
                   objectFit: 'cover',
-                  boxShadow: '0 8px 25px rgba(0,0,0,0.2)',
-                  transition: 'transform 0.3s ease-in-out',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.25)',
+                  transition: 'transform 0.4s ease-in-out',
                 }}
+                onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.04)')}
+                onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
               />
 
               <div
@@ -100,17 +108,20 @@ const Slideshow = () => {
                   position: 'absolute',
                   bottom: '15px',
                   right: '15px',
-                  width: '45px',
-                  height: '45px',
-                  backgroundColor: '#ffffffdd',
+                  width: '48px',
+                  height: '48px',
+                  backgroundColor: '#ffffffcc',
                   borderRadius: '50%',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  boxShadow: '0 3px 10px rgba(0,0,0,0.3)',
+                  boxShadow: '0 3px 12px rgba(0,0,0,0.3)',
                   cursor: 'pointer',
-                  zIndex: 5,
+                  zIndex: 10,
+                  transition: 'background 0.3s',
                 }}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#ffffffee')}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#ffffffcc')}
               >
                 <img src={galleryIcon} alt="Gallery" style={{ width: '24px', height: '24px' }} />
               </div>
@@ -119,7 +130,7 @@ const Slideshow = () => {
         ))}
       </Fade>
 
-      {/* Full Gallery Modal */}
+      {/* Gallery Modal */}
       {isGalleryOpen && (
         <div
           style={{
@@ -152,7 +163,7 @@ const Slideshow = () => {
                     transition: 'transform 0.3s',
                   }}
                   onClick={(e) => e.stopPropagation()}
-                  onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
+                  onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
                   onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                 />
               </PhotoView>
@@ -161,17 +172,11 @@ const Slideshow = () => {
         </div>
       )}
 
-      {/* Optional: Fade-in-up animation CSS */}
+      {/* Animation CSS */}
       <style>{`
-        @keyframes fadeInUp {
-          0% {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        @keyframes fadeInText {
+          0% { opacity: 0; transform: translateY(30px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>

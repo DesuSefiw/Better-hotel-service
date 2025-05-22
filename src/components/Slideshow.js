@@ -45,61 +45,56 @@ const Slideshow = () => {
             className="slide-container"
             style={{
               display: 'flex',
-              flexDirection: index % 2 === 0 ? 'row' : 'row-reverse',
               flexWrap: 'wrap',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '60px 40px',
-              background: 'linear-gradient(to right, #f7f8fc, #eef2f3)',
+              padding: '60px 30px',
+              background: '#ffffff',
               borderRadius: '20px',
-              boxShadow: '0 6px 25px rgba(0,0,0,0.1)',
-              gap: '40px',
-              minHeight: '450px',
-              transition: 'all 0.5s ease-in-out',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+              gap: '30px',
+              minHeight: '440px',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            {/* Text Area */}
             <div
               className="text-container"
               style={{
-                flex: '1 1 350px',
-                animation: 'fadeInText 1.3s ease-in-out',
-                padding: '10px',
+                flex: '1 1 300px',
+                animation: 'fadeSlide 1s ease-out',
               }}
             >
               <h2
                 style={{
                   fontSize: '2rem',
-                  color: '#2c3e50',
-                  fontWeight: 600,
-                  lineHeight: '1.6',
+                  color: '#1f2e45',
+                  fontWeight: 700,
                   textAlign: slide.leftText ? 'right' : 'left',
+                  lineHeight: '1.6',
                   position: 'relative',
-                  zIndex: 1,
                 }}
               >
-                <span style={{ background: 'linear-gradient(90deg, #00c6ff, #0072ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  {slide.leftText || slide.rightText}
-                </span>
+                <span className="text-highlight">{slide.leftText || slide.rightText}</span>
               </h2>
             </div>
 
-            {/* Image Area */}
-            <div style={{ position: 'relative', transition: 'transform 0.3s ease' }}>
-              <img
-                src={slide.image}
-                alt={`Slide ${index}`}
-                style={{
-                  width: '420px',
-                  height: 'auto',
-                  borderRadius: '20px',
-                  objectFit: 'cover',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.25)',
-                  transition: 'transform 0.4s ease-in-out',
-                }}
-                onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.04)')}
-                onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              />
+            <div style={{ position: 'relative' }}>
+              <div className="image-container">
+                <img
+                  src={slide.image}
+                  alt={`Slide ${index}`}
+                  style={{
+                    width: '400px',
+                    height: 'auto',
+                    borderRadius: '18px',
+                    objectFit: 'cover',
+                    transition: 'transform 0.5s ease-in-out',
+                    boxShadow: '0 10px 30px rgba(0,0,0,0.25)',
+                  }}
+                  className="zoom-on-hover"
+                />
+              </div>
 
               <div
                 onClick={openGallery}
@@ -108,29 +103,26 @@ const Slideshow = () => {
                   position: 'absolute',
                   bottom: '15px',
                   right: '15px',
-                  width: '48px',
-                  height: '48px',
-                  backgroundColor: '#ffffffcc',
+                  width: '45px',
+                  height: '45px',
+                  backgroundColor: '#ffffffdd',
                   borderRadius: '50%',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  boxShadow: '0 3px 12px rgba(0,0,0,0.3)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
                   cursor: 'pointer',
-                  zIndex: 10,
-                  transition: 'background 0.3s',
+                  zIndex: 5,
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#ffffffee')}
-                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = '#ffffffcc')}
               >
-                <img src={galleryIcon} alt="Gallery" style={{ width: '24px', height: '24px' }} />
+                <img src={galleryIcon} alt="Gallery" style={{ width: '22px', height: '22px' }} />
               </div>
             </div>
           </div>
         ))}
       </Fade>
 
-      {/* Gallery Modal */}
+      {/* Full Gallery Modal */}
       {isGalleryOpen && (
         <div
           style={{
@@ -163,7 +155,7 @@ const Slideshow = () => {
                     transition: 'transform 0.3s',
                   }}
                   onClick={(e) => e.stopPropagation()}
-                  onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.08)')}
+                  onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.05)')}
                   onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                 />
               </PhotoView>
@@ -172,11 +164,37 @@ const Slideshow = () => {
         </div>
       )}
 
-      {/* Animation CSS */}
+      {/* Animations and Enhancements */}
       <style>{`
-        @keyframes fadeInText {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
+        .zoom-on-hover:hover {
+          transform: scale(1.04);
+        }
+
+        @keyframes fadeSlide {
+          0% {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .text-highlight {
+          background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+          .slide-container {
+            flex-direction: column;
+          }
+
+          .text-container h2 {
+            text-align: center !important;
+          }
         }
       `}</style>
     </div>

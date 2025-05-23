@@ -6,6 +6,7 @@ const PostList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const timeoutRef = useRef(null);
 
+  // Fetch and filter posts
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
@@ -15,14 +16,13 @@ const PostList = () => {
           ? res.data.posts
           : [];
 
+        const today = new Date();
         const filtered = rawPosts.filter(post => {
           const postDate = new Date(post.createdAt);
-          const today = new Date();
           const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
           const ext = post.filePath?.split('.').pop()?.toLowerCase();
-          const isValidMedia = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'].includes(ext);
-
-          return diffDays <= 8 && postDate <= today && post.filePath && isValidMedia;
+          const validExts = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'];
+          return diffDays <= 8 && postDate <= today && post.filePath && validExts.includes(ext);
         });
 
         setPosts(filtered.length ? filtered : [{
@@ -34,6 +34,7 @@ const PostList = () => {
       .catch(err => console.error('Error fetching posts:', err));
   }, []);
 
+  // Handle auto-slide
   useEffect(() => {
     if (!posts.length) return;
 
@@ -45,7 +46,7 @@ const PostList = () => {
     const delay = isImage ? 4000 : 9000;
 
     timeoutRef.current = setTimeout(() => {
-      setCurrentIndex((prev) => (prev + 1) % posts.length);
+      setCurrentIndex(prev => (prev + 1) % posts.length);
     }, delay);
 
     return () => clearTimeout(timeoutRef.current);
@@ -62,25 +63,25 @@ const PostList = () => {
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
+  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
+  const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
+
+  // Prepare full file path
   const fullPath = currentMedia?.includes('uploads')
     ? `https://better-hotel-service-1.onrender.com/${currentMedia.replace(/^\/?/, '')}`
     : currentMedia;
-
-  const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
-  const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
   return (
     <div style={{
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '360px',
-      width: '640px',
+      height: '100%',
+      width: '100%',
       maxWidth: '90vw',
-      maxHeight: '50vh',
+      maxHeight: '80vh',
       margin: '2rem auto',
-      background: '#fff',
-      border: '1px solid #ddd',
+      background: '#000',
       borderRadius: '12px',
       overflow: 'hidden',
       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
@@ -93,7 +94,8 @@ const PostList = () => {
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'contain',
+            backgroundColor: '#000',
           }}
           draggable={false}
         />
@@ -107,10 +109,11 @@ const PostList = () => {
           muted
           playsInline
           loop
+          controls={false}
           style={{
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit: 'contain',
             backgroundColor: '#000',
           }}
           onError={() => console.error('Video failed to load:', fullPath)}

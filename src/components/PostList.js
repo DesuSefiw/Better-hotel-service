@@ -6,7 +6,6 @@ const PostList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const timeoutRef = useRef(null);
 
-  // Fetch and filter posts
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
       .then(res => {
@@ -34,7 +33,6 @@ const PostList = () => {
       .catch(err => console.error('Error fetching posts:', err));
   }, []);
 
-  // Handle auto-slide
   useEffect(() => {
     if (!posts.length) return;
 
@@ -66,7 +64,6 @@ const PostList = () => {
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
   const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
-  // Prepare full file path
   const fullPath = currentMedia?.includes('uploads')
     ? `https://better-hotel-service-1.onrender.com/${currentMedia.replace(/^\/?/, '')}`
     : currentMedia;
@@ -76,24 +73,23 @@ const PostList = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100%',
-      width: '100%',
-      maxWidth: '90vw',
-      maxHeight: '80vh',
+      width: '90vw',
+      height: '60vh',
+      maxWidth: '1000px',
       margin: '2rem auto',
       background: '#000',
       borderRadius: '12px',
       overflow: 'hidden',
       boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      position: 'relative',
+      padding: '1rem',
     }}>
       {isImage && (
         <img
           src={fullPath}
           alt={currentPost.title}
           style={{
-            width: '100%',
-            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
             objectFit: 'contain',
             backgroundColor: '#000',
           }}
@@ -111,10 +107,11 @@ const PostList = () => {
           loop
           controls={false}
           style={{
-            width: '100%',
-            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
             objectFit: 'contain',
             backgroundColor: '#000',
+            borderRadius: '8px',
           }}
           onError={() => console.error('Video failed to load:', fullPath)}
         />
@@ -124,3 +121,4 @@ const PostList = () => {
 };
 
 export default PostList;
+

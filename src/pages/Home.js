@@ -9,6 +9,8 @@ import PostList from '../components/PostList';
 import AboutUs from './About';
 import GallerySection from '../components/GallerySection';
 import { Helmet } from "react-helmet-async";
+import { Typewriter } from 'react-simple-typewriter';
+
 import sky from '../assets/images/sky.jpg';
 import wear from '../assets/images/wear.jpg';
 import ethio from '../assets/images/ethio.png';
@@ -59,10 +61,26 @@ const Home = () => {
           }}
         >
           <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2c3e50', marginBottom: '1rem', textTransform: 'uppercase' }}>
-            {t('welcome')}
+            <Typewriter
+              words={[t('welcome')]}
+              loop={1}
+              cursor
+              cursorStyle='|'
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={1000}
+            />
           </h1>
           <h2 style={{ fontSize: '1.25rem', color: '#555', lineHeight: '1.6', fontWeight: 'normal' }}>
-            {t('description')}
+            <Typewriter
+              words={[t('description')]}
+              loop={1}
+              cursor
+              cursorStyle='|'
+              typeSpeed={60}
+              deleteSpeed={40}
+              delaySpeed={1500}
+            />
           </h2>
         </motion.section>
 
@@ -101,8 +119,7 @@ const Home = () => {
             gap: '1.5rem',
             padding: '0 1rem'
           }}>
-            {[
-              { title: 'Organize a Hotel', icon: '🏨', desc: 'Organize quality hotels,cafes,restuarant with ease.' },
+            {[{ title: 'Organize a Hotel', icon: '🏨', desc: 'Organize quality hotels,cafes,restuarant with ease.' },
               { title: 'Consultancy', icon: '🧠', desc: 'Professional hospitality guidance.' },
               { title: 'Training', icon: '📚', desc: 'Skill-based programs for staff.' },
             ].map((service, idx) => (
@@ -138,8 +155,7 @@ const Home = () => {
             maxWidth: '800px',
             margin: '0 auto'
           }}>
-            {[
-              { name: 'Selam M.', feedback: 'An exceptional initiative! This service will make hotel management seamless, from setup to staffing and operations.' },
+            {[{ name: 'Selam M.', feedback: 'An exceptional initiative! This service will make hotel management seamless, from setup to staffing and operations.' },
               { name: 'Desalegn S.', feedback: 'A game-changer for the hospitality industry! Comprehensive training, consultancy, and recruitment—all in one place. and Recruit employees for them.' },
               { name: 'MOH A.', feedback: 'This service is exactly what hotels need to elevate their quality and efficiency. A must-have for industry growth! and also Prepare necessary operational documents' },
             ].map((review, index) => (
@@ -155,7 +171,9 @@ const Home = () => {
                   boxShadow: '0 4px 18px rgba(0, 0, 0, 0.1)',
                 }}
               >
-                <p style={{ fontStyle: 'italic', color: '#555' }}>"{review.feedback}"</p>
+                <p style={{ fontStyle: 'italic', color: '#555' }}>
+                  "{review.feedback}"
+                </p>
                 <h4 style={{ marginTop: '0.75rem', fontWeight: 'bold', color: '#2c3e50' }}>- {review.name}</h4>
               </motion.div>
             ))}
@@ -194,14 +212,15 @@ const Home = () => {
 
         {/* Contact */}
         <ContactForm />
-           {/* Gallery */}
+
+        {/* Gallery */}
         <GallerySection images={images} />
       </main>
 
-       
       <Footer />
     </>
   );
 };
 
 export default Home;
+

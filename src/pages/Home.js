@@ -80,7 +80,7 @@ const Home = () => {
             cursor: 'pointer',
           }}
         >
-          <h2>{t('service')}</h2>
+          <h2>{t('Services')}</h2>
           <Slideshow />
         </motion.div>
 
@@ -90,13 +90,10 @@ const Home = () => {
         {/* About Section */}
         <AboutUs />
 
-        {/* Gallery */}
-        <GallerySection images={images} />
-
         {/* 🔥 Service Cards */}
         <section style={{ marginBottom: '3rem' }}>
           <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
-            {t('our_services') || 'Our Services'}
+            {t('service') || 'Our Services'}
           </h2>
           <div style={{
             display: 'grid',
@@ -199,6 +196,8 @@ const Home = () => {
         <ContactForm />
       </main>
 
+        {/* Gallery */}
+        <GallerySection images={images} />
       <Footer />
     </>
   );

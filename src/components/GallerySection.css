@@ -1,107 +1,158 @@
 .gallery-container {
-    max-width: 1000px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  max-width: 1200px;
+  margin: 4rem auto;
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, #f9f9f9, #ffffff);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  text-align: center;
+  position: relative;
+}
+
+.gallery-title {
+  font-size: 2.5rem;
+  color: #1f2937;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.gallery-title::after {
+  content: '';
+  width: 80px;
+  height: 4px;
+  background: #3498db;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 5px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 0 1rem;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.gallery-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.gallery-item:hover::before {
+  opacity: 1;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.08);
+}
+
+.gallery-controls {
+  margin-top: 2rem;
+}
+
+.gallery-controls button {
+  margin: 0 1rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  transition: background 0.3s, transform 0.2s;
+  box-shadow: 0 5px 10px rgba(52, 152, 219, 0.3);
+}
+
+.gallery-controls button:hover:not(:disabled) {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.gallery-controls button:disabled {
+  background-color: #b0bec5;
+  cursor: not-allowed;
+}
+
+/* Animation */
+.fade-in {
+  animation: fadeInZoom 0.8s ease-out both;
+}
+
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
   }
-  
-  .gallery-title {
-    font-size: 2rem;
-    color: #2c3e50;
-    margin-bottom: 1.5rem;
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 180px;
-    gap: 1rem;
-    justify-items: center;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 16px;
+  max-width: 90%;
+  max-height: 85%;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modalFadeIn 0.5s ease forwards;
+}
+
+.modal-content img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  
-  .gallery-item {
-    overflow: hidden;
-    border-radius: 10px;
-    cursor: pointer;
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  .gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-    border-radius: 10px;
-  }
-  
-  .gallery-item:hover img {
-    transform: scale(1.1);
-  }
-  
-  .gallery-controls {
-    margin-top: 1.5rem;
-  }
-  
-  .gallery-controls button {
-    margin: 0 1rem;
-    padding: 0.6rem 1.2rem;
-    font-size: 1.2rem;
-    cursor: pointer;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-  }
-  
-  .gallery-controls button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .fade-in {
-    animation: fadeInZoom 0.8s ease-in-out both;
-  }
-  
-  @keyframes fadeInZoom {
-    0% {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  /* Modal Styles */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 1rem;
-    border-radius: 10px;
-    max-width: 90%;
-    max-height: 80%;
-  }
-  
-  .modal-content img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 10px;
-  }
-  
+}

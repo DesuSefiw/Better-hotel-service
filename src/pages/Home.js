@@ -194,10 +194,11 @@ const Home = () => {
 
         {/* Contact */}
         <ContactForm />
+           {/* Gallery */}
+        <GallerySection images={images} />
       </main>
 
-        {/* Gallery */}
-        <GallerySection images={images} />
+       
       <Footer />
     </>
   );

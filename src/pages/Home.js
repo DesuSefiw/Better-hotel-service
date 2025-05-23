@@ -109,39 +109,44 @@ const Home = () => {
         <AboutUs />
 
         {/* 🔥 Service Cards */}
-        <section style={{ marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
-            {t('service') || 'Our Services'}
-          </h2>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-            gap: '1.5rem',
-            padding: '0 1rem'
-          }}>
-            {[{ title: 'Organize a Hotel', icon: '🏨', desc: 'Organize quality hotels,cafes,restuarant with ease.' },
-              { title: 'Consultancy', icon: '🧠', desc: 'Professional hospitality guidance.' },
-              { title: 'Training', icon: '📚', desc: 'Skill-based programs for staff.' },
-            ].map((service, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                style={{
-                  backgroundColor: '#ffffff',
-                  padding: '1.5rem',
-                  borderRadius: '16px',
-                  boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
-                  cursor: 'pointer',
-                }}
-              >
-                <div style={{ fontSize: '2.5rem' }}>{service.icon}</div>
-                <h3 style={{ margin: '1rem 0 0.5rem', color: '#333' }}>{service.title}</h3>
-                <p style={{ color: '#777' }}>{service.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+        {/* 🔥 Service Cards */}
+<section style={{ marginBottom: '3rem' }}>
+  <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
+    {t('service') || 'Our Services'}
+  </h2>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '1.5rem',
+    padding: '0 1rem'
+  }}>
+    {[
+      { title: 'Hotel Setup', icon: '🏨', desc: 'Helping hotels establish a solid foundation for success.' },
+      { title: 'Consultancy', icon: '🧠', desc: 'Professional guidance for efficient hotel management and operations.' },
+      { title: 'Training Programs', icon: '📚', desc: 'Skill-based training to improve staff performance and hospitality services.' },
+      { title: 'Employee Recruitment', icon: '👥', desc: 'Connecting hotels with skilled professionals to enhance service quality.' },
+      { title: 'Operational Document Preparation', icon: '📑', desc: 'Providing essential documentation for seamless hotel operations.' }
+    ].map((service, idx) => (
+      <motion.div
+        key={idx}
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          backgroundColor: '#ffffff',
+          padding: '1.5rem',
+          borderRadius: '16px',
+          boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+          cursor: 'pointer',
+        }}
+      >
+        <div style={{ fontSize: '2.5rem' }}>{service.icon}</div>
+        <h3 style={{ margin: '1rem 0 0.5rem', color: '#333' }}>{service.title}</h3>
+        <p style={{ color: '#777' }}>{service.desc}</p>
+      </motion.div>
+    ))}
+  </div>
+</section>
+
 
         {/* 💬 Testimonials */}
         <section style={{ marginBottom: '4rem', backgroundColor: '#f1f3f5', padding: '3rem 1rem', borderRadius: '12px' }}>

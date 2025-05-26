@@ -10,6 +10,8 @@ import AboutUs from './About';
 import GallerySection from '../components/GallerySection';
 import { Helmet } from "react-helmet-async";
 import { Typewriter } from 'react-simple-typewriter';
+import SocialMedia from '../SocialMedia';
+import { Container, Row, Col } from "react-bootstrap";
 
 import sky from '../assets/images/sky.jpg';
 import wear from '../assets/images/wear.jpg';
@@ -220,6 +222,23 @@ const Home = () => {
 
         {/* Gallery */}
         <GallerySection images={images} />
+              <Container fluid className="home-about-section" id="about">
+        <Container>
+          <Row>
+            <Col md={12} className="home-about-social">
+              <h1 style={{color:"black"}}>Engage and Collaborate</h1>
+              <p style={{color:"black"}}>
+                {" "}
+                Seeking to establish a meaningful connection? I welcome the opportunity to discuss <br />
+                potential project collaborations or any other inquiries you may hav
+                <br />
+                <strong>Let us embark on a journey of shared success. I look forward to the chance to collaborate and create something remarkable.</strong>
+              </p>
+              <SocialMedia />
+            </Col>
+          </Row>
+        </Container>
+        </Container>
       </main>
 
       <Footer />

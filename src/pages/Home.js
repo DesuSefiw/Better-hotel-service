@@ -226,16 +226,14 @@ const Home = () => {
         <Container>
           <Row>
             <Col md={12} className="home-about-social">
-              <h1 style={{color:"black"}}>Engage and Collaborate</h1>
-              <p style={{color:"black"}}>
-                {" "}
-                Seeking to establish a meaningful connection? I welcome the opportunity to discuss <br />
-                potential project collaborations or any other inquiries you may hav
-                <br />
-                <strong>Let us embark on a journey of shared success. I look forward to the chance to collaborate and create something remarkable.</strong>
-              </p>
-              <SocialMedia />
-            </Col>
+        <h1 style={{ color: "black" }}>Connect With Beter Hotel Services</h1>
+        <p style={{ color: "black" }}>
+          Whether you're a hotel owner, hospitality professional, or someone seeking quality services, we're here to support and grow with you.
+          <br /><br />
+          <strong>Follow us to stay informed about the latest training programs, consulting offers, and hotel management innovations in Ethiopia.</strong>
+        </p>
+        <SocialMedia />
+      </Col>
           </Row>
         </Container>
         </Container>

@@ -7,14 +7,14 @@ import img from '../assets/images/egle.jpg';
 const Header = () => {
   const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [menuOpen, setMenuOpen] = useState(false); // <-- new state for menu toggle
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Listen for window resize to switch between mobile and desktop layout
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth <= 768;
-      setIsMobile(mobile);
-      if (!mobile) setMenuOpen(false); // auto close menu on desktop
+      setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setIsMenuOpen(false); // auto close menu when resizing to desktop
+      }
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -32,7 +32,6 @@ const Header = () => {
     display: 'block',
     textAlign: 'center',
     width: isMobile ? '100%' : 'auto',
-    marginBottom: isMobile ? '8px' : '0',
   };
 
   const buttonStyle = {
@@ -47,7 +46,6 @@ const Header = () => {
     display: 'block',
     textAlign: 'center',
     width: isMobile ? '100%' : 'auto',
-    marginBottom: isMobile ? '8px' : '0',
   };
 
   const containerStyle = {
@@ -66,8 +64,8 @@ const Header = () => {
   };
 
   const navContainerStyle = {
-    display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
-    flexDirection: 'column',
+    display: 'flex',
+    flexDirection: isMobile ? 'column' : 'row',
     gap: '10px',
     alignItems: 'center',
     width: isMobile ? '100%' : 'auto',
@@ -79,142 +77,101 @@ const Header = () => {
     alignItems: 'center',
     gap: '10px',
     marginBottom: isMobile ? '10px' : '0',
-    width: '100%',
-    justifyContent: 'space-between',
-  };
-
-  const hamburgerStyle = {
-    cursor: 'pointer',
-    display: isMobile ? 'block' : 'none',
-    width: '30px',
-    height: '22px',
-    position: 'relative',
-    zIndex: 1100,
-  };
-
-  const barStyle = {
-    height: '4px',
-    width: '100%',
-    backgroundColor: 'white',
-    borderRadius: '2px',
-    position: 'absolute',
-    left: 0,
-    transition: '0.3s',
   };
 
   return (
     <header style={containerStyle}>
-      {/* Logo and Title + Hamburger */}
+      {/* Logo and Title */}
       <div style={logoTitleStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img
-            src={img}
-            alt="Beter Hotel Services Logo"
-            style={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '5px',
-              backgroundColor: 'white',
-              objectFit: 'cover',
-            }}
-          />
-          <h1 style={{ margin: 0, fontSize: '1.5rem' }}>{t('title')}</h1>
-        </div>
+        <img
+          src={img}
+          alt="Beter Hotel Services Logo"
+          style={{
+            width: '50px',
+            height: '50px',
+            borderRadius: '5px',
+            backgroundColor: 'white',
+            objectFit: 'cover',
+          }}
+        />
+        <h1 style={{ margin: 0, fontSize: '1.5rem' }}>{t('title')}</h1>
+      </div>
 
-        {/* Hamburger button */}
-        <div
-          style={hamburgerStyle}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') setMenuOpen(!menuOpen);
+      {/* Hamburger Button */}
+      {isMobile && (
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            fontSize: '1.8rem',
+            cursor: 'pointer',
+            alignSelf: 'flex-end',
+            marginBottom: '10px',
           }}
         >
-          {/* 3 bars */}
-          <span
-            style={{
-              ...barStyle,
-              top: 0,
-              transform: menuOpen ? 'rotate(45deg) translateY(9px)' : 'none',
-            }}
-          />
-          <span
-            style={{
-              ...barStyle,
-              top: '9px',
-              opacity: menuOpen ? 0 : 1,
-            }}
-          />
-          <span
-            style={{
-              ...barStyle,
-              top: '18px',
-              transform: menuOpen ? 'rotate(-45deg) translateY(-9px)' : 'none',
-            }}
-          />
+          ☰
+        </button>
+      )}
+
+      {/* Navigation - visible on desktop or when menu is open on mobile */}
+      {(!isMobile || isMenuOpen) && (
+        <div style={navContainerStyle}>
+          {['about', 'contact'].map((key) => (
+            <a
+              key={key}
+              href={`#${key}`}
+              style={navLinkStyle}
+              onMouseOver={(e) => (e.target.style.backgroundColor = '#0059b3')}
+              onMouseOut={(e) => (e.target.style.backgroundColor = '#004080')}
+            >
+              {t(key)}
+            </a>
+          ))}
+
+          <Link to="/register" style={{ width: isMobile ? '100%' : 'auto' }}>
+            <button
+              style={buttonStyle}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#0059b3';
+                e.target.style.transform = 'scale(1.05)';
+                e.target.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = '#004080';
+                e.target.style.transform = 'scale(1)';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              {t('register')}
+            </button>
+          </Link>
+
+          <Link to="/login" style={{ width: isMobile ? '100%' : 'auto' }}>
+            <button
+              style={buttonStyle}
+              onMouseOver={(e) => {
+                e.target.style.backgroundColor = '#0059b3';
+                e.target.style.transform = 'scale(1.05)';
+                e.target.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.backgroundColor = '#004080';
+                e.target.style.transform = 'scale(1)';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              {t('login')}
+            </button>
+          </Link>
+
+          {/* Language Switcher */}
+          <div style={{ marginTop: isMobile ? '10px' : '0' }}>
+            <LanguageSwitcher />
+          </div>
         </div>
-      </div>
-
-      {/* Navigation + Actions */}
-      <div style={navContainerStyle}>
-        {['about', 'contact'].map((key) => (
-          <a
-            key={key}
-            href={`#${key}`}
-            style={navLinkStyle}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#0059b3'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#004080'}
-            onClick={() => setMenuOpen(false)} // close menu on link click (mobile)
-          >
-            {t(key)}
-          </a>
-        ))}
-
-        <Link to="/register" style={{ width: isMobile ? '100%' : 'auto' }}>
-          <button
-            style={buttonStyle}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#0059b3';
-              e.target.style.transform = 'scale(1.05)';
-              e.target.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#004080';
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = 'none';
-            }}
-            onClick={() => setMenuOpen(false)} // close menu on click (mobile)
-          >
-            {t('register')}
-          </button>
-        </Link>
-
-        <Link to="/login" style={{ width: isMobile ? '100%' : 'auto' }}>
-          <button
-            style={buttonStyle}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#0059b3';
-              e.target.style.transform = 'scale(1.05)';
-              e.target.style.boxShadow = '0 4px 10px rgba(0,0,0,0.25)';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#004080';
-              e.target.style.transform = 'scale(1)';
-              e.target.style.boxShadow = 'none';
-            }}
-            onClick={() => setMenuOpen(false)} // close menu on click (mobile)
-          >
-            {t('login')}
-          </button>
-        </Link>
-
-        {/* Language Switcher */}
-        <div style={{ marginTop: isMobile ? '10px' : '0' }}>
-          <LanguageSwitcher />
-        </div>
-      </div>
+      )}
     </header>
   );
 };

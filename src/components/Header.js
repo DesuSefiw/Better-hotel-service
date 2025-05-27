@@ -7,10 +7,15 @@ import img from '../assets/images/egle.jpg';
 const Header = () => {
   const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [menuOpen, setMenuOpen] = useState(false); // <-- new state for menu toggle
 
   // Listen for window resize to switch between mobile and desktop layout
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 768;
+      setIsMobile(mobile);
+      if (!mobile) setMenuOpen(false); // auto close menu on desktop
+    };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -27,6 +32,7 @@ const Header = () => {
     display: 'block',
     textAlign: 'center',
     width: isMobile ? '100%' : 'auto',
+    marginBottom: isMobile ? '8px' : '0',
   };
 
   const buttonStyle = {
@@ -41,6 +47,7 @@ const Header = () => {
     display: 'block',
     textAlign: 'center',
     width: isMobile ? '100%' : 'auto',
+    marginBottom: isMobile ? '8px' : '0',
   };
 
   const containerStyle = {
@@ -59,8 +66,8 @@ const Header = () => {
   };
 
   const navContainerStyle = {
-    display: 'flex',
-    flexDirection: isMobile ? 'column' : 'row',
+    display: isMobile ? (menuOpen ? 'flex' : 'none') : 'flex',
+    flexDirection: 'column',
     gap: '10px',
     alignItems: 'center',
     width: isMobile ? '100%' : 'auto',
@@ -72,24 +79,82 @@ const Header = () => {
     alignItems: 'center',
     gap: '10px',
     marginBottom: isMobile ? '10px' : '0',
+    width: '100%',
+    justifyContent: 'space-between',
+  };
+
+  const hamburgerStyle = {
+    cursor: 'pointer',
+    display: isMobile ? 'block' : 'none',
+    width: '30px',
+    height: '22px',
+    position: 'relative',
+    zIndex: 1100,
+  };
+
+  const barStyle = {
+    height: '4px',
+    width: '100%',
+    backgroundColor: 'white',
+    borderRadius: '2px',
+    position: 'absolute',
+    left: 0,
+    transition: '0.3s',
   };
 
   return (
     <header style={containerStyle}>
-      {/* Logo and Title */}
+      {/* Logo and Title + Hamburger */}
       <div style={logoTitleStyle}>
-        <img
-          src={img}
-          alt="Beter Hotel Services Logo"
-          style={{
-            width: '50px',
-            height: '50px',
-            borderRadius: '5px',
-            backgroundColor: 'white',
-            objectFit: 'cover',
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <img
+            src={img}
+            alt="Beter Hotel Services Logo"
+            style={{
+              width: '50px',
+              height: '50px',
+              borderRadius: '5px',
+              backgroundColor: 'white',
+              objectFit: 'cover',
+            }}
+          />
+          <h1 style={{ margin: 0, fontSize: '1.5rem' }}>{t('title')}</h1>
+        </div>
+
+        {/* Hamburger button */}
+        <div
+          style={hamburgerStyle}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') setMenuOpen(!menuOpen);
           }}
-        />
-        <h1 style={{ margin: 0, fontSize: '1.5rem' }}>{t('title')}</h1>
+        >
+          {/* 3 bars */}
+          <span
+            style={{
+              ...barStyle,
+              top: 0,
+              transform: menuOpen ? 'rotate(45deg) translateY(9px)' : 'none',
+            }}
+          />
+          <span
+            style={{
+              ...barStyle,
+              top: '9px',
+              opacity: menuOpen ? 0 : 1,
+            }}
+          />
+          <span
+            style={{
+              ...barStyle,
+              top: '18px',
+              transform: menuOpen ? 'rotate(-45deg) translateY(-9px)' : 'none',
+            }}
+          />
+        </div>
       </div>
 
       {/* Navigation + Actions */}
@@ -101,6 +166,7 @@ const Header = () => {
             style={navLinkStyle}
             onMouseOver={(e) => e.target.style.backgroundColor = '#0059b3'}
             onMouseOut={(e) => e.target.style.backgroundColor = '#004080'}
+            onClick={() => setMenuOpen(false)} // close menu on link click (mobile)
           >
             {t(key)}
           </a>
@@ -119,6 +185,7 @@ const Header = () => {
               e.target.style.transform = 'scale(1)';
               e.target.style.boxShadow = 'none';
             }}
+            onClick={() => setMenuOpen(false)} // close menu on click (mobile)
           >
             {t('register')}
           </button>
@@ -137,6 +204,7 @@ const Header = () => {
               e.target.style.transform = 'scale(1)';
               e.target.style.boxShadow = 'none';
             }}
+            onClick={() => setMenuOpen(false)} // close menu on click (mobile)
           >
             {t('login')}
           </button>

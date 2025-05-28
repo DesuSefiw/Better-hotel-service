@@ -118,7 +118,7 @@ const Header = () => {
       {/* Navigation - visible on desktop or when menu is open on mobile */}
       {(!isMobile || isMenuOpen) && (
         <div style={navContainerStyle}>
-          {['about', 'contact'].map((key) => (
+          {['about', 'contact','service'].map((key) => (
             <a
               key={key}
               href={`#${key}`}

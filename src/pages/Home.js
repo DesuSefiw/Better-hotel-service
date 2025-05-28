@@ -111,8 +111,7 @@ const Home = () => {
         <AboutUs />
 
         {/* 🔥 Service Cards */}
-        {/* 🔥 Service Cards */}
-<section style={{ marginBottom: '3rem' }}>
+<section id='service'style={{ marginBottom: '3rem' }}>
   <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
     {t('service') || 'Our Services'}
   </h2>

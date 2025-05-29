@@ -144,7 +144,7 @@ const PostList = () => {
           overflowY: viewAll ? 'scroll' : 'hidden',
           maxHeight: viewAll ? '50vh' : 'auto',
         }}>
-          {(viewAll ? posts : posts.slice(0, 4)).map(renderThumbnail)}
+          {(viewAll ? posts : posts.slice(0, 2)).map(renderThumbnail)}
         </div>
         <div style={{ textAlign: 'center', marginTop: '1rem' }}>
           <button

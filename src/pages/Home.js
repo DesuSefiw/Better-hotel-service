@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import PostList from '../components/PostList';
 import AboutUs from './About';
+import FloatingTelegram from '../components/FloatingTelegram';
 import GallerySection from '../components/GallerySection';
 import { Helmet } from "react-helmet-async";
 import { Typewriter } from 'react-simple-typewriter';
@@ -251,6 +252,7 @@ const Home = () => {
       </main>
 
       <Footer />
+                  <FloatingTelegram/>
     </>
   );
 };

@@ -1,0 +1,91 @@
+.animated-background {
+  position: relative;
+  background: linear-gradient(180deg, #000000 0%, #111 100%);
+  animation: flowBackground 20s infinite linear;
+  background-size: 400% 400%;
+  padding-top: 2rem;
+}
+
+@keyframes flowBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.main-container {
+  padding: 1rem;
+  color: white;
+}
+
+.welcome-box,
+.section-box,
+.service-card,
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.95);
+  color: black;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.title {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.service-icon {
+  font-size: 2.5rem;
+}
+
+.testimonial-section {
+  background-color: #f1f3f5;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.testimonial-card p {
+  font-style: italic;
+  color: #333;
+}
+
+.partner-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.partner-logo {
+  height: 80px;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .subtitle {
+    font-size: 1rem;
+  }
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+  .partner-logo {
+    height: 60px;
+  }
+}

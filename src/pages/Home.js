@@ -44,10 +44,11 @@ const Home = () => {
         <meta name="robots" content="index, follow" />
       </Helmet>
 <motion.div 
-  className="animated-bg"
-  animate={{ backgroundPosition: ["0% 0%", "50% 50%", "100% 100%"] }}
-  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+  className="mirror-bg"
+  animate={{ scale: [1, 1.02, 1], opacity: [0.8, 1, 0.8] }}
+  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
 />
+
 
       <Header />
 

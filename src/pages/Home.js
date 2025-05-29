@@ -15,7 +15,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import sky from '../assets/images/sky.jpg';
 import wear from '../assets/images/wear.jpg';
 import ethio from '../assets/images/ethio.png';
-
+import './Home.css';
 import img1 from '../assets/images/worker.jpg';
 import img2 from '../assets/images/hospitality_and_consultancy.jpg';
 import img3 from '../assets/images/organiz.jpg';
@@ -42,16 +42,23 @@ const Home = () => {
         <meta name="keywords" content="hotel booking Ethiopia, Better Hotel, Ethiopian hotels, Addis Ababa hotels, luxury hotel Ethiopia" />
         <meta name="robots" content="index, follow" />
       </Helmet>
-<motion.div 
-  className="mirror-bg"
-  animate={{ scale: [1, 1.02, 1], opacity: [0.8, 1, 0.8] }}
-  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-/>
+<div className="mirror-bg" />
+
 
 
       <Header />
 
-      <main style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#f8f9fa' }}>
+<main style={{
+  padding: '2rem',
+  textAlign: 'center',
+  backgroundColor: 'rgba(255, 255, 255, 0.85)',
+  borderRadius: '16px',
+  margin: '1rem auto',
+  maxWidth: '1200px',
+  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+  backdropFilter: 'blur(10px)',
+  WebkitBackdropFilter: 'blur(10px)'
+}}>
         {/* Welcome section */}
         <motion.section
           whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.2)' }}

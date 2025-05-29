@@ -4,6 +4,7 @@ import axios from 'axios';
 const PostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [viewAll, setViewAll] = useState(false);
   const timeoutRef = useRef(null);
 
   useEffect(() => {
@@ -12,8 +13,8 @@ const PostList = () => {
         const rawPosts = Array.isArray(res.data)
           ? res.data
           : Array.isArray(res.data.posts)
-          ? res.data.posts
-          : [];
+            ? res.data.posts
+            : [];
 
         const today = new Date();
         const filtered = rawPosts.filter(post => {
@@ -50,14 +51,6 @@ const PostList = () => {
     return () => clearTimeout(timeoutRef.current);
   }, [currentIndex, posts]);
 
-  if (!posts.length) {
-    return (
-      <div style={{ textAlign: 'center', padding: '1rem', fontSize: '14px' }}>
-        No recent posts to display.
-      </div>
-    );
-  }
-
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
@@ -68,57 +61,109 @@ const PostList = () => {
     ? `https://better-hotel-service-1.onrender.com/${currentMedia.replace(/^\/?/, '')}`
     : currentMedia;
 
+  const getThumbPath = (path) =>
+    path?.includes('uploads')
+      ? `https://better-hotel-service-1.onrender.com/${path.replace(/^\/?/, '')}`
+      : path;
+
+  const renderThumbnail = (post, i) => {
+    const thumbExt = post.filePath?.split('.').pop()?.toLowerCase();
+    const isThumbImg = ['jpg', 'jpeg', 'png', 'gif'].includes(thumbExt);
+    const isThumbVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(thumbExt);
+    const thumbPath = getThumbPath(post.filePath);
+
+    return (
+      <div key={i} onClick={() => setCurrentIndex(i)} style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
+        {isThumbImg ? (
+          <img src={thumbPath} alt={post.title} style={{ width: '100%', borderRadius: '8px' }} />
+        ) : isThumbVideo ? (
+          <video src={thumbPath} muted playsInline style={{ width: '100%', borderRadius: '8px' }} />
+        ) : null}
+      </div>
+    );
+  };
+
   return (
     <div style={{
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '90vw',
-      height: '60vh',
-      maxWidth: '1000px',
+      flexDirection: 'row',
+      width: '95%',
+      maxWidth: '1200px',
       margin: '2rem auto',
-      background: '#000',
-      borderRadius: '12px',
-      overflow: 'hidden',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-      padding: '1rem',
+      gap: '1rem',
     }}>
-      {isImage && (
-        <img
-          src={fullPath}
-          alt={currentPost.title}
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
-            objectFit: 'contain',
-            backgroundColor: '#000',
-          }}
-          draggable={false}
-        />
-      )}
+      {/* Main Display */}
+      <div style={{
+        flex: 2,
+        background: '#000',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        padding: '1rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '60vh',
+      }}>
+        {isImage && (
+          <img
+            src={fullPath}
+            alt={currentPost.title}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+            draggable={false}
+          />
+        )}
 
-      {isVideo && (
-        <video
-          key={fullPath}
-          src={fullPath}
-          autoPlay
-          muted
-          playsInline
-          loop
-          controls={false}
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%',
-            objectFit: 'contain',
-            backgroundColor: '#000',
-            borderRadius: '8px',
-          }}
-          onError={() => console.error('Video failed to load:', fullPath)}
-        />
-      )}
+        {isVideo && (
+          <video
+            key={fullPath}
+            src={fullPath}
+            autoPlay
+            muted
+            playsInline
+            loop
+            controls={false}
+            style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+          />
+        )}
+      </div>
+
+      {/* Sidebar */}
+      <div style={{
+        flex: 1,
+        background: '#fff',
+        borderRadius: '12px',
+        padding: '1rem',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}>
+        <h3 style={{ marginBottom: '1rem', textAlign: 'center' }}>Latest Posts</h3>
+        <div style={{
+          overflowY: viewAll ? 'scroll' : 'hidden',
+          maxHeight: viewAll ? '50vh' : 'auto',
+        }}>
+          {(viewAll ? posts : posts.slice(0, 4)).map(renderThumbnail)}
+        </div>
+        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
+          <button
+            onClick={() => setViewAll(prev => !prev)}
+            style={{
+              padding: '0.5rem 1rem',
+              backgroundColor: '#007BFF',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+            }}
+          >
+            {viewAll ? 'Show Less' : 'View All'}
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
 
 export default PostList;
-

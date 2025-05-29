@@ -45,7 +45,11 @@ const Home = () => {
         <meta name="keywords" content="hotel booking Ethiopia, Better Hotel, Ethiopian hotels, Addis Ababa hotels, luxury hotel Ethiopia" />
         <meta name="robots" content="index, follow" />
       </Helmet>
-
+<motion.div 
+        className="animated-bg"
+        animate={{ backgroundPosition: ["0% 0%", "50% 50%", "100% 100%"] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+      />
       <Header />
 
       <main className="animated-background">

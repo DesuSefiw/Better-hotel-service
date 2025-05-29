@@ -30,8 +30,6 @@ import img10 from '../assets/images/trinhosp.jpg';
 import img11 from '../assets/images/workerpart.jpg';
 import img12 from '../assets/images/service1.jpg';
 
-import './Home.css';
-
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12];
 
 const Home = () => {
@@ -45,21 +43,26 @@ const Home = () => {
         <meta name="keywords" content="hotel booking Ethiopia, Better Hotel, Ethiopian hotels, Addis Ababa hotels, luxury hotel Ethiopia" />
         <meta name="robots" content="index, follow" />
       </Helmet>
-<motion.div 
-        className="animated-bg"
-        animate={{ backgroundPosition: ["0% 0%", "50% 50%", "100% 100%"] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-      />
+
       <Header />
 
-      <main className="animated-background">
+      <main style={{ padding: '2rem', textAlign: 'center', backgroundColor: '#f8f9fa' }}>
         {/* Welcome section */}
         <motion.section
           whileHover={{ scale: 1.03, boxShadow: '0 8px 30px rgba(0, 0, 0, 0.2)' }}
           transition={{ duration: 0.3 }}
-          className="welcome-section"
+          style={{
+            marginBottom: '3rem',
+            padding: '2rem',
+            backgroundColor: '#fff',
+            borderRadius: '12px',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+            maxWidth: '800px',
+            marginInline: 'auto',
+            cursor: 'pointer',
+          }}
         >
-          <h1 className="welcome-title">
+          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2c3e50', marginBottom: '1rem', textTransform: 'uppercase' }}>
             <Typewriter
               words={[t('welcome')]}
               loop={1}
@@ -70,7 +73,7 @@ const Home = () => {
               delaySpeed={1000}
             />
           </h1>
-          <h2 className="welcome-description">
+          <h2 style={{ fontSize: '1.25rem', color: '#555', lineHeight: '1.6', fontWeight: 'normal' }}>
             <Typewriter
               words={[t('description')]}
               loop={1}
@@ -84,45 +87,80 @@ const Home = () => {
         </motion.section>
 
         {/* Slideshow */}
-        <motion.div className="slideshow-container"
+        <motion.div
           whileHover={{ scale: 1.02, rotate: 0.3 }}
           transition={{ type: 'spring', stiffness: 200 }}
+          style={{
+            marginBottom: '3rem',
+            padding: '1rem',
+            borderRadius: '12px',
+            backgroundColor: '#fff',
+            maxWidth: '850px',
+            marginInline: 'auto',
+            cursor: 'pointer',
+          }}
         >
           <h2>{t('Services')}</h2>
           <Slideshow />
         </motion.div>
 
+        {/* Post List */}
         <PostList />
+
+        {/* About Section */}
         <AboutUs />
 
         {/* 🔥 Service Cards */}
-        <section id='service' className="service-section">
-          <h2>{t('service') || 'Our Services'}</h2>
-          <div className="service-grid">
-            {[{ title: 'Hotel Setup', icon: '🏨', desc: 'Helping hotels establish a solid foundation for success.' },
-              { title: 'Consultancy', icon: '🧠', desc: 'Professional guidance for efficient hotel management and operations.' },
-              { title: 'Training Programs', icon: '📚', desc: 'Skill-based training to improve staff performance and hospitality services.' },
-              { title: 'Employee Recruitment', icon: '👥', desc: 'Connecting hotels with skilled professionals to enhance service quality.' },
-              { title: 'Operational Document Preparation', icon: '📑', desc: 'Providing essential documentation for seamless hotel operations.' }
-            ].map((service, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                className="service-card"
-              >
-                <div className="service-icon">{service.icon}</div>
-                <h3>{service.title}</h3>
-                <p>{service.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </section>
+<section id='service'style={{ marginBottom: '3rem' }}>
+  <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
+    {t('service') || 'Our Services'}
+  </h2>
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '1.5rem',
+    padding: '0 1rem'
+  }}>
+    {[
+      { title: 'Hotel Setup', icon: '🏨', desc: 'Helping hotels establish a solid foundation for success.' },
+      { title: 'Consultancy', icon: '🧠', desc: 'Professional guidance for efficient hotel management and operations.' },
+      { title: 'Training Programs', icon: '📚', desc: 'Skill-based training to improve staff performance and hospitality services.' },
+      { title: 'Employee Recruitment', icon: '👥', desc: 'Connecting hotels with skilled professionals to enhance service quality.' },
+      { title: 'Operational Document Preparation', icon: '📑', desc: 'Providing essential documentation for seamless hotel operations.' }
+    ].map((service, idx) => (
+      <motion.div
+        key={idx}
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.3 }}
+        style={{
+          backgroundColor: '#ffffff',
+          padding: '1.5rem',
+          borderRadius: '16px',
+          boxShadow: '0 6px 20px rgba(0,0,0,0.1)',
+          cursor: 'pointer',
+        }}
+      >
+        <div style={{ fontSize: '2.5rem' }}>{service.icon}</div>
+        <h3 style={{ margin: '1rem 0 0.5rem', color: '#333' }}>{service.title}</h3>
+        <p style={{ color: '#777' }}>{service.desc}</p>
+      </motion.div>
+    ))}
+  </div>
+</section>
+
 
         {/* 💬 Testimonials */}
-        <section className="testimonials-section">
-          <h2>{t('testimonials') || 'What Our Customers Say'}</h2>
-          <div className="testimonials-grid">
+        <section style={{ marginBottom: '4rem', backgroundColor: '#f1f3f5', padding: '3rem 1rem', borderRadius: '12px' }}>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
+            {t('testimonials') || 'What Our Customers Say'}
+          </h2>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem',
+            maxWidth: '800px',
+            margin: '0 auto'
+          }}>
             {[{ name: 'Selam M.', feedback: 'An exceptional initiative! This service will make hotel management seamless, from setup to staffing and operations.' },
               { name: 'Desalegn S.', feedback: 'A game-changer for the hospitality industry! Comprehensive training, consultancy, and recruitment—all in one place. and Recruit employees for them.' },
               { name: 'MOH A.', feedback: 'This service is exactly what hotels need to elevate their quality and efficiency. A must-have for industry growth! and also Prepare necessary operational documents' },
@@ -132,22 +170,38 @@ const Home = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="testimonial-card"
+                style={{
+                  backgroundColor: '#fff',
+                  padding: '1.5rem',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 18px rgba(0, 0, 0, 0.1)',
+                }}
               >
-                <p>"{review.feedback}"</p>
-                <h4>- {review.name}</h4>
+                <p style={{ fontStyle: 'italic', color: '#555' }}>
+                  "{review.feedback}"
+                </p>
+                <h4 style={{ marginTop: '0.75rem', fontWeight: 'bold', color: '#2c3e50' }}>- {review.name}</h4>
               </motion.div>
             ))}
           </div>
         </section>
 
         {/* 🤝 Partner Companies */}
-        <section className="partners-section">
-          <h2>{t('partners') || 'Our Partners'}</h2>
-          <motion.div className="partners-grid"
+        <section style={{ marginBottom: '4rem' }}>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem', color: '#2c3e50' }}>
+            {t('partners') || 'Our Partners'}
+          </h2>
+          <motion.div
             whileInView={{ opacity: 1 }}
             initial={{ opacity: 0 }}
             transition={{ duration: 1 }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '2rem'
+            }}
           >
             {[wear, sky, ethio].map((logo, i) => (
               <motion.img
@@ -156,29 +210,31 @@ const Home = () => {
                 alt={`Partner ${i + 1}`}
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.3 }}
-                className="partner-logo"
+                style={{ height: '80px', objectFit: 'contain' }}
               />
             ))}
           </motion.div>
         </section>
 
+        {/* Contact */}
         <ContactForm />
-        <GallerySection images={images} />
 
-        <Container fluid className="home-about-section" id="about">
-          <Container>
-            <Row>
-              <Col md={12} className="home-about-social">
-                <h1>Connect With Beter Hotel Services</h1>
-                <p>
-                  Whether you're a hotel owner, hospitality professional, or someone seeking quality services, we're here to support and grow with you.
-                  <br /><br />
-                  <strong>Follow us to stay informed about the latest training programs, consulting offers, and hotel management innovations in Ethiopia.</strong>
-                </p>
-                <SocialMedia />
-              </Col>
-            </Row>
-          </Container>
+        {/* Gallery */}
+        <GallerySection images={images} />
+              <Container fluid className="home-about-section" id="about">
+        <Container>
+          <Row>
+            <Col md={12} className="home-about-social">
+        <h1 style={{ color: "black" }}>Connect With Beter Hotel Services</h1>
+        <p style={{ color: "black" }}>
+          Whether you're a hotel owner, hospitality professional, or someone seeking quality services, we're here to support and grow with you.
+          <br /><br />
+          <strong>Follow us to stay informed about the latest training programs, consulting offers, and hotel management innovations in Ethiopia.</strong>
+        </p>
+        <SocialMedia />
+      </Col>
+          </Row>
+        </Container>
         </Container>
       </main>
 

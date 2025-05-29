@@ -12,7 +12,7 @@ import { Helmet } from "react-helmet-async";
 import { Typewriter } from 'react-simple-typewriter';
 import SocialMedia from '../SocialMedia';
 import { Container, Row, Col } from "react-bootstrap";
-
+import './Home.css'
 import sky from '../assets/images/sky.jpg';
 import wear from '../assets/images/wear.jpg';
 import ethio from '../assets/images/ethio.png';

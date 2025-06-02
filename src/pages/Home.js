@@ -113,7 +113,7 @@ const Home = () => {
             cursor: 'pointer',
           }}
         >
-          <h2>{t('Services')}</h2>
+          <h2>{t('Mission $ Vission')}</h2>
           <Slideshow />
         </motion.div>
 

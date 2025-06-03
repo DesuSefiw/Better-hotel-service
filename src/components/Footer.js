@@ -7,6 +7,7 @@ import {
   FaFacebook,
   FaLinkedin,
 } from 'react-icons/fa';
+import { Link } from 'react-router-dom'; // <-- For internal routing
 import ceoImg from '../assets/images/CEO.jpg';
 import headworker from '../assets/images/boardpartnerandmainworker.jpg';
 
@@ -40,18 +41,18 @@ const Footer = () => {
           <h3 style={{ marginBottom: '10px' }}>Better Hotel Services</h3>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaPhoneAlt />
-            <a href="tel:+251911444512" style={{ color: 'white',textDecoration:'none' }}>
+            <a href="tel:+251911444512" style={{ color: 'white', textDecoration: 'none' }}>
               +251-911-444-512
             </a>
           </p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaEnvelope />
-            <a href="mailto:betterhotel@gmail.com" style={{ color: 'white',textDecoration:'none' }}>
+            <a href="mailto:betterhotel@gmail.com" style={{ color: 'white', textDecoration: 'none' }}>
               betterhotel@gmail.com
             </a>
           </p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px' }}>
-             <FaUsers /> {trainerCount} Trainers Registered 
+            <FaUsers /> {trainerCount} Trainers Registered
           </p>
 
           {/* Social Media Links */}
@@ -81,6 +82,18 @@ const Footer = () => {
               <FaLinkedin />
             </a>
           </div>
+        </div>
+
+        {/* Navigation Links */}
+        <div style={{ flex: '1 1 200px' }}>
+          <h4 style={{ marginBottom: '15px' }}>Quick Links</h4>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <Link to="/" style={linkStyle}>Home</Link>
+            <Link to="/about" style={linkStyle}>About Us</Link>
+            <Link to="/services" style={linkStyle}>Services</Link>
+            <Link to="/mission" style={linkStyle}>Mission</Link>
+            <Link to="/vision" style={linkStyle}>Vision</Link>
+          </nav>
         </div>
 
         {/* CEO Info */}
@@ -127,6 +140,14 @@ const Footer = () => {
       </div>
     </footer>
   );
+};
+
+// 👇 Reusable link style
+const linkStyle = {
+  color: 'white',
+  textDecoration: 'none',
+  fontSize: '16px',
+  transition: 'color 0.3s',
 };
 
 export default Footer;

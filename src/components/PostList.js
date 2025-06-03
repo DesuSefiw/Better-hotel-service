@@ -57,27 +57,34 @@ const PostList = () => {
   const isImage = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
   const isVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
 
-  const fullPath = currentMedia?.includes('uploads')
-    ? `https://better-hotel-service-1.onrender.com/${currentMedia.replace(/^\/?/, '')}`
-    : currentMedia;
-
-  const getThumbPath = (path) =>
+  const getFullPath = path =>
     path?.includes('uploads')
       ? `https://better-hotel-service-1.onrender.com/${path.replace(/^\/?/, '')}`
       : path;
 
   const renderThumbnail = (post, i) => {
-    const thumbExt = post.filePath?.split('.').pop()?.toLowerCase();
-    const isThumbImg = ['jpg', 'jpeg', 'png', 'gif'].includes(thumbExt);
-    const isThumbVideo = ['mp4', 'mov', 'webm', 'ogg'].includes(thumbExt);
-    const thumbPath = getThumbPath(post.filePath);
+    const ext = post.filePath?.split('.').pop()?.toLowerCase();
+    const isImg = ['jpg', 'jpeg', 'png', 'gif'].includes(ext);
+    const isVid = ['mp4', 'mov', 'webm', 'ogg'].includes(ext);
+    const thumbPath = getFullPath(post.filePath);
 
     return (
-      <div key={i} onClick={() => setCurrentIndex(i)} style={{ cursor: 'pointer', marginBottom: '0.5rem' }}>
-        {isThumbImg ? (
-          <img src={thumbPath} alt={post.title} style={{ width: '100%', borderRadius: '8px' }} />
-        ) : isThumbVideo ? (
-          <video src={thumbPath} muted playsInline style={{ width: '100%', borderRadius: '8px' }} />
+      <div
+        key={i}
+        onClick={() => setCurrentIndex(i)}
+        style={{
+          cursor: 'pointer',
+          marginBottom: '0.5rem',
+          borderRadius: '8px',
+          overflow: 'hidden',
+          boxShadow: currentIndex === i ? '0 0 0 3px #007BFF' : 'none',
+          transition: 'box-shadow 0.3s ease',
+        }}
+      >
+        {isImg ? (
+          <img src={thumbPath} alt={post.title} style={{ width: '100%' }} />
+        ) : isVid ? (
+          <video src={thumbPath} muted playsInline style={{ width: '100%' }} />
         ) : null}
       </div>
     );
@@ -109,7 +116,7 @@ const PostList = () => {
       }}>
         {isImage && (
           <img
-            src={fullPath}
+            src={getFullPath(currentMedia)}
             alt={currentPost.title}
             style={{
               width: '100%',
@@ -124,8 +131,8 @@ const PostList = () => {
 
         {isVideo && (
           <video
-            key={fullPath}
-            src={fullPath}
+            key={getFullPath(currentMedia)}
+            src={getFullPath(currentMedia)}
             autoPlay
             muted
             playsInline
@@ -155,22 +162,28 @@ const PostList = () => {
         width: '100%',
       }}>
         <h3 style={{ marginBottom: '1rem', textAlign: 'center' }}>Latest Posts</h3>
-        <div style={{
-          overflowY: viewAll ? 'scroll' : 'hidden',
-          maxHeight: viewAll ? '50vh' : 'auto',
-        }}>
+
+        <div
+          style={{
+            overflowY: 'auto',
+            maxHeight: viewAll ? '300px' : '120px',
+            transition: 'max-height 0.5s ease',
+          }}
+        >
           {(viewAll ? posts : posts.slice(0, 2)).map(renderThumbnail)}
         </div>
+
         <div style={{ textAlign: 'center', marginTop: '1rem' }}>
           <button
             onClick={() => setViewAll(prev => !prev)}
             style={{
-              padding: '0.5rem 1rem',
+              padding: '0.5rem 1.2rem',
               backgroundColor: '#007BFF',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',
               cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
             }}
           >
             {viewAll ? 'Show Less' : 'View All'}

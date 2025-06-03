@@ -6,6 +6,8 @@ const PostList = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewAll, setViewAll] = useState(false);
   const timeoutRef = useRef(null);
+  const mediaRef = useRef(null);
+  const [mediaHeight, setMediaHeight] = useState(0);
 
   useEffect(() => {
     axios.get('https://better-hotel-service-1.onrender.com/api/posts')
@@ -51,6 +53,19 @@ const PostList = () => {
     return () => clearTimeout(timeoutRef.current);
   }, [currentIndex, posts]);
 
+  // Measure media height to sync sidebar
+  useEffect(() => {
+    if (mediaRef.current) {
+      const resizeObserver = new ResizeObserver(entries => {
+        for (let entry of entries) {
+          setMediaHeight(entry.contentRect.height);
+        }
+      });
+      resizeObserver.observe(mediaRef.current);
+      return () => resizeObserver.disconnect();
+    }
+  }, [mediaRef.current]);
+
   const currentPost = posts[currentIndex];
   const currentMedia = currentPost?.filePath;
   const ext = currentMedia?.split('.').pop()?.toLowerCase();
@@ -74,17 +89,18 @@ const PostList = () => {
         onClick={() => setCurrentIndex(i)}
         style={{
           cursor: 'pointer',
-          marginBottom: '0.5rem',
           borderRadius: '8px',
           overflow: 'hidden',
           boxShadow: currentIndex === i ? '0 0 0 3px #007BFF' : 'none',
           transition: 'box-shadow 0.3s ease',
+          height: viewAll ? 'auto' : `${mediaHeight / 2 - 20}px`,
+          marginBottom: '1rem',
         }}
       >
         {isImg ? (
-          <img src={thumbPath} alt={post.title} style={{ width: '100%' }} />
+          <img src={thumbPath} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : isVid ? (
-          <video src={thumbPath} muted playsInline style={{ width: '100%' }} />
+          <video src={thumbPath} muted playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : null}
       </div>
     );
@@ -94,26 +110,28 @@ const PostList = () => {
     <div style={{
       display: 'flex',
       flexDirection: 'row',
-      flexWrap: 'wrap',
       width: '95%',
       maxWidth: '1200px',
       margin: '2rem auto',
       gap: '1rem',
+      alignItems: 'stretch',
     }}>
       {/* Main Media Display */}
-      <div style={{
-        flex: '2 1 60%',
-        background: '#000',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-        padding: '1rem',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '50vh',
-        width: '100%',
-      }}>
+      <div
+        ref={mediaRef}
+        style={{
+          flex: '2 1 60%',
+          background: '#000',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          padding: '1rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+        }}
+      >
         {isImage && (
           <img
             src={getFullPath(currentMedia)}
@@ -121,14 +139,12 @@ const PostList = () => {
             style={{
               width: '100%',
               height: 'auto',
-              maxHeight: '80vh',
               objectFit: 'contain',
               borderRadius: '8px',
             }}
             draggable={false}
           />
         )}
-
         {isVideo && (
           <video
             key={getFullPath(currentMedia)}
@@ -141,7 +157,6 @@ const PostList = () => {
             style={{
               width: '100%',
               height: 'auto',
-              maxHeight: '80vh',
               objectFit: 'contain',
               borderRadius: '8px',
             }}
@@ -159,15 +174,16 @@ const PostList = () => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        maxHeight: `${mediaHeight}px`,
+        overflow: 'hidden',
         width: '100%',
       }}>
         <h3 style={{ marginBottom: '1rem', textAlign: 'center' }}>Latest Posts</h3>
 
         <div
           style={{
-            overflowY: 'auto',
-            maxHeight: viewAll ? '300px' : '120px',
-            transition: 'max-height 0.5s ease',
+            overflowY: viewAll ? 'auto' : 'hidden',
+            transition: 'all 0.5s ease',
           }}
         >
           {(viewAll ? posts : posts.slice(0, 2)).map(renderThumbnail)}

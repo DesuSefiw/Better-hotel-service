@@ -37,7 +37,7 @@ const Slideshow = () => {
   const closeGallery = () => setIsGalleryOpen(false);
 
   return (
-    <div style={{ position: 'relative', marginTop: '2rem' }}>
+    <div style={{ position: 'relative', marginTop: '2rem', width: '100%', overflow: 'hidden' }}>
       <Fade duration={3000} transitionDuration={800} infinite arrows={false}>
         {slides.map((slide, index) => (
           <div
@@ -79,22 +79,21 @@ const Slideshow = () => {
               </h2>
             </div>
 
-            <div style={{ position: 'relative' }}>
-              <div className="image-container">
-                <img
-                  src={slide.image}
-                  alt={`Slide ${index}`}
-                  style={{
-                    width: '400px',
-                    height: 'auto',
-                    borderRadius: '18px',
-                    objectFit: 'cover',
-                    transition: 'transform 0.5s ease-in-out',
-                    boxShadow: '0 10px 30px rgba(0,0,0,0.25)',
-                  }}
-                  className="zoom-on-hover"
-                />
-              </div>
+            <div className="image-container" style={{ position: 'relative', flex: '1 1 300px' }}>
+              <img
+                src={slide.image}
+                alt={`Slide ${index}`}
+                style={{
+                  width: '100%',
+                  maxWidth: '400px',
+                  height: 'auto',
+                  borderRadius: '18px',
+                  objectFit: 'cover',
+                  transition: 'transform 0.5s ease-in-out',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.25)',
+                }}
+                className="zoom-on-hover"
+              />
 
               <div
                 onClick={openGallery}
@@ -146,8 +145,9 @@ const Slideshow = () => {
                   src={slide.image}
                   alt={`Gallery ${idx}`}
                   style={{
-                    width: '200px',
-                    height: '150px',
+                    width: '100%',
+                    maxWidth: '200px',
+                    height: 'auto',
                     objectFit: 'cover',
                     borderRadius: '12px',
                     margin: '10px',
@@ -189,11 +189,18 @@ const Slideshow = () => {
 
         @media (max-width: 768px) {
           .slide-container {
-            flex-direction: column;
+            flex-direction: column !important;
+            padding: 30px 15px;
           }
 
           .text-container h2 {
             text-align: center !important;
+            font-size: 1.5rem;
+          }
+
+          .image-container {
+            width: 100%;
+            text-align: center;
           }
         }
       `}</style>

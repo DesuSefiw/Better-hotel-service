@@ -58,7 +58,7 @@ const Footer = () => {
           {/* Social Media Links */}
           <div style={{ marginTop: '20px', display: 'flex', gap: '15px' }}>
             <a
-              href="https://t.me/c/2593570202/4329"
+              href=https://t.me/+GmLqbBPHIgRjYjc8"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'white', fontSize: '20px' }}
@@ -66,7 +66,7 @@ const Footer = () => {
               <FaTelegramPlane />
             </a>
             <a
-              href="https://facebook.com/yourfacebook"
+              href="https://www.facebook.com/share/1G5NehS8rs/"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'white', fontSize: '20px' }}
@@ -74,7 +74,7 @@ const Footer = () => {
               <FaFacebook />
             </a>
             <a
-              href="https://linkedin.com/in/yourlinkedin"
+              href="https://www.linkedin.com/in/tarekegn-legesse-ba7b87191/"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'white', fontSize: '20px' }}

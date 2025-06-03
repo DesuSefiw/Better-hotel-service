@@ -58,7 +58,7 @@ const Footer = () => {
           {/* Social Media Links */}
           <div style={{ marginTop: '20px', display: 'flex', gap: '15px' }}>
             <a
-              href=https://t.me/+GmLqbBPHIgRjYjc8"
+              href="https://t.me/+GmLqbBPHIgRjYjc8"
               target="_blank"
               rel="noopener noreferrer"
               style={{ color: 'white', fontSize: '20px' }}

@@ -88,7 +88,7 @@ const Footer = () => {
         <div style={{ flex: '1 1 200px' }}>
           <h4 style={{ marginBottom: '15px' }}>Quick Links</h4>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <Link to="/" style={linkStyle}>Home</Link>
+            <Link to="" style={linkStyle}>Home</Link>
             <Link to="/about" style={linkStyle}>About Us</Link>
             <Link to="/services" style={linkStyle}>Services</Link>
             <Link to="/mission" style={linkStyle}>Mission</Link>

@@ -80,7 +80,7 @@ const Footer = () => {
         <div style={{ flex: '1 1 180px' }}>
           <br />
           <h4>Quick Links</h4>
-          <a href="#home" style={linkStyle}>Home</a>
+          <a href="#" style={linkStyle}>Home</a>
           <a href="#about" style={linkStyle}>About</a>
           <a href="#service" style={linkStyle}>Services</a>
           <a href="#mission" style={linkStyle}>Mission &vission</a>

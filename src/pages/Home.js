@@ -1,4 +1,5 @@
-import React from 'react';
+import {React,useEffect, useStat} from 'react';
+
 import Header from '../components/Header';
 import Slideshow from '../components/Slideshow';
 import ContactForm from '../components/ContactForm';

@@ -7,7 +7,6 @@ import {
   FaFacebook,
   FaLinkedin,
 } from 'react-icons/fa';
-import { Link } from 'react-router-dom'; // <-- For internal routing
 import ceoImg from '../assets/images/CEO.jpg';
 import headworker from '../assets/images/boardpartnerandmainworker.jpg';
 
@@ -23,6 +22,14 @@ const Footer = () => {
       .catch(err => console.error('Error fetching trainer count:', err));
   }, []);
 
+  const linkStyle = {
+    color: 'white',
+    textDecoration: 'none',
+    display: 'block',
+    marginBottom: '8px',
+    transition: '0.3s',
+  };
+
   return (
     <footer style={{ backgroundColor: '#003366', color: 'white', padding: '40px 20px' }}>
       <div
@@ -35,7 +42,7 @@ const Footer = () => {
         }}
       >
         {/* Company Info */}
-        <div style={{ flex: '1 1 250px' }}>
+        <div style={{ flex: '1 1 220px' }}>
           <br />
           <br />
           <h3 style={{ marginBottom: '10px' }}>Better Hotel Services</h3>
@@ -57,46 +64,31 @@ const Footer = () => {
 
           {/* Social Media Links */}
           <div style={{ marginTop: '20px', display: 'flex', gap: '15px' }}>
-            <a
-              href="https://t.me/+GmLqbBPHIgRjYjc8"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'white', fontSize: '20px' }}
-            >
+            <a href="https://t.me/c/2593570202/4329" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '20px' }}>
               <FaTelegramPlane />
             </a>
-            <a
-              href="https://www.facebook.com/share/1G5NehS8rs/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'white', fontSize: '20px' }}
-            >
+            <a href="https://facebook.com/yourfacebook" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '20px' }}>
               <FaFacebook />
             </a>
-            <a
-              href="https://www.linkedin.com/in/tarekegn-legesse-ba7b87191/"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'white', fontSize: '20px' }}
-            >
+            <a href="https://linkedin.com/in/yourlinkedin" target="_blank" rel="noopener noreferrer" style={{ color: 'white', fontSize: '20px' }}>
               <FaLinkedin />
             </a>
           </div>
         </div>
 
-        {/* Navigation Links */}
-        <div style={{ flex: '1 1 200px' }}>
-          <h4 style={{ marginBottom: '15px' }}>Quick Links</h4>
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <Link to="/" style={linkStyle}>Home</Link>
-            <Link to="/about" style={linkStyle}>About Us</Link>
-            <Link to="/services" style={linkStyle}>Services</Link>
-            <Link to="/service" style={linkStyle}>Mission &Vission</Link>
-          </nav>
+        {/* Quick Navigation Links */}
+        <div style={{ flex: '1 1 180px' }}>
+          <br />
+          <h4>Quick Links</h4>
+          <a href="#home" style={linkStyle}>Home</a>
+          <a href="#about" style={linkStyle}>About</a>
+          <a href="#service" style={linkStyle}>Services</a>
+          <a href="#mission" style={linkStyle}>Mission</a>
+          <a href="#vision" style={linkStyle}>Vision</a>
         </div>
 
         {/* CEO Info */}
-        <div style={{ flex: '1 1 250px', textAlign: 'center' }}>
+        <div style={{ flex: '1 1 220px', textAlign: 'center' }}>
           <img
             src={ceoImg}
             alt="CEO"
@@ -114,7 +106,7 @@ const Footer = () => {
         </div>
 
         {/* Headworker Info */}
-        <div style={{ flex: '1 1 250px', textAlign: 'center' }}>
+        <div style={{ flex: '1 1 220px', textAlign: 'center' }}>
           <img
             src={headworker}
             alt="HeadWorker"
@@ -139,14 +131,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
-
-// 👇 Reusable link style
-const linkStyle = {
-  color: 'white',
-  textDecoration: 'none',
-  fontSize: '16px',
-  transition: 'color 0.3s',
 };
 
 export default Footer;

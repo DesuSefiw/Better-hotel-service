@@ -83,7 +83,7 @@ useEffect(() => {
             cursor: 'pointer',
           }}
         >
-          <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontWeight: 'bold', color: '#2c3e50', marginBottom: '1rem', textTransform: 'uppercase' }}>
+          <h1 style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', fontWeight: 'bold', color: '#2c3e50', marginBottom: '1rem', textTransform: 'uppercase' }}>
             <Typewriter
                key={typewriterKey}
 
@@ -96,7 +96,7 @@ useEffect(() => {
               delaySpeed={1000}
             />
           </h1>
-          <h2 style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', color: '#555', lineHeight: '1.6', fontWeight: 'normal' }}>
+          <h2 style={{ fontSize: 'clamp(0.7rem, 3vw, 1rem)', color: '#555', lineHeight: '1.6', fontWeight: 'normal' }}>
             <Typewriter
               key={typewriterKey + 1}
               words={[t('description')]}

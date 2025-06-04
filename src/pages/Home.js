@@ -1,4 +1,4 @@
-import {React,useEffect, useStat} from 'react';
+import React,{useEffect, useStat,useRef} from 'react';
 
 import Header from '../components/Header';
 import Slideshow from '../components/Slideshow';

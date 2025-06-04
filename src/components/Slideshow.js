@@ -37,7 +37,7 @@ const Slideshow = () => {
   const closeGallery = () => setIsGalleryOpen(false);
 
   return (
-    <div style={{ position: 'relative', marginTop: '2rem', width: '100%', overflow: 'hidden' }}>
+    <div id="mission" style={{ position: 'relative', marginTop: '2rem', width: '100%', overflow: 'hidden' }}>
       <Fade duration={3000} transitionDuration={800} infinite arrows={false}>
         {slides.map((slide, index) => (
           <div

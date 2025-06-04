@@ -54,7 +54,7 @@ const Footer = () => {
           </p>
           <p style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <FaEnvelope />
-            <a href="mailto:betterhotel@gmail.com" style={{ color: 'white', textDecoration: 'none' }}>
+            <a href="mailto:betterhotel727@gmail.com" style={{ color: 'white', textDecoration: 'none' }}>
               betterhotel@gmail.com
             </a>
           </p>

@@ -83,8 +83,7 @@ const Footer = () => {
           <a href="#home" style={linkStyle}>Home</a>
           <a href="#about" style={linkStyle}>About</a>
           <a href="#service" style={linkStyle}>Services</a>
-          <a href="#mission" style={linkStyle}>Mission</a>
-          <a href="#vision" style={linkStyle}>Vision</a>
+          <a href="#mission" style={linkStyle}>Mission &vission</a>
         </div>
 
         {/* CEO Info */}

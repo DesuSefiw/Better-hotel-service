@@ -33,7 +33,12 @@ import img12 from '../assets/images/service1.jpg';
 const images = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12];
 
 const Home = () => {
-  const { t } = useTranslation();
+const { t, i18n } = useTranslation();
+const [typewriterKey, setTypewriterKey] = useState(0);
+
+useEffect(() => {
+  setTypewriterKey(prev => prev + 1); // triggers re-render when language changes
+}, [i18n.language]);
 
   return (
     <>
@@ -66,7 +71,9 @@ const Home = () => {
           transition={{ duration: 0.3 }}
           style={{
             marginBottom: '3rem',
-            padding: '2rem',
+            padding: '2rem 1rem',
+                minHeight: '30vh',
+
             backgroundColor: '#fff',
             borderRadius: '12px',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
@@ -75,8 +82,10 @@ const Home = () => {
             cursor: 'pointer',
           }}
         >
-          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2c3e50', marginBottom: '1rem', textTransform: 'uppercase' }}>
+          <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontWeight: 'bold', color: '#2c3e50', marginBottom: '1rem', textTransform: 'uppercase' }}>
             <Typewriter
+               key={typewriterKey}
+
               words={[t('welcome')]}
               loop={1}
               cursor
@@ -86,8 +95,9 @@ const Home = () => {
               delaySpeed={1000}
             />
           </h1>
-          <h2 style={{ fontSize: '1.25rem', color: '#555', lineHeight: '1.6', fontWeight: 'normal' }}>
+          <h2 style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)', color: '#555', lineHeight: '1.6', fontWeight: 'normal' }}>
             <Typewriter
+              key={typewriterKey + 1}
               words={[t('description')]}
               loop={1}
               cursor

@@ -16,7 +16,7 @@ import SocialMedia from '../SocialMedia';
 import { Container, Row, Col } from "react-bootstrap";
 import sky from '../assets/images/sky.jpg';
 import wear from '../assets/images/wear.jpg';
-import ethio from '../assets/images/ethio.jpg';
+import ethio from '../assets/images/ethio.png';
 import './Home.css';
 import img1 from '../assets/images/worker.jpg';
 import img2 from '../assets/images/hospitality_and_consultancy.jpg';

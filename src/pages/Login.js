@@ -20,7 +20,7 @@ const Login = () => {
         if (data.isCEO) {
           navigate('/dashboard');
         } else {
-          alert('Access denied. CEO only.');
+          alert('Access denied. CEO Training manageronly.');
         }
       }
        else {
@@ -31,7 +31,7 @@ const Login = () => {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}>CEO Login</h2>
+        <h2 style={styles.title}> Login</h2>
         <p style={{textAlign: 'center',fontSize: '14px',marginBottom: '20px',color: '#555',}}>
             this only permission to CEO or Training manager
             </p>

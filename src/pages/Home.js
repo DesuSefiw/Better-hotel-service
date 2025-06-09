@@ -185,7 +185,9 @@ useEffect(() => {
             maxWidth: '800px',
             margin: '0 auto'
           }}>
-            {[{ name: 'Selam M.', feedback: 'An exceptional initiative! This service will make hotel management seamless, from setup to staffing and operations.' },
+            {[{ name: 'Emnet kambe', feedback: 'It is a good start. I believe that this is a group determined to lead the hotel sector, which has lost its beauty, with a calm and educated mind.' },
+
+              { name: 'Selam M.', feedback: 'An exceptional initiative! This service will make hotel management seamless, from setup to staffing and operations.' },
               { name: 'Desalegn S.', feedback: 'A game-changer for the hospitality industry! Comprehensive training, consultancy, and recruitment—all in one place. and Recruit employees for them.' },
               { name: 'MOH A.', feedback: 'This service is exactly what hotels need to elevate their quality and efficiency. A must-have for industry growth! and also Prepare necessary operational documents' },
             ].map((review, index) => (

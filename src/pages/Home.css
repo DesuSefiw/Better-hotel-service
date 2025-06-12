@@ -6,6 +6,7 @@
   top: 0;
   left: 0;
   z-index: -1;
+  background-image: url('../assets/images/sky.jpg');
   background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   backdrop-filter: blur(15px);
   animation: animateGlass 15s ease-in-out infinite;

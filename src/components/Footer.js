@@ -110,8 +110,8 @@ const Footer = () => {
             src={headworker}
             alt="HeadWorker"
             style={{
-              width: '90px',
-              height: '90px',
+              width: '100px',
+              height: '125px',
               borderRadius: '50%',
               objectFit: 'cover',
               marginBottom: '10px',

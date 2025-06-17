@@ -220,9 +220,10 @@ app.get('/api/posts', async (req, res) => {
     res.json(posts);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error fetching posts' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 // Start Server
 const PORT = process.env.PORT || 5000;

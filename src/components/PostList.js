@@ -19,13 +19,23 @@ const PostList = () => {
             : [];
 
         const today = new Date();
-        const filtered = rawPosts.filter(post => {
-          const postDate = new Date(post.createdAt);
-          const diffDays = (today - postDate) / (1000 * 60 * 60 * 24);
-          const ext = post.filePath?.split('.').pop()?.toLowerCase();
-          const validExts = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'];
-          return diffDays <= 8 && postDate <= today && post.filePath && validExts.includes(ext);
-        });
+       const filtered = rawPosts.filter(post => {
+  const postDate = new Date(post.createdAt);
+  const now = new Date();
+
+  // Calculate the difference in days (ignore time by setting both dates to midnight)
+  const postMidnight = new Date(postDate.toDateString());
+  const nowMidnight = new Date(now.toDateString());
+
+  const diffTime = nowMidnight - postMidnight;
+  const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+  const ext = post.filePath?.split('.').pop()?.toLowerCase();
+  const validExts = ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm', 'ogg'];
+
+  return diffDays < 8 && validExts.includes(ext);
+});
+
 
         setPosts(filtered.length ? filtered : [{
           title: 'Fallback Post',

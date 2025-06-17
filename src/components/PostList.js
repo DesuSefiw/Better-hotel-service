@@ -157,20 +157,22 @@ const PostList = () => {
         )}
         {isVideo && (
           <video
-            key={getFullPath(currentMedia)}
-            src={getFullPath(currentMedia)}
-            autoPlay
-            muted
-            playsInline
-            loop
-            controls
-            style={{
-              width: '100%',
-              height: 'auto',
-              objectFit: 'contain',
-              borderRadius: '8px',
-            }}
-          />
+  key={getFullPath(currentMedia)}
+  src={getFullPath(currentMedia)}
+  autoPlay
+  muted
+  playsInline
+  loop
+  controls
+  style={{
+    width: '100%',
+    height: 'auto',
+    objectFit: 'contain',
+    borderRadius: '8px',
+  }}
+  onError={(e) => console.error('Video load error:', e)}
+/>
+
         )}
       </div>
 

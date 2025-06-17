@@ -36,13 +36,7 @@ app.use('/uploads', (req, res, next) => {
   }
   next();
 }, express.static('uploads'));
-const cutoffDate = new Date();
-cutoffDate.setDate(cutoffDate.getDate() - 8);
 
-const posts = await Post.find({
-  createdAt: { $gte: cutoffDate },
-  filePath: { $exists: true, $ne: '' },
-});
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://desalegnsefiw2:kXuopHwMq4ZVgnei@cluster0.xauvfp5.mongodb.net/test', {
@@ -220,16 +214,21 @@ app.delete('/api/posts/:id', authenticateJWT, async (req, res) => {
 // Get Posts From Last 8 Days Only
 app.get('/api/posts', async (req, res) => {
   try {
-    const eightDaysAgo = new Date();
-    eightDaysAgo.setDate(eightDaysAgo.getDate() - 8);
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - 8);
 
-    const posts = await Post.find({ createdAt: { $gte: eightDaysAgo } }).sort({ createdAt: -1 });
+    const posts = await Post.find({
+      createdAt: { $gte: cutoffDate },
+      filePath: { $exists: true, $ne: '' },
+    });
+
     res.json(posts);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching posts' });
   }
 });
+
 
 
 // Start Server

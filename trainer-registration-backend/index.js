@@ -36,6 +36,13 @@ app.use('/uploads', (req, res, next) => {
   }
   next();
 }, express.static('uploads'));
+const cutoffDate = new Date();
+cutoffDate.setDate(cutoffDate.getDate() - 8);
+
+const posts = await Post.find({
+  createdAt: { $gte: cutoffDate },
+  filePath: { $exists: true, $ne: '' },
+});
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://desalegnsefiw2:kXuopHwMq4ZVgnei@cluster0.xauvfp5.mongodb.net/test', {

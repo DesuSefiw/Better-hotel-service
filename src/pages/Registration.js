@@ -131,6 +131,7 @@ const handleSubmit = async (e) => {
                     value={service}
                     checked={formData.services.includes(service)}
                     onChange={() => handleServiceChange(service)}
+                     required
                   />{' '}
                   {service}
                 </label>

@@ -39,25 +39,38 @@ const Register = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      const requestBody = { ...formData };
-if (formData.services.includes('Take Training')) {
-  requestBody.type = type;
-}
+  // Validate phone number: must start with 09 and be exactly 10 digits
+  const phoneRegex = /^09\d{8}$/;
+  if (!phoneRegex.test(formData.phone)) {
+    alert('📱 Phone number must start with "09" and be exactly 10 digits.');
+    return;
+  }
 
-await axios.post('https://better-hotel-service-1.onrender.com/api/register', requestBody);
+  // Validate that at least one service is selected
+  if (formData.services.length === 0) {
+    alert('⚠️ Please select at least one service.');
+    return;
+  }
 
-      
-      alert('🎉 Registered successfully!');
-      setFormData({ name: '', email: '', phone: '', services: [] });
-      setTrainingType('');
-    } catch (err) {
-      alert('❌ Error registering. Please try again.');
+  try {
+    const requestBody = { ...formData };
+    if (formData.services.includes('Take Training')) {
+      requestBody.type = type;
     }
-  };
+
+    await axios.post('https://better-hotel-service-1.onrender.com/api/register', requestBody);
+
+    alert('🎉 Registered successfully!');
+    setFormData({ name: '', email: '', phone: '', services: [] });
+    setTrainingType('');
+  } catch (err) {
+    alert('❌ Error registering. Please try again.');
+  }
+};
+
 
   return (
     <>

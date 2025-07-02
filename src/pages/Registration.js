@@ -42,20 +42,22 @@ const Register = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Phone validation
+  console.log("Form Data:", formData);
+
+  // ✅ Validate phone number
   const phoneRegex = /^09\d{8}$/;
   if (!phoneRegex.test(formData.phone)) {
     alert('📱 Phone number must start with "09" and be exactly 10 digits.');
     return;
   }
 
-  // Service selection validation
-  if (formData.services.length === 0) {
+  // ✅ Validate at least one checkbox selected
+  if (!formData.services || formData.services.length === 0) {
     alert('⚠️ Please select at least one service.');
     return;
   }
 
-  // Training type validation if "Take Training" is selected
+  // ✅ Training type required if "Take Training" is selected
   if (formData.services.includes('Take Training') && type === '') {
     alert('⚠️ Please select if you are registering as an individual or organization.');
     return;
@@ -63,7 +65,6 @@ const handleSubmit = async (e) => {
 
   try {
     const requestBody = { ...formData };
-
     if (formData.services.includes('Take Training')) {
       requestBody.type = type;
     }
@@ -78,6 +79,7 @@ const handleSubmit = async (e) => {
     alert('❌ Error registering. Please try again.');
   }
 };
+
 
 
   return (
@@ -131,7 +133,7 @@ const handleSubmit = async (e) => {
                     value={service}
                     checked={formData.services.includes(service)}
                     onChange={() => handleServiceChange(service)}
-                     required
+                    
                   />{' '}
                   {service}
                 </label>

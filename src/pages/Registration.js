@@ -39,24 +39,31 @@ const Register = () => {
     }
   };
 
- const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
-  // Validate phone number: must start with 09 and be exactly 10 digits
+  // Phone validation
   const phoneRegex = /^09\d{8}$/;
   if (!phoneRegex.test(formData.phone)) {
     alert('📱 Phone number must start with "09" and be exactly 10 digits.');
     return;
   }
 
-  // Validate that at least one service is selected
+  // Service selection validation
   if (formData.services.length === 0) {
     alert('⚠️ Please select at least one service.');
     return;
   }
 
+  // Training type validation if "Take Training" is selected
+  if (formData.services.includes('Take Training') && type === '') {
+    alert('⚠️ Please select if you are registering as an individual or organization.');
+    return;
+  }
+
   try {
     const requestBody = { ...formData };
+
     if (formData.services.includes('Take Training')) {
       requestBody.type = type;
     }
@@ -67,6 +74,7 @@ const Register = () => {
     setFormData({ name: '', email: '', phone: '', services: [] });
     setTrainingType('');
   } catch (err) {
+    console.error(err);
     alert('❌ Error registering. Please try again.');
   }
 };
